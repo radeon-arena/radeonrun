@@ -2,7 +2,15 @@
 # VERIFIED on InferStation (gfx1151). Best measured decode ~22.0 tok/s
 # (in512/out128 streaming). serve cmd is the one run on halo5/halo6.
 
-recipe_version: "1"
+recipe_version: "2"
+metadata:
+  description: llamacpp serving MiMo-V2.5 (UD-Q2_K_XL) on Strix Halo
+  maintainer: JoursBleu
+  quantization: UD-Q2_K_XL
+  measured:
+    gpu: "Radeon 8060S (Strix Halo, gfx1151)"
+    profile: halo-arena-v1
+    decode_toks_per_s: 22.0
 name: mimo-v2-5-ud-q2-k-xl
 description: llamacpp serving MiMo-V2.5 (UD-Q2_K_XL) on Strix Halo
 model: /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf

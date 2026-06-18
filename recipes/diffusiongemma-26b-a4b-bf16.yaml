@@ -13,7 +13,15 @@
 #   --diffusion-config '{"canvas_length":256}'
 #   --max-model-len 896 = in(512) + out(128) + canvas(256)
 
-recipe_version: "1"
+recipe_version: "2"
+metadata:
+  description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (BF16) on Strix Halo
+  maintainer: JoursBleu
+  quantization: BF16
+  measured:
+    gpu: "Radeon 8060S (Strix Halo, gfx1151)"
+    profile: halo-arena-v1
+    decode_toks_per_s: 14.5
 name: diffusiongemma-26b-a4b-bf16
 description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (BF16) on Strix Halo
 
