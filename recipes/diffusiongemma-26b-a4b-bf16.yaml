@@ -1,0 +1,45 @@
+# Recipe: DiffusionGemma-26B-A4B (BF16) on Strix Halo - vLLM (upstream main)
+# VERIFIED on InferStation (gfx1151): 4 real BF16 decode results on 2026-06-16,
+# best ~14.5 tok/s (TTFT is high — 15-70s — because block-diffusion denoises a
+# whole canvas before emitting tokens; that is expected for this model class).
+#
+# Requires the upstream-main image (DiffusionGemma is not in the gfx11 line):
+#   build it from ./Dockerfile.main  ->  container: halo-vllm-main-node
+#
+# Diffusion-specific flags (from the InferStation halo unit):
+#   --generation-config vllm   (required; else the checkpoint's max_tokens:256
+#                               overrides each request)
+#   --hf-overrides '{"diffusion_sampler":"entropy_bound","diffusion_entropy_bound":0.1}'
+#   --diffusion-config '{"canvas_length":256}'
+#   --max-model-len 896 = in(512) + out(128) + canvas(256)
+
+recipe_version: "1"
+name: diffusiongemma-26b-a4b-bf16
+description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (BF16) on Strix Halo
+
+model: /models/diffusiongemma-26B-A4B-it
+
+# Built from ./Dockerfile.main (upstream main has DiffusionGemma; gfx11 line does not).
+container: halo-vllm-main-node
+
+mods: []
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  # Diffusion concurrency is memory-bound (the sampler materializes
+  # [num_seqs, canvas, vocab] fp32 transients) — keep this low.
+  nseq: 4
+
+env: {}
+
+# Verified serve command (the one run on the InferStation halo unit).
+command: |
+  vllm serve /models/diffusiongemma-26B-A4B-it \
+    --served-model-name diffusiongemma-26B-A4B-it \
+    --host {host} --port {port} \
+    --max-model-len 896 --max-num-seqs {nseq} \
+    --gpu-memory-utilization 0.6 \
+    --generation-config vllm \
+    --hf-overrides '{"diffusion_sampler":"entropy_bound","diffusion_entropy_bound":0.1}' \
+    --diffusion-config '{"canvas_length":256}'

@@ -23,15 +23,21 @@ produced a real decode result on strix-halo / strix-halo (the comment in each fi
 the best measured tok/s). FLASH_ATTN configs (which fail on gfx1151) are
 excluded.
 
-**37 recipes** across two engines:
+**38 recipes** across three image lines:
 
-- **vLLM** (`container: halo-vllm-node`, 9): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
+- **vLLM gfx11** (`container: halo-vllm-node`, 9): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
   Quark-W8A8), Qwen3.6-27B (BF16 / Quark), Qwen3-30B-A3B (BF16),
   Gemma-4-26B-A4B (BF16 / AWQ-4bit), Gemma-4-31B (Quark-W8A8). vLLM uses
   `--attention-backend TRITON_ATTN` (only stable vLLM attention on gfx1151).
 - **llama.cpp HIP** (`container: halo-llamacpp-node`, 28): Qwen3 4B/8B/14B/32B,
   Qwen3-30B-A3B, Qwen3.6-27B/35B-A3B, Gemma-4-26B-A4B, Llama-3.1-8B, MiMo-V2.5,
   Step-3.5-Flash — in BF16 / Q8_0 / Q4_K_M / UD-Q4_K_M / etc.
+- **vLLM upstream-main** (`container: halo-vllm-main-node`, 1):
+  `diffusiongemma-26b-a4b-bf16` — DiffusionGemma needs upstream-main vLLM, so it
+  uses the `--main` image ([`Dockerfile.main`](../Dockerfile.main)), not the
+  gfx11 line. 4 real BF16 results on halo (best ~14.5 tok/s; TTFT is high by
+  design — block-diffusion denoises a whole canvas before emitting tokens).
+
 
 List them all with `./run-recipe.py --list`.
 

@@ -7,8 +7,9 @@ set -euo pipefail
 # into CACHEBUST so the build tracks AMD's gfx1151 fork (see Dockerfile).
 #
 # Usage:
-#   ./build-and-copy.sh                 # build vLLM image -> halo-vllm-node
-#   ./build-and-copy.sh --llamacpp      # build llama.cpp image -> halo-llamacpp-node
+#   ./build-and-copy.sh                 # vLLM gfx11 image  -> halo-vllm-node
+#   ./build-and-copy.sh --main          # vLLM upstream-main -> halo-vllm-main-node (DiffusionGemma)
+#   ./build-and-copy.sh --llamacpp      # llama.cpp HIP      -> halo-llamacpp-node
 #   ./build-and-copy.sh -t mytag        # custom image tag
 #
 # (Multi-node copy is not implemented — Strix Halo is single-node here.)
@@ -19,6 +20,7 @@ ENGINE="vllm"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --llamacpp) ENGINE="llamacpp"; shift ;;
+    --main)     ENGINE="vllm-main"; shift ;;
     -t|--tag)   IMAGE_TAG="$2"; shift 2 ;;
     *) echo "Unknown arg: $1" >&2; exit 2 ;;
   esac
@@ -28,6 +30,13 @@ if [[ "$ENGINE" == "llamacpp" ]]; then
   IMAGE_TAG="${IMAGE_TAG:-halo-llamacpp-node}"
   echo "Building llama.cpp (HIP/gfx1151) image: $IMAGE_TAG"
   docker build -f Dockerfile.llamacpp -t "$IMAGE_TAG" .
+elif [[ "$ENGINE" == "vllm-main" ]]; then
+  IMAGE_TAG="${IMAGE_TAG:-halo-vllm-main-node}"
+  # Track upstream vllm-project/vllm main HEAD (has DiffusionGemma).
+  CACHEBUST="$(git ls-remote https://github.com/vllm-project/vllm.git main 2>/dev/null | cut -f1 || true)"
+  CACHEBUST="${CACHEBUST:-main-$(date -u +%Y%m%d)}"
+  echo "Building vLLM (upstream main, gfx1151) image: $IMAGE_TAG  (CACHEBUST=$CACHEBUST)"
+  docker build -f Dockerfile.main -t "$IMAGE_TAG" --build-arg "CACHEBUST=$CACHEBUST" .
 else
   IMAGE_TAG="${IMAGE_TAG:-halo-vllm-node}"
   # Resolve the current gfx11 branch HEAD so the wheel build tracks it (the

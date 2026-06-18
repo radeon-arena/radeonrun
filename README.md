@@ -48,14 +48,19 @@ MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
 ## 1. Building the image
 
 ```bash
-./build-and-copy.sh              # vLLM image -> halo-vllm-node
-./build-and-copy.sh --llamacpp   # llama.cpp (HIP) image -> halo-llamacpp-node
+./build-and-copy.sh              # vLLM gfx11 image   -> halo-vllm-node
+./build-and-copy.sh --main       # vLLM upstream-main -> halo-vllm-main-node
+./build-and-copy.sh --llamacpp   # llama.cpp (HIP)    -> halo-llamacpp-node
 ```
 
-- vLLM: [`Dockerfile`](Dockerfile) — base
+- vLLM (default): [`Dockerfile`](Dockerfile) — base
   `rocm/vllm:rocm7.13.0_gfx1151_..._vllm_0.19.1`, builds a vLLM wheel from AMD's
   `ROCm/vllm` `gfx11` branch (gfx1151-tuned; also avoids the upstream-main AWQ
   MoE `tp_size` crash). The build applies the C++23 `std::in_range` fix.
+- vLLM (upstream main): [`Dockerfile.main`](Dockerfile.main) — same base, but
+  builds `vllm-project/vllm` **main**. Use this for models that need upstream
+  main, notably **DiffusionGemma**. Mirrors InferStation's `vllm-rocm-halo-main`
+  image.
 - llama.cpp: [`Dockerfile.llamacpp`](Dockerfile.llamacpp) — base
   `rocm/dev-ubuntu-24.04:7.2.1-complete` (ROCm version must match the host KFD
   driver), `-DGGML_HIP=ON -DAMDGPU_TARGETS=gfx1151`.
@@ -72,16 +77,17 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**37 pre-configured serve commands** live in [`recipes/`](recipes/), generated
+**38 pre-configured serve commands** live in [`recipes/`](recipes/), generated
 from the InferStation gfx1151 units and cross-checked against `runs.json` (each
 corresponds to a config that produced a real decode result on InferStation gfx1151 fleet).
 See [recipes/README.md](recipes/README.md). Examples:
 
 - `qwen3.6-35b-a3b-bf16-vllm`, `qwen3.6-35b-a3b-awq-4bit-vllm`,
-  `qwen3.6-35b-a3b-quark-w8a8-int8-vllm` (vLLM, TRITON_ATTN)
-- `gemma-4-26b-a4b-it-awq-4bit-vllm`, `gemma-4-31b-it-quark-w8a8-int8-vllm` (vLLM)
+  `qwen3.6-35b-a3b-quark-w8a8-int8-vllm` (vLLM gfx11, TRITON_ATTN)
+- `gemma-4-26b-a4b-it-awq-4bit-vllm`, `gemma-4-31b-it-quark-w8a8-int8-vllm` (vLLM gfx11)
 - `qwen3-32b-q8-0-llamacpp`, `qwen3.6-35b-a3b-ud-q4-k-m-llamacpp`,
   `mimo-v2.5-ud-q2-k-xl-llamacpp` (llama.cpp HIP)
+- `diffusiongemma-26b-a4b-bf16` (vLLM **upstream-main** image; needs `--main` build)
 
 List them all: `./run-recipe.py --list`.
 
@@ -116,7 +122,7 @@ community project for running vLLM / llama.cpp on AMD Strix Halo via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; **37 serve recipes** generated from the
+- vLLM + llama.cpp images for gfx1151; **38 serve recipes** (incl. DiffusionGemma on the upstream-main image) generated from the
   InferStation gfx1151 units and cross-checked against real `runs.json` results;
   solo launcher with ROCm passthrough; build fix for the gfx11 C++23
   `std::in_range`; gfx1151 notes.
