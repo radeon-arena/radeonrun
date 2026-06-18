@@ -1,0 +1,43 @@
+# Recipe: Qwen3.6-35B-A3B (FP8) on Strix Halo  — SCAFFOLD / UNVERIFIED
+#
+# This is a skeleton retargeted from the upstream CUDA recipe. The serve flags
+# below are placeholders: attention backend, quantization, and kv-cache-dtype
+# must be chosen for ROCm/gfx1151 and tested on hardware before use.
+
+recipe_version: "1"
+name: Qwen36-35B-A3B
+description: vLLM serving Qwen3.6-35B-A3B (FP8) on Strix Halo [scaffold]
+
+# HuggingFace model to download (optional, for --download-model)
+model: Qwen/Qwen3.6-35B-A3B-FP8
+
+# Container image to use
+container: halo-vllm-node
+
+# Mods to apply (TODO: confirm which are needed on ROCm)
+mods: []
+
+# Default settings (can be overridden via CLI)
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1          # TODO: Strix Halo is single-GPU; confirm
+  gpu_memory_utilization: 0.9
+  max_model_len: 32768        # TODO: tune for 128 GB unified memory
+  max_num_batched_tokens: 8192
+
+# Environment variables
+env: {}
+
+# The vLLM serve command template
+# TODO(ROCm): replace CUDA-specific flags (flashinfer, fastsafetensors, ray)
+#             with the gfx1151-appropriate equivalents after testing.
+command: |
+  vllm serve Qwen/Qwen3.6-35B-A3B-FP8 \
+    --host {host} \
+    --port {port} \
+    --max-model-len {max_model_len} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --attention-backend TRITON_ATTN \
+    -tp {tensor_parallel}

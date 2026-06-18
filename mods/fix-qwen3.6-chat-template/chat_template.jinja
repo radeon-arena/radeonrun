@@ -1,0 +1,7 @@
+{# SCAFFOLD chat template placeholder for Qwen3.6.
+   TODO: replace with the actual corrected chat template, verified against the
+   model's tokenizer_config before use. This stub intentionally does nothing
+   useful so it is obvious it must be filled in. #}
+{%- for message in messages -%}
+{{ message['role'] }}: {{ message['content'] }}
+{% endfor -%}
