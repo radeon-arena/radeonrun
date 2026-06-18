@@ -1,111 +1,117 @@
-# vLLM Docker Optimized for AMD Strix Halo (scaffold)
+# vLLM Docker for AMD Strix Halo (gfx1151)
 
-> **Status: SCAFFOLD.** This repository currently contains only the directory
-> structure and file skeletons. The ROCm/Halo implementation has **not** been
-> written or hardware-validated yet. Files marked `SCAFFOLD` / `TODO` are
-> placeholders, not working code.
+Build and run recent **vLLM** (and **llama.cpp**) on **AMD Strix Halo**
+(Radeon 8060S iGPU / `gfx1151` / RDNA 3.5 / ROCm 7.2.x): container builds,
+one-click recipes, and a solo launcher with the right GPU passthrough.
 
-A community effort to build and run recent vLLM on **AMD Strix Halo**
-(Radeon 8060S / `gfx1151` / ROCm 7.2.x): one-click recipes, container builds,
-and launch scripts tuned for the Halo APU.
+The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
+**derived from real runs on the InferStation gfx1151 benchmark fleet**
+(strix-halo / strix-halo) — the serve commands and build steps are verified. The recipe
+*orchestrator* (`run-recipe.py`) is still partial (see its TODOs); use
+`build-and-copy.sh` + `launch-cluster.sh --solo` directly in the meantime.
+
+> **Read [`docs/GFX1151_NOTES.md`](docs/GFX1151_NOTES.md) first** — it has the
+> hard-won facts (FLASH_ATTN is a dead end, no marlin MoE on ROCm, the C++23
+> build fix, the FastAPI health-500 trap, etc.).
 
 ## Table of Contents
 
-- [DISCLAIMER](#disclaimer)
-- [QUICK START](#quick-start)
-- [1. Building the Docker Image](#1-building-the-docker-image)
-- [2. Launching (solo / cluster)](#2-launching-solo--cluster)
-- [3. Running the Container (Manual)](#3-running-the-container-manual)
-- [4. Configuration Details](#4-configuration-details)
-- [5. Mods and Patches](#5-mods-and-patches)
-- [6. Launch Scripts](#6-launch-scripts)
-- [7. Cluster mode for inference](#7-cluster-mode-for-inference)
-- [8. Model Loading](#8-model-loading)
-- [9. Benchmarking](#9-benchmarking)
-- [10. Downloading Models](#10-downloading-models)
+- [Quick Start](#quick-start)
+- [1. Building the image](#1-building-the-image)
+- [2. Running (solo)](#2-running-solo)
+- [3. Recipes](#3-recipes)
+- [4. Configuration](#4-configuration)
+- [5. Mods and patches](#5-mods-and-patches)
+- [6. Scripts](#6-scripts)
+- [7. gfx1151 notes](#7-gfx1151-notes)
 - [CHANGELOG](#changelog)
 
-## DISCLAIMER
-
-This repository is not affiliated with AMD or their subsidiaries. It is a
-community project aimed at helping Strix Halo users set up and run recent
-versions of vLLM on ROCm.
-
-## QUICK START
-
-> **TODO:** every command below is a placeholder showing the *intended* shape.
-> None of it works until the scaffold is filled in and tested on real hardware.
-
-### Build
+## Quick Start
 
 ```bash
 git clone git@github.com:JoursBleu/halo-vllm-docker.git
 cd halo-vllm-docker
 
-# TODO: build the ROCm container (see Dockerfile, currently a skeleton)
+# Build the vLLM image for gfx1151 (clones AMD's ROCm/vllm gfx11 branch,
+# applies the C++23 build fix, compiles HIP extensions). ~30-60 min cold.
 ./build-and-copy.sh
+
+# Serve a model (TRITON_ATTN is the only stable vLLM attention on gfx1151).
+MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
+  vllm serve /models/Qwen3.6-35B-A3B \
+    --host 0.0.0.0 --port 8000 \
+    --max-num-seqs 32 --dtype bfloat16 \
+    --attention-backend TRITON_ATTN
 ```
 
-### Run (solo)
+## 1. Building the image
 
 ```bash
-# TODO: launch a model on a single Strix Halo node
-./launch-cluster.sh --solo exec \
-  vllm serve <model> --port 8000 --host 0.0.0.0
+./build-and-copy.sh              # vLLM image -> halo-vllm-node
+./build-and-copy.sh --llamacpp   # llama.cpp (HIP) image -> halo-llamacpp-node
 ```
 
-## 1. Building the Docker Image
+- vLLM: [`Dockerfile`](Dockerfile) — base
+  `rocm/vllm:rocm7.13.0_gfx1151_..._vllm_0.19.1`, builds a vLLM wheel from AMD's
+  `ROCm/vllm` `gfx11` branch (gfx1151-tuned; also avoids the upstream-main AWQ
+  MoE `tp_size` crash). The build applies the C++23 `std::in_range` fix.
+- llama.cpp: [`Dockerfile.llamacpp`](Dockerfile.llamacpp) — base
+  `rocm/dev-ubuntu-24.04:7.2.1-complete` (ROCm version must match the host KFD
+  driver), `-DGGML_HIP=ON -DAMDGPU_TARGETS=gfx1151`.
 
-TODO. The [`Dockerfile`](Dockerfile) skeleton sketches the ROCm base + vLLM
-build stages but is not yet implemented. The base image, attention backends,
-and quantization kernels must be chosen for `gfx1151` and verified on hardware.
+## 2. Running (solo)
 
-## 2. Launching (solo / cluster)
+`launch-cluster.sh --solo` runs the container with the verified ROCm GPU
+passthrough (`--device /dev/kfd --device /dev/dri --group-add video
+--security-opt seccomp=unconfined --ipc host`), mounts `/models` and the HF
+cache, clears the entrypoint, and execs your command.
 
-TODO. See [`launch-cluster.sh`](launch-cluster.sh). Strix Halo is typically a
-single-node APU; the cluster path is kept for structural parity and is TODO.
+Multi-node / cluster mode is **not** implemented — Strix Halo is a single-GPU
+APU and our experience is single-node only.
 
-## 3. Running the Container (Manual)
+## 3. Recipes
 
-TODO.
+Pre-configured, verified serve commands live in [`recipes/`](recipes/). See
+[recipes/README.md](recipes/README.md). Verified examples:
 
-## 4. Configuration Details
+- `qwen3.6-35b-a3b-bf16` (vLLM, TRITON_ATTN)
+- `gemma4-26b-a4b` (vLLM, AWQ-4bit)
+- `gemma4-31b-quark-w8a8` (vLLM, Quark W8A8 INT8)
+- `qwen3-30b-a3b-q4-llamacpp` (llama.cpp, HIP)
 
-See [`.env.example`](.env.example) for the configuration variables.
+## 4. Configuration
 
-## 5. Mods and Patches
+See [`.env.example`](.env.example).
 
-Per-model fixes live under [`mods/`](mods/). Each mod is a directory with a
-`run.sh` applied at container/launch time. See [mods/README.md](mods/README.md).
+## 5. Mods and patches
 
-## 6. Launch Scripts
+See [`mods/`](mods/) — `fix-gfx11-in-range` (build fix) and `force-triton-attn`
+(runtime). See [mods/README.md](mods/README.md).
 
-- [`build-and-copy.sh`](build-and-copy.sh) — build the image (and optionally
-  copy it to other nodes).
-- [`launch-cluster.sh`](launch-cluster.sh) — run the container (solo or cluster).
-- [`autodiscover.sh`](autodiscover.sh) — discover nodes / interfaces.
-- [`hf-download.sh`](hf-download.sh) — download models from HuggingFace.
-- [`run-recipe.py`](run-recipe.py) / [`run-recipe.sh`](run-recipe.sh) — one-click
-  recipe runner.
+## 6. Scripts
 
-## 7. Cluster mode for inference
+- [`build-and-copy.sh`](build-and-copy.sh) — build the image(s). ✅ implemented
+- [`launch-cluster.sh`](launch-cluster.sh) — run a model (solo). ✅ implemented
+- [`run-recipe.py`](run-recipe.py) / [`run-recipe.sh`](run-recipe.sh) — recipe
+  runner. ⚠️ partial (lists recipes; full orchestration is TODO)
+- [`hf-download.sh`](hf-download.sh) — model download. ⚠️ skeleton
+- [`autodiscover.sh`](autodiscover.sh) — node/interface discovery. ⚠️ skeleton (single-node, likely unused)
 
-TODO.
+## 7. gfx1151 notes
 
-## 8. Model Loading
+[`docs/GFX1151_NOTES.md`](docs/GFX1151_NOTES.md) — attention backends, MoE/marlin
+on ROCm, AITER, skinny GEMM, the build fix, health-500, llama.cpp `-c`/`-np`
+sizing, and more.
 
-TODO.
+## DISCLAIMER
 
-## 9. Benchmarking
-
-TODO.
-
-## 10. Downloading Models
-
-See [`hf-download.sh`](hf-download.sh) (skeleton).
+This repository is not affiliated with AMD or their subsidiaries. It is a
+community project for running vLLM / llama.cpp on AMD Strix Halo via ROCm.
 
 ## CHANGELOG
 
 ### Unreleased
-- Initial scaffold: directory structure and file skeletons for an AMD Strix
-  Halo (`gfx1151` / ROCm) vLLM toolkit. No working implementation yet.
+- vLLM + llama.cpp images for gfx1151; verified serve recipes (TRITON_ATTN,
+  AWQ, Quark, llama.cpp HIP); solo launcher with ROCm passthrough; build fix
+  for the gfx11 C++23 `std::in_range`; gfx1151 notes from InferStation.
+- Recipe orchestrator still partial.

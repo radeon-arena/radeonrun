@@ -1,25 +1,41 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 #
-# build-and-copy.sh - Build the halo-vllm-docker image and optionally copy it
-#                     to other nodes. (SCAFFOLD — not implemented.)
+# build-and-copy.sh - Build the halo-vllm-docker image(s) for gfx1151.
 #
-# Mirrors a conventional build-script flag set so the real build can be filled
-# in later.
+# Builds the vLLM image (./Dockerfile) by default, pinning the gfx11 branch HEAD
+# into CACHEBUST so the build tracks AMD's gfx1151 fork (see Dockerfile).
 #
-# Usage (intended):
-#   ./build-and-copy.sh                 # build locally (single Strix Halo node)
-#   ./build-and-copy.sh -c              # build + copy to COPY_HOSTS in .env
-#   ./build-and-copy.sh --rebuild-vllm  # build vLLM from source instead of wheel
+# Usage:
+#   ./build-and-copy.sh                 # build vLLM image -> halo-vllm-node
+#   ./build-and-copy.sh --llamacpp      # build llama.cpp image -> halo-llamacpp-node
+#   ./build-and-copy.sh -t mytag        # custom image tag
 #
-# TODO:
-#   - docker build with the ROCm Dockerfile (ARG ROCM_IMAGE / PYTORCH_ROCM_ARCH)
-#   - tag handling (vllm-node, variants)
-#   - optional `docker save | ssh host docker load` distribution
-#   - record build-metadata.yaml
+# (Multi-node copy is not implemented — Strix Halo is single-node here.)
 
-IMAGE_TAG="halo-vllm-node"
+IMAGE_TAG=""
+ENGINE="vllm"
 
-echo "[scaffold] build-and-copy.sh is not implemented yet."
-echo "[scaffold] would build image '$IMAGE_TAG' from ./Dockerfile (ROCm/gfx1151)."
-exit 1
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --llamacpp) ENGINE="llamacpp"; shift ;;
+    -t|--tag)   IMAGE_TAG="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1" >&2; exit 2 ;;
+  esac
+done
+
+if [[ "$ENGINE" == "llamacpp" ]]; then
+  IMAGE_TAG="${IMAGE_TAG:-halo-llamacpp-node}"
+  echo "Building llama.cpp (HIP/gfx1151) image: $IMAGE_TAG"
+  docker build -f Dockerfile.llamacpp -t "$IMAGE_TAG" .
+else
+  IMAGE_TAG="${IMAGE_TAG:-halo-vllm-node}"
+  # Resolve the current gfx11 branch HEAD so the wheel build tracks it (the
+  # Dockerfile's git-clone layer is otherwise cached forever).
+  CACHEBUST="$(git ls-remote https://github.com/ROCm/vllm.git gfx11 2>/dev/null | cut -f1 || true)"
+  CACHEBUST="${CACHEBUST:-gfx11-$(date -u +%Y%m%d)}"
+  echo "Building vLLM (gfx1151) image: $IMAGE_TAG  (CACHEBUST=$CACHEBUST)"
+  docker build -f Dockerfile -t "$IMAGE_TAG" --build-arg "CACHEBUST=$CACHEBUST" .
+fi
+
+echo "Done: $IMAGE_TAG"

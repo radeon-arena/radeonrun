@@ -1,12 +1,14 @@
-# Recipe: Gemma-4-26B-A4B on Strix Halo  — SCAFFOLD / UNVERIFIED
+# Recipe: Gemma-4-26B-A4B-it (AWQ-4bit) on Strix Halo — vLLM
 #
-# Skeleton recipe. Serve flags are placeholders pending ROCm/gfx1151 testing.
+# VERIFIED on InferStation (gfx1151). AWQ MoE experts fall back to Triton WNA16
+# fused_experts on ROCm (marlin MoE is disabled on ROCm — not a bug, see
+# docs/GFX1151_NOTES.md). dense layers still go through the awq_marlin/Triton path.
 
 recipe_version: "1"
-name: Gemma4-26B-A4B
-description: vLLM serving Gemma-4-26B-A4B on Strix Halo [scaffold]
+name: Gemma4-26B-A4B-AWQ
+description: vLLM serving Gemma-4-26B-A4B-it (AWQ-4bit) on Strix Halo
 
-model: google/gemma-4-26B-A4B-it
+model: /models/gemma-4-26B-A4B-it-AWQ-4bit
 
 container: halo-vllm-node
 
@@ -15,23 +17,18 @@ mods: []
 defaults:
   port: 8000
   host: 0.0.0.0
-  tensor_parallel: 1
-  gpu_memory_utilization: 0.9
-  max_model_len: 32768
-  max_num_batched_tokens: 8192
+  nseq: 32
+  max_model_len: 2304
+  gpu_memory_utilization: 0.85
 
 env: {}
 
-# TODO(ROCm): verify quantization / tool + reasoning parsers on gfx1151.
+# Verified serve command. Note --dtype float16 for the AWQ path on ROCm.
 command: |
-  vllm serve google/gemma-4-26B-A4B-it \
+  vllm serve /models/gemma-4-26B-A4B-it-AWQ-4bit \
     --host {host} \
     --port {port} \
+    --max-num-seqs {nseq} \
+    --dtype float16 \
     --max-model-len {max_model_len} \
-    --max-num-batched-tokens {max_num_batched_tokens} \
-    --gpu-memory-utilization {gpu_memory_utilization} \
-    --attention-backend TRITON_ATTN \
-    --enable-auto-tool-choice \
-    --tool-call-parser gemma4 \
-    --reasoning-parser gemma4 \
-    -tp {tensor_parallel}
+    --gpu-memory-utilization {gpu_memory_utilization}

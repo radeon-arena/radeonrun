@@ -1,7 +1,5 @@
 # Examples
 
 Standalone example launch scripts (as opposed to YAML recipes). Each script is
-a self-contained `launch-cluster.sh` invocation for a specific model.
-
-> **SCAFFOLD:** examples are placeholders retargeted at ROCm/Strix Halo and are
-> not yet validated. See [example-vllm.sh](example-vllm.sh).
+a self-contained `launch-cluster.sh --solo` invocation for a specific model,
+using a verified gfx1151 serve command. See [example-vllm.sh](example-vllm.sh).

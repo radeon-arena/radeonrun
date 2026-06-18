@@ -1,0 +1,59 @@
+# syntax=docker/dockerfile:1.6
+#
+# llama.cpp (HIP/ROCm) for AMD Strix Halo (gfx1151), as run on InferStation.
+#
+# Build with:
+#   docker build -f Dockerfile.llamacpp -t halo-llamacpp-node .
+#
+# IMPORTANT: ROCM_VERSION must match the host's ROCm/KFD driver. On the
+# InferStation halo nodes (InferStation gfx1151 fleet) that is 7.2.1. gfx1151 is NOT supported
+# by ROCm 7.0, so do not downgrade below 7.2.x.
+
+ARG UBUNTU_VERSION=24.04
+ARG ROCM_VERSION=7.2.1
+ARG BASE_ROCM_DEV_CONTAINER=rocm/dev-ubuntu-${UBUNTU_VERSION}:${ROCM_VERSION}-complete
+ARG ROCM_DOCKER_ARCH=gfx1151
+ARG LLAMA_TAG=master
+
+# =========================================================
+# STAGE 1: build llama.cpp with the HIP backend
+# =========================================================
+FROM ${BASE_ROCM_DEV_CONTAINER} AS builder
+ARG ROCM_DOCKER_ARCH
+ARG LLAMA_TAG
+
+ENV AMDGPU_TARGETS=${ROCM_DOCKER_ARCH}
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git cmake build-essential libcurl4-openssl-dev ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+RUN git clone https://github.com/ggml-org/llama.cpp.git && \
+    cd llama.cpp && git checkout "${LLAMA_TAG}" && \
+    git rev-parse HEAD > /opt/commit.txt
+
+RUN cd /opt/llama.cpp && \
+    HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
+    cmake -S . -B build \
+      -DGGML_HIP=ON \
+      -DAMDGPU_TARGETS=${ROCM_DOCKER_ARCH} \
+      -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build --config Release -j"$(nproc)" --target llama-server llama-cli llama-bench
+
+# =========================================================
+# STAGE 2: runtime
+# =========================================================
+FROM ${BASE_ROCM_DEV_CONTAINER} AS runtime
+ARG ROCM_DOCKER_ARCH
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libcurl4-openssl-dev libgomp1 && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /opt/llama.cpp/build/bin/ /app/
+COPY --from=builder /opt/commit.txt /app/commit.txt
+ENV PATH="/app:${PATH}"
+
+WORKDIR /workspace
+CMD ["/bin/bash"]
