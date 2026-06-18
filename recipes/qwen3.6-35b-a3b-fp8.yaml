@@ -1,8 +1,8 @@
 # Recipe: Qwen3.6-35B-A3B (FP8) on Strix Halo  — SCAFFOLD / UNVERIFIED
 #
-# This is a skeleton retargeted from the upstream CUDA recipe. The serve flags
-# below are placeholders: attention backend, quantization, and kv-cache-dtype
-# must be chosen for ROCm/gfx1151 and tested on hardware before use.
+# Skeleton recipe. The serve flags below are placeholders: attention backend,
+# quantization, and kv-cache-dtype must be chosen for ROCm/gfx1151 and tested
+# on hardware before use.
 
 recipe_version: "1"
 name: Qwen36-35B-A3B

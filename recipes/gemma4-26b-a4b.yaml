@@ -1,7 +1,6 @@
 # Recipe: Gemma-4-26B-A4B on Strix Halo  — SCAFFOLD / UNVERIFIED
 #
-# Skeleton retargeted from the upstream CUDA recipe. Serve flags are
-# placeholders pending ROCm/gfx1151 testing.
+# Skeleton recipe. Serve flags are placeholders pending ROCm/gfx1151 testing.
 
 recipe_version: "1"
 name: Gemma4-26B-A4B

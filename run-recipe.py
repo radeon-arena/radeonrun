@@ -2,9 +2,10 @@
 """
 run-recipe.py - One-click model deployment using YAML recipes (SCAFFOLD)
 
-Mirrors the upstream interface so recipes can be filled in later. This is a
-skeleton: argument parsing and the recipe schema are sketched, but the actual
-build/download/launch orchestration for ROCm/Strix Halo is NOT implemented.
+Provides a one-click interface for deploying models with pre-configured
+settings. This is a skeleton: argument parsing and the recipe schema are
+sketched, but the actual build/download/launch orchestration for ROCm/Strix
+Halo is NOT implemented.
 
 Intended responsibilities (TODO):
 - Load a recipe YAML from recipes/<name>.yaml

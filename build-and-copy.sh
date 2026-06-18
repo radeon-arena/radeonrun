@@ -4,7 +4,8 @@ set -e
 # build-and-copy.sh - Build the halo-vllm-docker image and optionally copy it
 #                     to other nodes. (SCAFFOLD — not implemented.)
 #
-# Mirrors the upstream flags so the real build can be filled in later.
+# Mirrors a conventional build-script flag set so the real build can be filled
+# in later.
 #
 # Usage (intended):
 #   ./build-and-copy.sh                 # build locally (single Strix Halo node)

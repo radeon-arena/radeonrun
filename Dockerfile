@@ -2,10 +2,10 @@
 #
 # SCAFFOLD Dockerfile for halo-vllm-docker (AMD Strix Halo / gfx1151 / ROCm).
 #
-# This mirrors the multi-stage shape of the upstream CUDA Dockerfile but is a
-# skeleton: the ROCm base image, kernel/attention backends, and vLLM build are
-# TODO and must be chosen for gfx1151 and verified on real hardware before this
-# can be considered working. Do NOT assume `docker build` succeeds yet.
+# This is a multi-stage skeleton: the ROCm base image, kernel/attention
+# backends, and vLLM build are TODO and must be chosen for gfx1151 and verified
+# on real hardware before this can be considered working. Do NOT assume
+# `docker build` succeeds yet.
 
 # TODO(ROCm): pick and pin a real ROCm base. Candidates to evaluate on gfx1151:
 #   - rocm/vllm-dev:<tag>
@@ -46,8 +46,8 @@ FROM base AS vllm-build
 # TODO(ROCm): either
 #   (a) pip install a prebuilt ROCm vLLM wheel for gfx1151, or
 #   (b) git clone vLLM and build the HIP extensions from source.
-# The upstream pulls nightly CUDA wheels; the ROCm equivalent must be decided
-# and tested. Leaving unimplemented on purpose.
+# The right approach for ROCm/gfx1151 must be decided and tested. Leaving
+# unimplemented on purpose.
 #
 # RUN echo "TODO: install/build vLLM for ROCm gfx1151"
 
