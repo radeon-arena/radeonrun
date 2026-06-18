@@ -1,0 +1,17 @@
+# Recipe: Qwen3.6-35B-A3B (BF16) on Strix Halo - vllm
+# VERIFIED on InferStation (gfx1151). Best measured decode ~124.3 tok/s
+# (in512/out128 streaming). serve cmd is the one run on halo5/halo6.
+
+recipe_version: "1"
+name: qwen3-6-35b-a3b-bf16
+description: vllm serving Qwen3.6-35B-A3B (BF16) on Strix Halo
+model: /models/Qwen3.6-35B-A3B
+container: halo-vllm-node
+mods: []
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  nseq: 32
+env: {}
+command: |
+  vllm serve /models/Qwen3.6-35B-A3B --host 0.0.0.0 --port {port} --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN

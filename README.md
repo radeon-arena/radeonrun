@@ -72,13 +72,18 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-Pre-configured, verified serve commands live in [`recipes/`](recipes/). See
-[recipes/README.md](recipes/README.md). Verified examples:
+**37 pre-configured serve commands** live in [`recipes/`](recipes/), generated
+from the InferStation gfx1151 units and cross-checked against `runs.json` (each
+corresponds to a config that produced a real decode result on halo5/halo6).
+See [recipes/README.md](recipes/README.md). Examples:
 
-- `qwen3.6-35b-a3b-bf16` (vLLM, TRITON_ATTN)
-- `gemma4-26b-a4b` (vLLM, AWQ-4bit)
-- `gemma4-31b-quark-w8a8` (vLLM, Quark W8A8 INT8)
-- `qwen3-30b-a3b-q4-llamacpp` (llama.cpp, HIP)
+- `qwen3.6-35b-a3b-bf16-vllm`, `qwen3.6-35b-a3b-awq-4bit-vllm`,
+  `qwen3.6-35b-a3b-quark-w8a8-int8-vllm` (vLLM, TRITON_ATTN)
+- `gemma-4-26b-a4b-it-awq-4bit-vllm`, `gemma-4-31b-it-quark-w8a8-int8-vllm` (vLLM)
+- `qwen3-32b-q8-0-llamacpp`, `qwen3.6-35b-a3b-ud-q4-k-m-llamacpp`,
+  `mimo-v2.5-ud-q2-k-xl-llamacpp` (llama.cpp HIP)
+
+List them all: `./run-recipe.py --list`.
 
 ## 4. Configuration
 
@@ -111,7 +116,7 @@ community project for running vLLM / llama.cpp on AMD Strix Halo via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; serve recipes (TRITON_ATTN, AWQ, Quark,
-  llama.cpp HIP) as run on the InferStation gfx1151 fleet; solo launcher with
-  ROCm passthrough; build fix for the gfx11 C++23 `std::in_range`; gfx1151
-  notes.
+- vLLM + llama.cpp images for gfx1151; **37 serve recipes** generated from the
+  InferStation gfx1151 units and cross-checked against real `runs.json` results;
+  solo launcher with ROCm passthrough; build fix for the gfx11 C++23
+  `std::in_range`; gfx1151 notes.

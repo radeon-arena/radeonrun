@@ -1,0 +1,18 @@
+# Recipe: Gemma-4-26B-A4B-it (BF16) on Strix Halo - llamacpp
+# VERIFIED on InferStation (gfx1151). Best measured decode ~88.5 tok/s
+# (in512/out128 streaming). serve cmd is the one run on halo5/halo6.
+
+recipe_version: "1"
+name: gemma-4-26b-a4b-it-bf16
+description: llamacpp serving Gemma-4-26B-A4B-it (BF16) on Strix Halo
+model: /models/gemma-4-26B-A4B-it/gemma-4-26B-A4B-it-bf16.gguf
+container: halo-llamacpp-node
+mods: []
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  nseq: 32
+  ctx: 32768
+env: {}
+command: |
+  llama-server -m /models/gemma-4-26B-A4B-it/gemma-4-26B-A4B-it-bf16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}

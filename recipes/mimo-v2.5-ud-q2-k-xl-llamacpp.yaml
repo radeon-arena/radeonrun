@@ -1,0 +1,18 @@
+# Recipe: MiMo-V2.5 (UD-Q2_K_XL) on Strix Halo - llamacpp
+# VERIFIED on InferStation (gfx1151). Best measured decode ~22.0 tok/s
+# (in512/out128 streaming). serve cmd is the one run on halo5/halo6.
+
+recipe_version: "1"
+name: mimo-v2-5-ud-q2-k-xl
+description: llamacpp serving MiMo-V2.5 (UD-Q2_K_XL) on Strix Halo
+model: /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf
+container: halo-llamacpp-node
+mods: []
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  nseq: 32
+  ctx: 32768
+env: {}
+command: |
+  llama-server -m /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf -ngl 999 -fa off --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}

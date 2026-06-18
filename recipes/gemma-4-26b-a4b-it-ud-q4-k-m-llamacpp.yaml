@@ -1,0 +1,18 @@
+# Recipe: Gemma-4-26B-A4B-it (UD-Q4_K_M) on Strix Halo - llamacpp
+# VERIFIED on InferStation (gfx1151). Best measured decode ~124.8 tok/s
+# (in512/out128 streaming). serve cmd is the one run on halo5/halo6.
+
+recipe_version: "1"
+name: gemma-4-26b-a4b-it-ud-q4-k-m
+description: llamacpp serving Gemma-4-26B-A4B-it (UD-Q4_K_M) on Strix Halo
+model: /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+container: halo-llamacpp-node
+mods: []
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  nseq: 32
+  ctx: 32768
+env: {}
+command: |
+  llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}
