@@ -15,15 +15,16 @@ gfx1151 fleet** (strix-halo / strix-halo) and produce its daily benchmark result
 with `./run-recipe.py <name>` (or `--print` to show the command), or paste its
 serve command into `launch-cluster.sh --solo` directly.
 
-## Verified recipes
+## Recipes
 
-All recipes here were generated from the InferStation gfx1151 unit definitions
-and cross-checked against `runs.json` — each one corresponds to a config that
-produced a real decode result on strix-halo / strix-halo (the comment in each file records
-the best measured tok/s). FLASH_ATTN configs (which fail on gfx1151) are
-excluded.
+These recipes are generated from the InferStation gfx1151 unit definitions.
+Most correspond to a config that produced a real decode result on strix-halo / strix-halo
+(the comment in each file records the best measured tok/s, cross-checked against
+`runs.json`); a couple are real serve configs from the same unit set that are
+not yet benchmarked on halo (clearly noted in-file). FLASH_ATTN configs (which
+fail on gfx1151) are excluded.
 
-**38 recipes** across three image lines:
+**39 recipes** across three image lines:
 
 - **vLLM gfx11** (`container: halo-vllm-node`, 9): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
   Quark-W8A8), Qwen3.6-27B (BF16 / Quark), Qwen3-30B-A3B (BF16),
@@ -32,11 +33,14 @@ excluded.
 - **llama.cpp HIP** (`container: halo-llamacpp-node`, 28): Qwen3 4B/8B/14B/32B,
   Qwen3-30B-A3B, Qwen3.6-27B/35B-A3B, Gemma-4-26B-A4B, Llama-3.1-8B, MiMo-V2.5,
   Step-3.5-Flash — in BF16 / Q8_0 / Q4_K_M / UD-Q4_K_M / etc.
-- **vLLM upstream-main** (`container: halo-vllm-main-node`, 1):
-  `diffusiongemma-26b-a4b-bf16` — DiffusionGemma needs upstream-main vLLM, so it
-  uses the `--main` image ([`Dockerfile.main`](../Dockerfile.main)), not the
-  gfx11 line. 4 real BF16 results on halo (best ~14.5 tok/s; TTFT is high by
-  design — block-diffusion denoises a whole canvas before emitting tokens).
+- **vLLM upstream-main** (`container: halo-vllm-main-node`, 2):
+  `diffusiongemma-26b-a4b-bf16` and `diffusiongemma-26b-a4b-awq-int4`.
+  DiffusionGemma needs upstream-main vLLM, so these use the `--main` image
+  ([`Dockerfile.main`](../Dockerfile.main)), not the gfx11 line. The BF16 variant
+  has 4 real halo results (best ~14.5 tok/s; TTFT is high by design —
+  block-diffusion denoises a whole canvas before emitting tokens). The AWQ-INT4
+  variant is a real serve config from the same unit set, not yet benchmarked on
+  halo (no tok/s claimed).
 
 
 List them all with `./run-recipe.py --list`.

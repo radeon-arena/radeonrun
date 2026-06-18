@@ -77,7 +77,7 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**38 pre-configured serve commands** live in [`recipes/`](recipes/), generated
+**39 pre-configured serve commands** live in [`recipes/`](recipes/), generated
 from the InferStation gfx1151 units and cross-checked against `runs.json` (each
 corresponds to a config that produced a real decode result on InferStation gfx1151 fleet).
 See [recipes/README.md](recipes/README.md). Examples:
@@ -87,7 +87,7 @@ See [recipes/README.md](recipes/README.md). Examples:
 - `gemma-4-26b-a4b-it-awq-4bit-vllm`, `gemma-4-31b-it-quark-w8a8-int8-vllm` (vLLM gfx11)
 - `qwen3-32b-q8-0-llamacpp`, `qwen3.6-35b-a3b-ud-q4-k-m-llamacpp`,
   `mimo-v2.5-ud-q2-k-xl-llamacpp` (llama.cpp HIP)
-- `diffusiongemma-26b-a4b-bf16` (vLLM **upstream-main** image; needs `--main` build)
+- `diffusiongemma-26b-a4b-bf16` / `-awq-int4` (vLLM **upstream-main** image; needs `--main` build)
 
 List them all: `./run-recipe.py --list`.
 
@@ -122,7 +122,7 @@ community project for running vLLM / llama.cpp on AMD Strix Halo via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; **38 serve recipes** (incl. DiffusionGemma on the upstream-main image) generated from the
+- vLLM + llama.cpp images for gfx1151; **39 serve recipes** (incl. DiffusionGemma BF16 + AWQ-INT4 on the upstream-main image) generated from the
   InferStation gfx1151 units and cross-checked against real `runs.json` results;
   solo launcher with ROCm passthrough; build fix for the gfx11 C++23
   `std::in_range`; gfx1151 notes.

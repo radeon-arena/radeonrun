@@ -1,0 +1,45 @@
+# Recipe: DiffusionGemma-26B-A4B (AWQ-INT4) on Strix Halo - vLLM (upstream main)
+#
+# Serve config from the real InferStation halo unit (vllm-rocm-halo-main image,
+# same line as the BF16 variant). The BF16 variant of this model is benchmarked
+# on halo (4 real results, best ~14.5 tok/s); this AWQ-INT4 variant is a real,
+# deployable config from the same unit set but has not been benchmarked on halo
+# yet, so no tok/s number is claimed here.
+#
+# Requires the upstream-main image (DiffusionGemma is not in the gfx11 line):
+#   build it from ./Dockerfile.main  ->  container: halo-vllm-main-node
+#
+# Diffusion-specific flags (see diffusiongemma-26b-a4b-bf16.yaml for notes):
+#   --generation-config vllm / --hf-overrides diffusion_sampler /
+#   --diffusion-config canvas_length / --max-model-len 896
+
+recipe_version: "1"
+name: diffusiongemma-26b-a4b-awq-int4
+description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (AWQ-INT4) on Strix Halo
+
+model: /models/diffusiongemma-26B-A4B-it-AWQ-INT4
+
+# Built from ./Dockerfile.main (upstream main has DiffusionGemma; gfx11 line does not).
+container: halo-vllm-main-node
+
+mods: []
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  # Diffusion concurrency is memory-bound (the sampler materializes
+  # [num_seqs, canvas, vocab] fp32 transients) — keep this low.
+  nseq: 4
+
+env: {}
+
+# Serve command from the InferStation halo unit (bbf22689c5).
+command: |
+  vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 \
+    --served-model-name diffusiongemma-26B-A4B-it-AWQ-INT4 \
+    --host {host} --port {port} \
+    --max-model-len 896 --max-num-seqs {nseq} \
+    --gpu-memory-utilization 0.6 \
+    --generation-config vllm \
+    --hf-overrides '{"diffusion_sampler":"entropy_bound","diffusion_entropy_bound":0.1}' \
+    --diffusion-config '{"canvas_length":256}'
