@@ -1,0 +1,19 @@
+halo-vllm-docker
+================
+
+This project is a scaffold derived from the structure of:
+
+    spark-vllm-docker
+    Copyright (c) 2026 Eugene Rakhmatulin
+    https://github.com/eugr/spark-vllm-docker
+    Licensed under the MIT License.
+
+The original targets NVIDIA DGX Spark (GB10 / CUDA / ARM64). This repository
+re-targets the same idea at AMD Strix Halo (Radeon 8060S / gfx1151 / ROCm).
+
+IMPORTANT: This is currently a SCAFFOLD ONLY. The directory layout and file
+skeletons mirror the original project, but the ROCm/Halo implementation has
+NOT yet been written or validated on hardware. Files marked "SCAFFOLD" /
+"TODO" contain placeholders, not working code. Do not assume any Dockerfile,
+script, or recipe here builds or runs until it has been filled in and tested
+on a real Strix Halo machine.

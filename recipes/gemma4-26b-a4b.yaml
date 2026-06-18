@@ -1,0 +1,38 @@
+# Recipe: Gemma-4-26B-A4B on Strix Halo  — SCAFFOLD / UNVERIFIED
+#
+# Skeleton retargeted from the upstream CUDA recipe. Serve flags are
+# placeholders pending ROCm/gfx1151 testing.
+
+recipe_version: "1"
+name: Gemma4-26B-A4B
+description: vLLM serving Gemma-4-26B-A4B on Strix Halo [scaffold]
+
+model: google/gemma-4-26B-A4B-it
+
+container: halo-vllm-node
+
+mods: []
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.9
+  max_model_len: 32768
+  max_num_batched_tokens: 8192
+
+env: {}
+
+# TODO(ROCm): verify quantization / tool + reasoning parsers on gfx1151.
+command: |
+  vllm serve google/gemma-4-26B-A4B-it \
+    --host {host} \
+    --port {port} \
+    --max-model-len {max_model_len} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --attention-backend TRITON_ATTN \
+    --enable-auto-tool-choice \
+    --tool-call-parser gemma4 \
+    --reasoning-parser gemma4 \
+    -tp {tensor_parallel}

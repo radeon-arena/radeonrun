@@ -1,0 +1,41 @@
+name: Recipe Tests
+
+# SCAFFOLD: mirrors the upstream workflow. Runs the (not-yet-implemented)
+# recipe parser tests on push/PR.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'run-recipe.py'
+      - 'run-recipe.sh'
+      - 'launch-cluster.sh'
+      - 'recipes/**'
+      - 'tests/**'
+      - '.github/workflows/test-recipes.yml'
+  pull_request:
+    paths:
+      - 'run-recipe.py'
+      - 'run-recipe.sh'
+      - 'launch-cluster.sh'
+      - 'recipes/**'
+      - 'tests/**'
+      - '.github/workflows/test-recipes.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install deps
+        run: python -m pip install --quiet pyyaml
+      - name: Run recipe tests
+        run: bash tests/test_recipes.sh
