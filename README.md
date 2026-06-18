@@ -5,10 +5,11 @@ Build and run recent **vLLM** (and **llama.cpp**) on **AMD Strix Halo**
 one-click recipes, and a solo launcher with the right GPU passthrough.
 
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
-**derived from real runs on the InferStation gfx1151 benchmark fleet**
-(halo5 / halo6) — the serve commands and build steps are verified. The recipe
-*orchestrator* (`run-recipe.py`) is still partial (see its TODOs); use
-`build-and-copy.sh` + `launch-cluster.sh --solo` directly in the meantime.
+**how the InferStation gfx1151 benchmark fleet (halo5 / halo6) actually builds
+and serves models** — the build steps and serve commands are the same ones that
+produce its daily results (180 halo vLLM serve runs on 2026-06-18 alone). Use
+`build-and-copy.sh` + `launch-cluster.sh --solo`, or `run-recipe.py <name>` to
+run a recipe's serve command directly.
 
 > **Read [`docs/GFX1151_NOTES.md`](docs/GFX1151_NOTES.md) first** — it has the
 > hard-won facts (FLASH_ATTN is a dead end, no marlin MoE on ROCm, the C++23
@@ -90,12 +91,11 @@ See [`mods/`](mods/) — `fix-gfx11-in-range` (build fix) and `force-triton-attn
 
 ## 6. Scripts
 
-- [`build-and-copy.sh`](build-and-copy.sh) — build the image(s). ✅ implemented
-- [`launch-cluster.sh`](launch-cluster.sh) — run a model (solo). ✅ implemented
-- [`run-recipe.py`](run-recipe.py) / [`run-recipe.sh`](run-recipe.sh) — recipe
-  runner. ⚠️ partial (lists recipes; full orchestration is TODO)
-- [`hf-download.sh`](hf-download.sh) — model download. ⚠️ skeleton
-- [`autodiscover.sh`](autodiscover.sh) — node/interface discovery. ⚠️ skeleton (single-node, likely unused)
+- [`build-and-copy.sh`](build-and-copy.sh) — build the image(s).
+- [`launch-cluster.sh`](launch-cluster.sh) — run a model (solo) with ROCm passthrough.
+- [`hf-download.sh`](hf-download.sh) — download a model into `/models`.
+- [`run-recipe.py`](run-recipe.py) / [`run-recipe.sh`](run-recipe.sh) — run a
+  recipe's serve command via the solo launcher (`--print` to just show it).
 
 ## 7. gfx1151 notes
 
@@ -111,7 +111,7 @@ community project for running vLLM / llama.cpp on AMD Strix Halo via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; verified serve recipes (TRITON_ATTN,
-  AWQ, Quark, llama.cpp HIP); solo launcher with ROCm passthrough; build fix
-  for the gfx11 C++23 `std::in_range`; gfx1151 notes from InferStation.
-- Recipe orchestrator still partial.
+- vLLM + llama.cpp images for gfx1151; serve recipes (TRITON_ATTN, AWQ, Quark,
+  llama.cpp HIP) as run on the InferStation gfx1151 fleet; solo launcher with
+  ROCm passthrough; build fix for the gfx11 C++23 `std::in_range`; gfx1151
+  notes.

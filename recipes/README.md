@@ -10,10 +10,10 @@ Each recipe is a YAML file specifying:
 - environment variables
 - the serve command (vLLM or llama-server)
 
-The serve commands in these recipes are **taken from real runs on the
-InferStation gfx1151 fleet** (halo5 / halo6). The orchestration wrapper
-(`run-recipe.py`) that builds/downloads/launches from a recipe is still partial
-— see its TODOs — but the recipe contents themselves are verified.
+The serve commands in these recipes are **the ones run on the InferStation
+gfx1151 fleet** (halo5 / halo6) and produce its daily benchmark results. Run one
+with `./run-recipe.py <name>` (or `--print` to show the command), or paste its
+serve command into `launch-cluster.sh --solo` directly.
 
 ## Verified recipes
 

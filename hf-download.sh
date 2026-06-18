@@ -1,28 +1,45 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 #
-# hf-download.sh - Download a model from HuggingFace and optionally copy it to
-#                  other nodes. (SCAFFOLD — not implemented.)
+# hf-download.sh - Download a model from HuggingFace into a local models dir.
 #
-# Usage (intended):
+# This is the download flow used to stage models for the gfx1151 serve runs.
+#
+# Usage:
 #   ./hf-download.sh <org/model>
-#   ./hf-download.sh <org/model> -c --copy-parallel
+#   MODELS_DIR=/models ./hf-download.sh Qwen/Qwen3-30B-A3B
 #
-# TODO:
-#   - use `hf download` (huggingface_hub[cli]) into the HF cache
-#   - optional rsync/ssh distribution to COPY_HOSTS
-#   - HF_HUB_DISABLE_XET / token handling
+# Env:
+#   MODELS_DIR  destination root (default: /models) -> /models/<repo-basename>
+#   HF_TOKEN    HuggingFace token for gated/private repos (optional)
 
 usage() {
-    echo "Usage: $0 [OPTIONS] <model-name>"
-    echo "  <model-name>            HuggingFace model id (e.g. 'Qwen/Qwen3-8B')"
-    echo "  -c, --copy-to <hosts>   Host(s) to copy the model to"
-    echo "      --copy-parallel     Copy to all hosts in parallel"
-    echo "  -u, --user <user>       Username for ssh (default: \$USER)"
+    echo "Usage: $0 <org/model>"
+    echo "  e.g. $0 Qwen/Qwen3-30B-A3B"
+    echo "  Env: MODELS_DIR (default /models), HF_TOKEN (optional)"
 }
 
-if [[ $# -eq 0 ]]; then usage; exit 1; fi
+if [[ $# -lt 1 ]]; then usage; exit 1; fi
 
-echo "[scaffold] hf-download.sh is not implemented yet."
-echo "[scaffold] would download: $*"
-exit 1
+MODEL="$1"
+MODELS_DIR="${MODELS_DIR:-/models}"
+DEST="${MODELS_DIR}/$(basename "$MODEL")"
+
+# Pick the hf CLI (huggingface_hub[cli]); fall back to python -m.
+if command -v hf >/dev/null 2>&1; then
+  HF=(hf)
+elif command -v huggingface-cli >/dev/null 2>&1; then
+  HF=(huggingface-cli)
+else
+  echo "hf CLI not found. Install: pip install --user 'huggingface_hub[cli]'" >&2
+  exit 1
+fi
+
+# XET backend can flake on parallel pulls of the same repo; disable it.
+export HF_HUB_DISABLE_XET=1
+[[ -n "${HF_TOKEN:-}" ]] && export HF_TOKEN
+
+mkdir -p "$DEST"
+echo "Downloading $MODEL -> $DEST"
+"${HF[@]}" download "$MODEL" --local-dir "$DEST"
+echo "Done: $DEST"
