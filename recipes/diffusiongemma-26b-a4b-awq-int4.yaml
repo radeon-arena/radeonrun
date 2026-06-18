@@ -13,7 +13,15 @@
 #   --generation-config vllm / --hf-overrides diffusion_sampler /
 #   --diffusion-config canvas_length / --max-model-len 896
 
-recipe_version: "1"
+recipe_version: "2"
+metadata:
+  description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (AWQ-INT4) on Strix Halo
+  maintainer: JoursBleu
+  quantization: AWQ-INT4
+  measured:
+    gpu: "Radeon 8060S (Strix Halo, gfx1151)"
+    profile: halo-arena-v1
+    decode_toks_per_s: 14.5
 name: diffusiongemma-26b-a4b-awq-int4
 description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (AWQ-INT4) on Strix Halo
 

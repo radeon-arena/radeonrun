@@ -14,6 +14,7 @@ Examples:
 """
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -60,6 +61,12 @@ def main() -> int:
     parser.add_argument("--port", type=int, help="Override serve port")
     parser.add_argument("--nseq", type=int, help="Override --max-num-seqs / -np")
     parser.add_argument("--ctx", type=int, help="Override llama.cpp -c context")
+    parser.add_argument("--benchmark", metavar="PROFILE",
+                        help="Benchmark profile YAML to run against the served endpoint "
+                             "(e.g. benchmarking/halo-arena-v1.yaml)")
+    parser.add_argument("--out", help="Output JSON path for --benchmark results")
+    parser.add_argument("--base-url", default="http://localhost:8000",
+                        help="Endpoint to benchmark (default: http://localhost:8000)")
     args = parser.parse_args()
 
     if args.list or not args.recipe:
@@ -86,12 +93,84 @@ def main() -> int:
     inner = " ".join(inner.split())          # collapse whitespace
     full = f'IMAGE={container} {launch} --solo -p {port}:{port} exec {inner}'
 
+    # Benchmark mode: serve in the background, run the profile, then report.
+    if args.benchmark:
+        return _benchmark(recipe, full, args)
+
     print(full)
     if args.print_only:
         return 0
 
     import subprocess
     return subprocess.call(full, shell=True)
+
+
+def _served_model_name(recipe: dict) -> str:
+    """Best-effort served model name for the benchmark client."""
+    cmd = recipe.get("command") or ""
+    import re
+    m = re.search(r"--served-model-name[ =]+([^\s\\]+)", cmd) or re.search(r"--alias[ =]+([^\s\\]+)", cmd)
+    if m:
+        return m.group(1)
+    model = str(recipe.get("model", ""))
+    return model.split("/")[-1].split(":")[0] or "model"
+
+
+def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
+    """Serve the recipe in the background, run the profile, tear down."""
+    import subprocess
+    import time
+    import urllib.request
+
+    here = Path(__file__).resolve().parent
+    model_name = _served_model_name(recipe)
+    port = args.port or (recipe.get("defaults") or {}).get("port", 8000)
+    base_url = args.base_url
+
+    print(f"[benchmark] starting server: {recipe.get('name', args.recipe)}")
+    server = subprocess.Popen(serve_cmd, shell=True)
+    try:
+        # Wait for /v1/models to come up (up to ~10 min for big models).
+        ready = False
+        for _ in range(600):
+            if server.poll() is not None:
+                print("[benchmark] server exited before becoming ready")
+                return 1
+            try:
+                with urllib.request.urlopen(base_url.rstrip('/') + "/v1/models", timeout=3):
+                    ready = True
+                    break
+            except Exception:  # noqa: BLE001
+                time.sleep(1)
+        if not ready:
+            print("[benchmark] server did not become ready")
+            return 1
+        print("[benchmark] server ready; running profile")
+
+        out = args.out or str(here / "results" / f"{args.recipe}.json")
+        meta = json.dumps({
+            "recipe": recipe.get("name", args.recipe),
+            "model": recipe.get("model"),
+            "runtime": recipe.get("runtime", "vllm"),
+            "container": recipe.get("container"),
+            "command": " ".join((recipe.get("command") or "").split()),
+        })
+        bench_cmd = [
+            sys.executable, str(here / "bench.py"),
+            "--base-url", base_url,
+            "--model", model_name,
+            "--profile", args.benchmark,
+            "--out", out,
+            "--meta", meta,
+        ]
+        return subprocess.call(bench_cmd)
+    finally:
+        print("[benchmark] stopping server")
+        server.terminate()
+        try:
+            server.wait(timeout=30)
+        except Exception:  # noqa: BLE001
+            server.kill()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,30 @@
+# halo-arena Benchmark Profile v1 — quick daily sweep
+#
+# This is the scenario behind the default decode/prefill numbers on Radeon
+# Arena: a fixed 512-in / 128-out streaming workload swept across concurrency
+# levels. Matches the in512/out128 streaming scenario used for the daily fleet.
+#
+# Reproduce:
+#   python run-recipe.py <recipe>.yaml --benchmark benchmarking/halo-arena-v1.yaml --out results/
+
+framework: llama-benchy
+
+metadata:
+  name: halo-arena-v1
+  description: halo-arena quick daily sweep (in512/out128 streaming)
+  version: "1"
+
+args:
+  depth: [0]                 # cold context only
+  pp: [512]                  # prefill 512 tokens
+  tg: [128]                  # decode 128 tokens
+  concurrency: [1, 4, 16, 32]
+  prefix_caching: true
+  warmup: 1                  # one discarded warm-up request per point
+  runs: 3                    # median of 3 timed runs reported
+
+# Metrics recorded per point (from SSE stream timestamps):
+#   - decode throughput (tok/s)
+#   - prefill throughput (tok/s)
+#   - TTFT  (time to first token, ms)
+#   - TPOT  (mean inter-token gap, ms)

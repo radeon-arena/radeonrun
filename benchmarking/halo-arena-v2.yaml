@@ -1,0 +1,60 @@
+# halo-arena Benchmark Profile v2 — full long-context sweep
+#
+# The complete reproducibility profile: prefill 2048 / decode 128 swept across
+# seven context depths (cold -> 100k tokens) and four concurrency levels, three
+# timed runs each. This is the profile that backs the long-context columns on
+# Radeon Arena.
+#
+# Reproduce:
+#   python run-recipe.py <recipe>.yaml --benchmark benchmarking/halo-arena-v2.yaml --out results/
+
+framework: llama-benchy
+
+metadata:
+  name: halo-arena-v2
+  description: halo-arena full long-context sweep (pp2048/tg128, depth 0..100k)
+  version: "2"
+
+args:
+  depth: [0, 4096, 8192, 16384, 32768, 65536, 100000]
+  pp: [2048]
+  tg: [128]
+  concurrency: [1, 2, 5, 10]
+  prefix_caching: true
+  warmup: 1
+  runs: 3
+
+# Heat-aware schedule: interleaves heavy and light points so GPU thermal load
+# stays even across the sweep (running deep/high-concurrency points back-to-back
+# heat-soaks the GPU and depresses later numbers). Generated deterministically
+# (seed=42) so the ordering itself is reproducible.
+schedule:
+  # bucket-tiered heat-aware schedule, seed=42, 28 points
+  - { depth: 100000, concurrency: 1 }
+  - { depth: 32768, concurrency: 2 }
+  - { depth: 32768, concurrency: 10 }
+  - { depth: 4096, concurrency: 5 }
+  - { depth: 0, concurrency: 10 }
+  - { depth: 65536, concurrency: 2 }
+  - { depth: 4096, concurrency: 10 }
+  - { depth: 65536, concurrency: 10 }
+  - { depth: 4096, concurrency: 2 }
+  - { depth: 0, concurrency: 2 }
+  - { depth: 32768, concurrency: 5 }
+  - { depth: 65536, concurrency: 1 }
+  - { depth: 100000, concurrency: 5 }
+  - { depth: 8192, concurrency: 2 }
+  - { depth: 0, concurrency: 5 }
+  - { depth: 16384, concurrency: 10 }
+  - { depth: 8192, concurrency: 5 }
+  - { depth: 65536, concurrency: 5 }
+  - { depth: 32768, concurrency: 1 }
+  - { depth: 4096, concurrency: 1 }
+  - { depth: 100000, concurrency: 2 }
+  - { depth: 16384, concurrency: 5 }
+  - { depth: 100000, concurrency: 10 }
+  - { depth: 16384, concurrency: 2 }
+  - { depth: 0, concurrency: 1 }
+  - { depth: 8192, concurrency: 10 }
+  - { depth: 16384, concurrency: 1 }
+  - { depth: 8192, concurrency: 1 }
