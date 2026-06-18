@@ -3,8 +3,8 @@
 # launch-cluster.sh - Run the halo-vllm-docker container, solo or cluster.
 #                     (SCAFFOLD — not implemented.)
 #
-# Mirrors the upstream launcher interface so the real implementation can be
-# dropped in later.
+# Provides a launcher interface so the real implementation can be dropped in
+# later.
 #
 # Usage (intended):
 #   ./launch-cluster.sh --solo exec vllm serve <model> --port 8000 --host 0.0.0.0

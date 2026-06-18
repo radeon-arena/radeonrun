@@ -1,9 +1,8 @@
 # Networking (Strix Halo) — SCAFFOLD
 
-> This document mirrors the upstream `docs/NETWORKING.md` (which covers DGX
-> Spark ConnectX-7 / RoCE 2- and 3-node meshes). Strix Halo is typically a
-> single-node APU mini-PC, so multi-node networking may be out of scope.
-> Content here is **TODO**, pending a decision on whether clustering applies.
+> Strix Halo is typically a single-node APU mini-PC, so multi-node networking
+> may be out of scope. Content here is **TODO**, pending a decision on whether
+> clustering applies.
 
 ## Single node
 

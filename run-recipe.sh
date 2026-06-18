@@ -3,7 +3,7 @@
 # run-recipe.sh - Wrapper for run-recipe.py
 #
 # Ensures Python dependencies are available and runs the recipe runner.
-# (Generic wrapper; mirrors upstream. The runner it calls is a scaffold.)
+# (Generic wrapper. The runner it calls is a scaffold.)
 #
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

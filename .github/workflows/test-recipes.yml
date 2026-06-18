@@ -1,7 +1,6 @@
 name: Recipe Tests
 
-# SCAFFOLD: mirrors the upstream workflow. Runs the (not-yet-implemented)
-# recipe parser tests on push/PR.
+# SCAFFOLD: runs the (not-yet-implemented) recipe parser tests on push/PR.
 
 on:
   push:

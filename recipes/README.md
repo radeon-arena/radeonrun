@@ -1,7 +1,6 @@
 # Recipes
 
-Recipes are a **one-click** way to deploy a model with pre-configured settings.
-Each recipe is a YAML file specifying:
+Recipes are a **one-click** way to deploy a model with pre-configured settings.Each recipe is a YAML file specifying:
 
 - HuggingFace model to download
 - Container image and build arguments
@@ -10,9 +9,8 @@ Each recipe is a YAML file specifying:
 - Environment variables
 - The vLLM serve command
 
-> **SCAFFOLD:** the recipe schema below mirrors the upstream project. The
-> example recipes here are skeletons retargeted at ROCm/Strix Halo and have
-> **not** been validated on hardware. Flags such as `--attention-backend`,
+> **SCAFFOLD:** the example recipes here are skeletons targeting ROCm/Strix
+> Halo and have **not** been validated on hardware. Flags such as `--attention-backend`,
 > `--quantization`, and `--kv-cache-dtype` must be chosen for `gfx1151` and
 > tested before a recipe can be trusted.
 
