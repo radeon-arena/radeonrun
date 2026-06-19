@@ -20,6 +20,50 @@ from pathlib import Path
 
 RECIPES_DIR = Path(__file__).resolve().parent / "recipes"
 
+# Image registry + device -> GPU arch. A recipe names a logical engine
+# (vllm | vllm-main | llamacpp); the concrete image is resolved per device so
+# the same recipe runs on any Radeon GPU.
+ORG = "ghcr.io/radeon-arena"
+DEVICE_GFX = {"strix": "gfx1151", "w7900": "gfx1100", "r9700": "gfx1200"}
+# Legacy container names (pre radeon-docker rename) -> logical engine.
+_ENGINE_ALIASES = {
+    "halo-vllm-opt": "vllm",
+    "halo-vllm-main": "vllm-main",
+    "halo-llamacpp": "llamacpp",
+    "vllm": "vllm",
+    "vllm-main": "vllm-main",
+    "llamacpp": "llamacpp",
+}
+
+
+def _engine_of(recipe, container):
+    """Logical engine for a recipe: explicit `runtime`, else its container name."""
+    rt = str(recipe.get("runtime") or "").strip().lower()
+    if rt in ("vllm", "vllm-main", "llamacpp"):
+        return rt
+    base = container.split("/")[-1].split(":")[0]  # strip registry path + tag
+    if base in _ENGINE_ALIASES:
+        return _ENGINE_ALIASES[base]
+    if base.startswith("halo-vllm") or base == "vllm":
+        return "vllm"
+    if "llamacpp" in base or "llama-cpp" in base:
+        return "llamacpp"
+    return None
+
+
+def _resolve_container(recipe: dict, device: str) -> str:
+    """Resolve a recipe's logical engine + device to a concrete GHCR image.
+
+    Falls back to the recipe's raw `container` when it names an unknown engine
+    (e.g. a third-party image), so external refs are still honored.
+    """
+    raw = str(recipe.get("container") or "").strip()
+    gfx = DEVICE_GFX.get(device, "gfx1151")
+    engine = _engine_of(recipe, raw)
+    if engine:
+        return f"{ORG}/{engine}:{gfx}"
+    return raw or f"{ORG}/vllm:{gfx}"
+
 
 def list_recipes() -> None:
     if not RECIPES_DIR.is_dir():
@@ -67,6 +111,8 @@ def main() -> int:
     parser.add_argument("--out", help="Output JSON path for --benchmark results")
     parser.add_argument("--base-url", default="http://localhost:8000",
                         help="Endpoint to benchmark (default: http://localhost:8000)")
+    parser.add_argument("--device", default="strix", choices=sorted(DEVICE_GFX),
+                        help="Target GPU device profile (default: strix / gfx1151)")
     args = parser.parse_args()
 
     if args.list or not args.recipe:
@@ -84,7 +130,7 @@ def main() -> int:
         print(f"Recipe '{args.recipe}' has no command.")
         return 2
 
-    container = recipe.get("container", "halo-vllm-opt")
+    container = _resolve_container(recipe, args.device)
     # Build the launch-cluster.sh invocation. The recipe command already has
     # the model path baked in; we just wrap it in the solo launcher.
     launch = (RECIPES_DIR.parent / "launch-cluster.sh")

@@ -5,7 +5,7 @@
 recipe_version: "2"
 metadata:
   description: llamacpp serving Qwen3.6-27B (BF16) on Strix Halo
-  maintainer: JoursBleu
+  maintainer: radeon-arena
   quantization: BF16
   measured:
     gpu: "Radeon 8060S (Strix Halo, gfx1151)"
@@ -14,7 +14,7 @@ metadata:
 name: qwen3-6-27b-bf16
 description: llamacpp serving Qwen3.6-27B (BF16) on Strix Halo
 model: /models/Qwen3.6-27B/Qwen3.6-27B-BF16.gguf
-container: ghcr.io/radeon-arena/halo-llamacpp:gfx1151
+container: llamacpp
 mods: []
 defaults:
   port: 8000

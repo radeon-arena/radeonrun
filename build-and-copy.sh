@@ -1,50 +1,30 @@
 #!/bin/bash
 set -euo pipefail
 #
-# build-and-copy.sh - Build the halo-vllm-docker image(s) for gfx1151.
+# build-and-copy.sh - DEPRECATED back-compat shim.
 #
-# Builds the vLLM image (./Dockerfile) by default, pinning the gfx11 branch HEAD
-# into CACHEBUST so the build tracks AMD's gfx1151 fork (see Dockerfile).
+# Superseded by ./build.sh, which builds any framework x device. This wrapper
+# keeps the old flags working (it always targets the strix / gfx1151 device):
 #
-# Usage:
-#   ./build-and-copy.sh                 # vLLM gfx11 image  -> halo-vllm-opt
-#   ./build-and-copy.sh --main          # vLLM upstream-main -> halo-vllm-main (DiffusionGemma)
-#   ./build-and-copy.sh --llamacpp      # llama.cpp HIP      -> halo-llamacpp
-#   ./build-and-copy.sh -t mytag        # custom image tag
+#   ./build-and-copy.sh              ->  ./build.sh -f vllm      -d strix
+#   ./build-and-copy.sh --main       ->  ./build.sh -f vllm-main -d strix
+#   ./build-and-copy.sh --llamacpp   ->  ./build.sh -f llamacpp  -d strix
+#   ./build-and-copy.sh -t mytag     ->  ./build.sh ... -t mytag
 #
-# (Multi-node copy is not implemented — Strix Halo is single-node here.)
+# Prefer build.sh directly:  ./build.sh --framework llamacpp --device w7900
 
-IMAGE_TAG=""
-ENGINE="vllm"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FRAMEWORK="vllm"
+EXTRA=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --llamacpp) ENGINE="llamacpp"; shift ;;
-    --main)     ENGINE="vllm-main"; shift ;;
-    -t|--tag)   IMAGE_TAG="$2"; shift 2 ;;
+    --llamacpp) FRAMEWORK="llamacpp"; shift ;;
+    --main)     FRAMEWORK="vllm-main"; shift ;;
+    -t|--tag)   EXTRA+=(--tag "$2"); shift 2 ;;
     *) echo "Unknown arg: $1" >&2; exit 2 ;;
   esac
 done
 
-if [[ "$ENGINE" == "llamacpp" ]]; then
-  IMAGE_TAG="${IMAGE_TAG:-halo-llamacpp}"
-  echo "Building llama.cpp (HIP/gfx1151) image: $IMAGE_TAG"
-  docker build -f Dockerfile.llamacpp -t "$IMAGE_TAG" .
-elif [[ "$ENGINE" == "vllm-main" ]]; then
-  IMAGE_TAG="${IMAGE_TAG:-halo-vllm-main}"
-  # Track upstream vllm-project/vllm main HEAD (has DiffusionGemma).
-  CACHEBUST="$(git ls-remote https://github.com/vllm-project/vllm.git main 2>/dev/null | cut -f1 || true)"
-  CACHEBUST="${CACHEBUST:-main-$(date -u +%Y%m%d)}"
-  echo "Building vLLM (upstream main, gfx1151) image: $IMAGE_TAG  (CACHEBUST=$CACHEBUST)"
-  docker build -f Dockerfile.main -t "$IMAGE_TAG" --build-arg "CACHEBUST=$CACHEBUST" .
-else
-  IMAGE_TAG="${IMAGE_TAG:-halo-vllm-opt}"
-  # Resolve the current gfx11 branch HEAD so the wheel build tracks it (the
-  # Dockerfile's git-clone layer is otherwise cached forever).
-  CACHEBUST="$(git ls-remote https://github.com/ROCm/vllm.git gfx11 2>/dev/null | cut -f1 || true)"
-  CACHEBUST="${CACHEBUST:-gfx11-$(date -u +%Y%m%d)}"
-  echo "Building vLLM (gfx1151) image: $IMAGE_TAG  (CACHEBUST=$CACHEBUST)"
-  docker build -f Dockerfile -t "$IMAGE_TAG" --build-arg "CACHEBUST=$CACHEBUST" .
-fi
-
-echo "Done: $IMAGE_TAG"
+echo "[build-and-copy.sh] deprecated -> ./build.sh -f ${FRAMEWORK} -d strix"
+exec "${SCRIPT_DIR}/build.sh" --framework "${FRAMEWORK}" --device strix "${EXTRA[@]}"

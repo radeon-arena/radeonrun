@@ -5,7 +5,7 @@
 recipe_version: "2"
 metadata:
   description: llamacpp serving Qwen3-4B (Q8_0) on Strix Halo
-  maintainer: JoursBleu
+  maintainer: radeon-arena
   quantization: Q8_0
   measured:
     gpu: "Radeon 8060S (Strix Halo, gfx1151)"
@@ -14,7 +14,7 @@ metadata:
 name: qwen3-4b-q8-0
 description: llamacpp serving Qwen3-4B (Q8_0) on Strix Halo
 model: /models/Qwen3-4B/Qwen3-4B-Q8_0.gguf
-container: ghcr.io/radeon-arena/halo-llamacpp:gfx1151
+container: llamacpp
 mods: []
 defaults:
   port: 8000

@@ -4,7 +4,7 @@
 # whole canvas before emitting tokens; that is expected for this model class).
 #
 # Requires the upstream-main image (DiffusionGemma is not in the gfx11 line):
-#   build it from ./Dockerfile.main  ->  container: halo-vllm-main
+#   build it from dockerfiles/vllm-main/Dockerfile  ->  container: vllm-main
 #
 # Diffusion-specific flags (from the InferStation halo unit):
 #   --generation-config vllm   (required; else the checkpoint's max_tokens:256
@@ -16,7 +16,7 @@
 recipe_version: "2"
 metadata:
   description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (BF16) on Strix Halo
-  maintainer: JoursBleu
+  maintainer: radeon-arena
   quantization: BF16
   measured:
     gpu: "Radeon 8060S (Strix Halo, gfx1151)"
@@ -27,8 +27,8 @@ description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (BF16) on Strix
 
 model: /models/diffusiongemma-26B-A4B-it
 
-# Built from ./Dockerfile.main (upstream main has DiffusionGemma; gfx11 line does not).
-container: halo-vllm-main
+# Built from dockerfiles/vllm-main/Dockerfile (upstream main has DiffusionGemma; gfx11 line does not).
+container: vllm-main
 
 mods: []
 

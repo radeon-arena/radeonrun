@@ -5,7 +5,7 @@
 recipe_version: "2"
 metadata:
   description: llamacpp serving Gemma-4-26B-A4B-it (UD-Q4_K_M) on Strix Halo
-  maintainer: JoursBleu
+  maintainer: radeon-arena
   quantization: UD-Q4_K_M
   measured:
     gpu: "Radeon 8060S (Strix Halo, gfx1151)"
@@ -14,7 +14,7 @@ metadata:
 name: gemma-4-26b-a4b-it-ud-q4-k-m
 description: llamacpp serving Gemma-4-26B-A4B-it (UD-Q4_K_M) on Strix Halo
 model: /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
-container: ghcr.io/radeon-arena/halo-llamacpp:gfx1151
+container: llamacpp
 mods: []
 defaults:
   port: 8000

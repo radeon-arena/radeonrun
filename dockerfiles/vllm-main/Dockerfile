@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.6
 #
-# halo-vllm-docker — vLLM (upstream main) for AMD Strix Halo (gfx1151 / ROCm).
+# radeon-docker — vLLM (upstream main) for AMD Radeon (default: gfx1151 / ROCm).
 #
-# This is the SECOND vLLM line, alongside ./Dockerfile (AMD's ROCm/vllm gfx11
+# This is the SECOND vLLM line, alongside dockerfiles/vllm/Dockerfile (AMD's ROCm/vllm gfx11
 # branch). It builds upstream `vllm-project/vllm` main instead.
 #
 # Why a separate main line:
@@ -11,9 +11,9 @@
 #   - Tradeoff: it does NOT have the gfx11 branch's gfx1151-specific kernels,
 #     and on ROCm its refactored MoE can hit `RoutedExperts has no attribute
 #     tp_size` for some AWQ MoE models. So:
-#       * gfx11 line (./Dockerfile, halo-vllm-opt)      -> default, best for
+#       * gfx11 line (dockerfiles/vllm/Dockerfile, vllm image)  -> default, best for
 #         AWQ/Quark/BF16 MoE serving on gfx1151.
-#       * main line (this file, halo-vllm-main)     -> use for models that
+#       * main line (this file, vllm-main image)     -> use for models that
 #         require upstream main (DiffusionGemma).
 #
 # This mirrors the InferStation `vllm-rocm-halo-main` image (the
