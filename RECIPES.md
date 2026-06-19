@@ -40,7 +40,7 @@ When `command` is omitted the runtime generates it from `defaults`.
 | `model`           | string | **yes**     | —               | HF repo (`Qwen/Qwen3-8B`), local path (`/models/Qwen3-8B`), or GGUF spec (`Qwen/Qwen3-8B-GGUF:Q4_K_M`). |
 | `model_revision`  | string | no          | `null`          | Pin to an HF revision (branch, tag, or **commit hash**) for byte-identical, reproducible deployments. |
 | `runtime`         | string | no          | auto-detected   | `vllm` or `llama-cpp`. See [Runtime resolution](#runtime-resolution). |
-| `container`       | string | recommended | runtime default | Logical engine (`vllm`, `vllm-main`, `llamacpp`), resolved per `--device` to `ghcr.io/radeon-arena/<engine>:<gfx>`; or a pinned `repo@sha256:…`. |
+| `container`       | string | recommended | runtime default | Logical engine (`vllm`, `vllm-main`, `llamacpp`), resolved per `--device`/`--tag` to `ghcr.io/radeon-arena/<device>-<engine>:<commit>`; or a pinned `repo@sha256:…`. Set `image_tag` to pin a build commit. |
 | `mods`            | list   | no          | `[]`            | Patch directories applied before launch (e.g. `mods/fix-gfx11-in-range`). |
 
 GGUF models use colon syntax (`repo:quant`) to download only the matching

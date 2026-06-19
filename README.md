@@ -7,9 +7,14 @@ device profile in [`devices/`](devices/):
 
 | Device | Arch | Status |
 |---|---|---|
-| `strix` — Strix Halo (Radeon 8060S iGPU, RDNA 3.5) | `gfx1151` | ✅ verified |
+| `halo` — Strix Halo (Radeon 8060S iGPU, RDNA 3.5) | `gfx1151` | ✅ verified |
 | `w7900` — Radeon PRO W7900 (RDNA3) | `gfx1100` | ⚠️ placeholder, unverified |
 | `r9700` — Radeon AI PRO R9700 (RDNA4) | `gfx1200` | ⚠️ placeholder, base TBD |
+
+Images are named **`ghcr.io/radeon-arena/<device>-<framework>:<commit>`** — the
+device is in the name and the tag is the upstream build commit (so a result can
+pin a byte-reproducible image, e.g. `halo-llamacpp:fe7c8b2414`); `:latest` is
+also published for convenience.
 
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
 **how the InferStation gfx1151 benchmark fleet (strix-halo / strix-halo) actually builds
@@ -42,7 +47,7 @@ cd radeon-docker
 
 # Build the vLLM image for Strix Halo (gfx1151): clones AMD's ROCm/vllm gfx11
 # branch, applies the C++23 build fix, compiles HIP extensions. ~30-60 min cold.
-./build.sh --framework vllm --device strix
+./build.sh --framework vllm --device halo
 
 # Serve a model (TRITON_ATTN is the only stable vLLM attention on gfx1151).
 MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
@@ -55,14 +60,14 @@ MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
 ## 1. Building the image
 
 ```bash
-./build.sh -f vllm      -d strix   # vLLM gfx11 branch  -> ghcr.io/radeon-arena/vllm:gfx1151
-./build.sh -f vllm-main -d strix   # vLLM upstream main -> ghcr.io/radeon-arena/vllm-main:gfx1151
-./build.sh -f llamacpp  -d strix   # llama.cpp (HIP)    -> ghcr.io/radeon-arena/llamacpp:gfx1151
-./build.sh -f llamacpp  -d w7900   # same recipe, gfx1100 (RDNA3)
+./build.sh -f vllm      -d halo    # vLLM gfx11 branch  -> ghcr.io/radeon-arena/halo-vllm-opt:<commit>
+./build.sh -f vllm-main -d halo    # vLLM upstream main -> ghcr.io/radeon-arena/halo-vllm-main:<commit>
+./build.sh -f llamacpp  -d halo    # llama.cpp (HIP)    -> ghcr.io/radeon-arena/halo-llamacpp:<commit>
+./build.sh -f llamacpp  -d w7900   # same recipe, gfx1100 (RDNA3) -> w7900-llamacpp:<commit>
 ```
 
-Default image tag is `ghcr.io/radeon-arena/<framework>:<gfx-arch>`. The old
-`./build-and-copy.sh` still works as a strix-only shim.
+Each build tags both `:<commit>` (the upstream build commit) and `:latest`. The
+old `./build-and-copy.sh` still works as a halo-only shim.
 
 - vLLM (default): [`dockerfiles/vllm/Dockerfile`](dockerfiles/vllm/Dockerfile) — base
   `rocm/vllm:rocm7.13.0_gfx1151_..._vllm_0.19.1`, builds a vLLM wheel from AMD's
@@ -114,7 +119,7 @@ See [`mods/`](mods/) — `fix-gfx11-in-range` (build fix) and `force-triton-attn
 ## 6. Scripts
 
 - [`build.sh`](build.sh) — build an image for a framework × device.
-- [`build-and-copy.sh`](build-and-copy.sh) — deprecated strix-only shim for `build.sh`.
+- [`build-and-copy.sh`](build-and-copy.sh) — deprecated halo-only shim for `build.sh`.
 - [`launch-cluster.sh`](launch-cluster.sh) — run a model (solo) with ROCm passthrough.
 - [`hf-download.sh`](hf-download.sh) — download a model into `/models`.
 - [`run-recipe.py`](run-recipe.py) / [`run-recipe.sh`](run-recipe.sh) — run a

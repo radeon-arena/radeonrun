@@ -12,13 +12,13 @@ set -euo pipefail
 #   ./launch-cluster.sh --solo -p 8000:8000 exec vllm serve /models/<m> ...
 #
 # Environment:
-#   IMAGE                container image            (default: ghcr.io/radeon-arena/vllm:gfx1151)
+#   IMAGE                container image            (default: ghcr.io/radeon-arena/halo-vllm-opt:latest)
 #   CONTAINER            container name             (default: halo_vllm)
 #   MODELS_DIR           host models dir -> /models (default: /models)
 #   HF_HOME              host HF cache              (default: ~/.cache/huggingface)
 #   HIP_VISIBLE_DEVICES  GPU index to expose        (optional)
 
-IMAGE="${IMAGE:-ghcr.io/radeon-arena/vllm:gfx1151}"
+IMAGE="${IMAGE:-ghcr.io/radeon-arena/halo-vllm-opt:latest}"
 CONTAINER="${CONTAINER:-radeon_vllm}"
 MODELS_DIR="${MODELS_DIR:-/models}"
 HF_CACHE_DIR="${HF_HOME:-$HOME/.cache/huggingface}"

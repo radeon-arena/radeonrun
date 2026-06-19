@@ -4,11 +4,11 @@ set -euo pipefail
 # build-and-copy.sh - DEPRECATED back-compat shim.
 #
 # Superseded by ./build.sh, which builds any framework x device. This wrapper
-# keeps the old flags working (it always targets the strix / gfx1151 device):
+# keeps the old flags working (it always targets the halo / gfx1151 device):
 #
-#   ./build-and-copy.sh              ->  ./build.sh -f vllm      -d strix
-#   ./build-and-copy.sh --main       ->  ./build.sh -f vllm-main -d strix
-#   ./build-and-copy.sh --llamacpp   ->  ./build.sh -f llamacpp  -d strix
+#   ./build-and-copy.sh              ->  ./build.sh -f vllm      -d halo
+#   ./build-and-copy.sh --main       ->  ./build.sh -f vllm-main -d halo
+#   ./build-and-copy.sh --llamacpp   ->  ./build.sh -f llamacpp  -d halo
 #   ./build-and-copy.sh -t mytag     ->  ./build.sh ... -t mytag
 #
 # Prefer build.sh directly:  ./build.sh --framework llamacpp --device w7900
@@ -26,5 +26,5 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-echo "[build-and-copy.sh] deprecated -> ./build.sh -f ${FRAMEWORK} -d strix"
-exec "${SCRIPT_DIR}/build.sh" --framework "${FRAMEWORK}" --device strix "${EXTRA[@]}"
+echo "[build-and-copy.sh] deprecated -> ./build.sh -f ${FRAMEWORK} -d halo"
+exec "${SCRIPT_DIR}/build.sh" --framework "${FRAMEWORK}" --device halo "${EXTRA[@]}"

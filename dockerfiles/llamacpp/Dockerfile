@@ -3,7 +3,7 @@
 # llama.cpp (HIP/ROCm) for AMD Radeon (default: Strix Halo / gfx1151), as run on InferStation.
 #
 # Build with:
-#   docker build -f dockerfiles/llamacpp/Dockerfile -t ghcr.io/radeon-arena/llamacpp:gfx1151 .
+#   docker build -f dockerfiles/llamacpp/Dockerfile -t ghcr.io/radeon-arena/halo-llamacpp:latest .
 #
 # IMPORTANT: ROCM_VERSION must match the host's ROCm/KFD driver. On the
 # InferStation halo nodes (InferStation gfx1151 fleet) that is 7.2.1. gfx1151 is NOT supported
