@@ -7,7 +7,7 @@ set -euo pipefail
 # into CACHEBUST so the build tracks AMD's gfx1151 fork (see Dockerfile).
 #
 # Usage:
-#   ./build-and-copy.sh                 # vLLM gfx11 image  -> halo-vllm
+#   ./build-and-copy.sh                 # vLLM gfx11 image  -> halo-vllm-opt
 #   ./build-and-copy.sh --main          # vLLM upstream-main -> halo-vllm-main (DiffusionGemma)
 #   ./build-and-copy.sh --llamacpp      # llama.cpp HIP      -> halo-llamacpp
 #   ./build-and-copy.sh -t mytag        # custom image tag
@@ -38,7 +38,7 @@ elif [[ "$ENGINE" == "vllm-main" ]]; then
   echo "Building vLLM (upstream main, gfx1151) image: $IMAGE_TAG  (CACHEBUST=$CACHEBUST)"
   docker build -f Dockerfile.main -t "$IMAGE_TAG" --build-arg "CACHEBUST=$CACHEBUST" .
 else
-  IMAGE_TAG="${IMAGE_TAG:-halo-vllm}"
+  IMAGE_TAG="${IMAGE_TAG:-halo-vllm-opt}"
   # Resolve the current gfx11 branch HEAD so the wheel build tracks it (the
   # Dockerfile's git-clone layer is otherwise cached forever).
   CACHEBUST="$(git ls-remote https://github.com/ROCm/vllm.git gfx11 2>/dev/null | cut -f1 || true)"

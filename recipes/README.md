@@ -26,7 +26,7 @@ fail on gfx1151) are excluded.
 
 **39 recipes** across three image lines:
 
-- **vLLM gfx11** (`container: halo-vllm`, 9): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
+- **vLLM gfx11** (`container: halo-vllm-opt`, 9): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
   Quark-W8A8), Qwen3.6-27B (BF16 / Quark), Qwen3-30B-A3B (BF16),
   Gemma-4-26B-A4B (BF16 / AWQ-4bit), Gemma-4-31B (Quark-W8A8). vLLM uses
   `--attention-backend TRITON_ATTN` (only stable vLLM attention on gfx1151).
@@ -60,7 +60,7 @@ recipe_version: "1"
 name: <ShortName>
 description: <what this serves>
 model: /models/<dir-or-file>   # local path mounted into the container, or HF id
-container: halo-vllm      # or halo-llamacpp
+container: halo-vllm-opt      # or halo-llamacpp
 mods: []                       # list of mods/<dir> to apply
 defaults:
   port: 8000

@@ -48,7 +48,7 @@ MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
 ## 1. Building the image
 
 ```bash
-./build-and-copy.sh              # vLLM gfx11 image   -> halo-vllm
+./build-and-copy.sh              # vLLM gfx11 image   -> halo-vllm-opt
 ./build-and-copy.sh --main       # vLLM upstream-main -> halo-vllm-main
 ./build-and-copy.sh --llamacpp   # llama.cpp (HIP)    -> halo-llamacpp
 ```
