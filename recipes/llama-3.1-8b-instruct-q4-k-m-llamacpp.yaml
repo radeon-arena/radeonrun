@@ -14,7 +14,7 @@ metadata:
 name: llama-3-1-8b-instruct-q4-k-m
 description: llamacpp serving Llama-3.1-8B-Instruct (Q4_K_M) on Strix Halo
 model: /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf
-container: halo-llamacpp-node
+container: ghcr.io/joursbleu/halo-llamacpp-node:gfx1151
 mods: []
 defaults:
   port: 8000

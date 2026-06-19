@@ -14,7 +14,7 @@ metadata:
 name: step-3-5-flash-q4-k-s
 description: llamacpp serving Step-3.5-Flash (Q4_K_S) on Strix Halo
 model: /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf
-container: halo-llamacpp-node
+container: ghcr.io/joursbleu/halo-llamacpp-node:gfx1151
 mods: []
 defaults:
   port: 8000
