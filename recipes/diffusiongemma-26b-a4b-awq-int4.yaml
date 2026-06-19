@@ -7,7 +7,7 @@
 # yet, so no tok/s number is claimed here.
 #
 # Requires the upstream-main image (DiffusionGemma is not in the gfx11 line):
-#   build it from ./Dockerfile.main  ->  container: halo-vllm-main-node
+#   build it from ./Dockerfile.main  ->  container: halo-vllm-main
 #
 # Diffusion-specific flags (see diffusiongemma-26b-a4b-bf16.yaml for notes):
 #   --generation-config vllm / --hf-overrides diffusion_sampler /
@@ -28,7 +28,7 @@ description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (AWQ-INT4) on S
 model: /models/diffusiongemma-26B-A4B-it-AWQ-INT4
 
 # Built from ./Dockerfile.main (upstream main has DiffusionGemma; gfx11 line does not).
-container: halo-vllm-main-node
+container: halo-vllm-main
 
 mods: []
 

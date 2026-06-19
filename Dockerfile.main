@@ -11,9 +11,9 @@
 #   - Tradeoff: it does NOT have the gfx11 branch's gfx1151-specific kernels,
 #     and on ROCm its refactored MoE can hit `RoutedExperts has no attribute
 #     tp_size` for some AWQ MoE models. So:
-#       * gfx11 line (./Dockerfile, halo-vllm-node)      -> default, best for
+#       * gfx11 line (./Dockerfile, halo-vllm)      -> default, best for
 #         AWQ/Quark/BF16 MoE serving on gfx1151.
-#       * main line (this file, halo-vllm-main-node)     -> use for models that
+#       * main line (this file, halo-vllm-main)     -> use for models that
 #         require upstream main (DiffusionGemma).
 #
 # This mirrors the InferStation `vllm-rocm-halo-main` image (the

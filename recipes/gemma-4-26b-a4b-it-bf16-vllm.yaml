@@ -14,7 +14,7 @@ metadata:
 name: gemma-4-26b-a4b-it-bf16
 description: vllm serving Gemma-4-26B-A4B-it (BF16) on Strix Halo
 model: /models/gemma-4-26B-A4B-it
-container: halo-vllm-node
+container: halo-vllm
 mods: []
 defaults:
   port: 8000

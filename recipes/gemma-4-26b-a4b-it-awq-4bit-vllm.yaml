@@ -14,7 +14,7 @@ metadata:
 name: gemma-4-26b-a4b-it-awq-4bit
 description: vllm serving Gemma-4-26B-A4B-it (AWQ-4bit) on Strix Halo
 model: /models/gemma-4-26B-A4B-it-AWQ-4bit
-container: halo-vllm-node
+container: halo-vllm
 mods: []
 defaults:
   port: 8000

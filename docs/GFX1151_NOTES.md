@@ -119,7 +119,7 @@ docker run --rm -it \
   --device /dev/kfd --device /dev/dri --group-add video \
   --security-opt seccomp=unconfined --ipc host \
   -v /models:/models \
-  halo-vllm-node \
+  halo-vllm \
   vllm serve /models/<model> --host 0.0.0.0 --port 8000 --attention-backend TRITON_ATTN
 ```
 
