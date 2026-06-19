@@ -14,7 +14,7 @@ metadata:
 name: qwen3-30b-a3b-q4-k-m
 description: llamacpp serving Qwen3-30B-A3B (Q4_K_M) on Strix Halo
 model: /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q4_K_M.gguf
-container: ghcr.io/joursbleu/halo-llamacpp-node:gfx1151
+container: ghcr.io/joursbleu/halo-llamacpp:gfx1151
 mods: []
 defaults:
   port: 8000

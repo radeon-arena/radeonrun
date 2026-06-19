@@ -14,7 +14,7 @@ metadata:
 name: gemma-4-31b-it-quark-w8a8-int8
 description: vllm serving Gemma-4-31B-it (Quark-W8A8-INT8) on Strix Halo
 model: /models/Gemma-4-31B-it-Quark-W8A8-INT8
-container: halo-vllm-node
+container: halo-vllm
 mods: []
 defaults:
   port: 8000

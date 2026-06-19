@@ -14,7 +14,7 @@ metadata:
 name: qwen3-8b-bf16
 description: llamacpp serving Qwen3-8B (BF16) on Strix Halo
 model: /models/Qwen3-8B/Qwen3-8B-BF16.gguf
-container: ghcr.io/joursbleu/halo-llamacpp-node:gfx1151
+container: ghcr.io/joursbleu/halo-llamacpp:gfx1151
 mods: []
 defaults:
   port: 8000

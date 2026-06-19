@@ -12,14 +12,14 @@ set -euo pipefail
 #   ./launch-cluster.sh --solo -p 8000:8000 exec vllm serve /models/<m> ...
 #
 # Environment:
-#   IMAGE                container image            (default: halo-vllm-node)
-#   CONTAINER            container name             (default: halo_vllm_node)
+#   IMAGE                container image            (default: halo-vllm)
+#   CONTAINER            container name             (default: halo_vllm)
 #   MODELS_DIR           host models dir -> /models (default: /models)
 #   HF_HOME              host HF cache              (default: ~/.cache/huggingface)
 #   HIP_VISIBLE_DEVICES  GPU index to expose        (optional)
 
-IMAGE="${IMAGE:-halo-vllm-node}"
-CONTAINER="${CONTAINER:-halo_vllm_node}"
+IMAGE="${IMAGE:-halo-vllm}"
+CONTAINER="${CONTAINER:-halo_vllm}"
 MODELS_DIR="${MODELS_DIR:-/models}"
 HF_CACHE_DIR="${HF_HOME:-$HOME/.cache/huggingface}"
 PORT_MAP=""

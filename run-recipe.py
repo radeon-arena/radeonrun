@@ -84,7 +84,7 @@ def main() -> int:
         print(f"Recipe '{args.recipe}' has no command.")
         return 2
 
-    container = recipe.get("container", "halo-vllm-node")
+    container = recipe.get("container", "halo-vllm")
     # Build the launch-cluster.sh invocation. The recipe command already has
     # the model path baked in; we just wrap it in the solo launcher.
     launch = (RECIPES_DIR.parent / "launch-cluster.sh")
