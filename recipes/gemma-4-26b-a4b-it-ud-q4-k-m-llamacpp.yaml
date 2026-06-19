@@ -14,7 +14,7 @@ metadata:
 name: gemma-4-26b-a4b-it-ud-q4-k-m
 description: llamacpp serving Gemma-4-26B-A4B-it (UD-Q4_K_M) on Strix Halo
 model: /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
-container: halo-llamacpp-node
+container: ghcr.io/joursbleu/halo-llamacpp-node:gfx1151
 mods: []
 defaults:
   port: 8000
