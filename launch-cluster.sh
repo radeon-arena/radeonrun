@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 #
-# launch-cluster.sh - Run the halo-vllm-docker container in solo mode.
+# launch-cluster.sh - Run the radeon-docker container in solo mode.
 #
 # Solo mode is implemented and uses the GPU passthrough verified on the
 # InferStation gfx1151 nodes. Cluster (multi-node) mode is NOT implemented —
@@ -12,14 +12,14 @@ set -euo pipefail
 #   ./launch-cluster.sh --solo -p 8000:8000 exec vllm serve /models/<m> ...
 #
 # Environment:
-#   IMAGE                container image            (default: halo-vllm-opt)
+#   IMAGE                container image            (default: ghcr.io/radeon-arena/vllm:gfx1151)
 #   CONTAINER            container name             (default: halo_vllm)
 #   MODELS_DIR           host models dir -> /models (default: /models)
 #   HF_HOME              host HF cache              (default: ~/.cache/huggingface)
 #   HIP_VISIBLE_DEVICES  GPU index to expose        (optional)
 
-IMAGE="${IMAGE:-halo-vllm-opt}"
-CONTAINER="${CONTAINER:-halo_vllm}"
+IMAGE="${IMAGE:-ghcr.io/radeon-arena/vllm:gfx1151}"
+CONTAINER="${CONTAINER:-radeon_vllm}"
 MODELS_DIR="${MODELS_DIR:-/models}"
 HF_CACHE_DIR="${HF_HOME:-$HOME/.cache/huggingface}"
 PORT_MAP=""

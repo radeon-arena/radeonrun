@@ -5,7 +5,7 @@
 recipe_version: "2"
 metadata:
   description: llamacpp serving Llama-3.1-8B-Instruct (BF16) on Strix Halo
-  maintainer: JoursBleu
+  maintainer: radeon-arena
   quantization: BF16
   measured:
     gpu: "Radeon 8060S (Strix Halo, gfx1151)"
@@ -14,7 +14,7 @@ metadata:
 name: llama-3-1-8b-instruct-bf16
 description: llamacpp serving Llama-3.1-8B-Instruct (BF16) on Strix Halo
 model: /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf
-container: ghcr.io/radeon-arena/halo-llamacpp:gfx1151
+container: llamacpp
 mods: []
 defaults:
   port: 8000

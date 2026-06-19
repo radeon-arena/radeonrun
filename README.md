@@ -1,15 +1,22 @@
-# vLLM Docker for AMD Strix Halo (gfx1151)
+# radeon-docker — vLLM &amp; llama.cpp containers for AMD Radeon (ROCm)
 
-Build and run recent **vLLM** (and **llama.cpp**) on **AMD Strix Halo**
-(Radeon 8060S iGPU / `gfx1151` / RDNA 3.5 / ROCm 7.2.x): container builds,
-one-click recipes, and a solo launcher with the right GPU passthrough.
+Build and run recent **vLLM** and **llama.cpp** on **AMD Radeon** GPUs via ROCm:
+container builds, one-click recipes, and a solo launcher with the right GPU
+passthrough. One Dockerfile per framework; the target GPU is selected by a
+device profile in [`devices/`](devices/):
+
+| Device | Arch | Status |
+|---|---|---|
+| `strix` — Strix Halo (Radeon 8060S iGPU, RDNA 3.5) | `gfx1151` | ✅ verified |
+| `w7900` — Radeon PRO W7900 (RDNA3) | `gfx1100` | ⚠️ placeholder, unverified |
+| `r9700` — Radeon AI PRO R9700 (RDNA4) | `gfx1200` | ⚠️ placeholder, base TBD |
 
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
 **how the InferStation gfx1151 benchmark fleet (halo5 / halo6) actually builds
 and serves models** — the build steps and serve commands are the same ones that
-produce its daily results (180 halo vLLM serve runs on 2026-06-18 alone). Use
-`build-and-copy.sh` + `launch-cluster.sh --solo`, or `run-recipe.py <name>` to
-run a recipe's serve command directly.
+produce its daily results (180 vLLM serve runs on 2026-06-18 alone). Use
+`build.sh` + `launch-cluster.sh --solo`, or `run-recipe.py <name>` to run a
+recipe's serve command directly.
 
 > **Read [`docs/GFX1151_NOTES.md`](docs/GFX1151_NOTES.md) first** — it has the
 > hard-won facts (FLASH_ATTN is a dead end, no marlin MoE on ROCm, the C++23
@@ -30,12 +37,12 @@ run a recipe's serve command directly.
 ## Quick Start
 
 ```bash
-git clone git@github.com:JoursBleu/halo-vllm-docker.git
-cd halo-vllm-docker
+git clone git@github.com:radeon-arena/radeon-docker.git
+cd radeon-docker
 
-# Build the vLLM image for gfx1151 (clones AMD's ROCm/vllm gfx11 branch,
-# applies the C++23 build fix, compiles HIP extensions). ~30-60 min cold.
-./build-and-copy.sh
+# Build the vLLM image for Strix Halo (gfx1151): clones AMD's ROCm/vllm gfx11
+# branch, applies the C++23 build fix, compiles HIP extensions. ~30-60 min cold.
+./build.sh --framework vllm --device strix
 
 # Serve a model (TRITON_ATTN is the only stable vLLM attention on gfx1151).
 MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
@@ -48,20 +55,24 @@ MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
 ## 1. Building the image
 
 ```bash
-./build-and-copy.sh              # vLLM gfx11 image   -> halo-vllm-opt
-./build-and-copy.sh --main       # vLLM upstream-main -> halo-vllm-main
-./build-and-copy.sh --llamacpp   # llama.cpp (HIP)    -> halo-llamacpp
+./build.sh -f vllm      -d strix   # vLLM gfx11 branch  -> ghcr.io/radeon-arena/vllm:gfx1151
+./build.sh -f vllm-main -d strix   # vLLM upstream main -> ghcr.io/radeon-arena/vllm-main:gfx1151
+./build.sh -f llamacpp  -d strix   # llama.cpp (HIP)    -> ghcr.io/radeon-arena/llamacpp:gfx1151
+./build.sh -f llamacpp  -d w7900   # same recipe, gfx1100 (RDNA3)
 ```
 
-- vLLM (default): [`Dockerfile`](Dockerfile) — base
+Default image tag is `ghcr.io/radeon-arena/<framework>:<gfx-arch>`. The old
+`./build-and-copy.sh` still works as a strix-only shim.
+
+- vLLM (default): [`dockerfiles/vllm/Dockerfile`](dockerfiles/vllm/Dockerfile) — base
   `rocm/vllm:rocm7.13.0_gfx1151_..._vllm_0.19.1`, builds a vLLM wheel from AMD's
   `ROCm/vllm` `gfx11` branch (gfx1151-tuned; also avoids the upstream-main AWQ
   MoE `tp_size` crash). The build applies the C++23 `std::in_range` fix.
-- vLLM (upstream main): [`Dockerfile.main`](Dockerfile.main) — same base, but
+- vLLM (upstream main): [`dockerfiles/vllm-main/Dockerfile`](dockerfiles/vllm-main/Dockerfile) — same base, but
   builds `vllm-project/vllm` **main**. Use this for models that need upstream
   main, notably **DiffusionGemma**. Mirrors InferStation's `vllm-rocm-halo-main`
   image.
-- llama.cpp: [`Dockerfile.llamacpp`](Dockerfile.llamacpp) — base
+- llama.cpp: [`dockerfiles/llamacpp/Dockerfile`](dockerfiles/llamacpp/Dockerfile) — base
   `rocm/dev-ubuntu-24.04:7.2.1-complete` (ROCm version must match the host KFD
   driver), `-DGGML_HIP=ON -DAMDGPU_TARGETS=gfx1151`.
 
@@ -102,7 +113,8 @@ See [`mods/`](mods/) — `fix-gfx11-in-range` (build fix) and `force-triton-attn
 
 ## 6. Scripts
 
-- [`build-and-copy.sh`](build-and-copy.sh) — build the image(s).
+- [`build.sh`](build.sh) — build an image for a framework × device.
+- [`build-and-copy.sh`](build-and-copy.sh) — deprecated strix-only shim for `build.sh`.
 - [`launch-cluster.sh`](launch-cluster.sh) — run a model (solo) with ROCm passthrough.
 - [`hf-download.sh`](hf-download.sh) — download a model into `/models`.
 - [`run-recipe.py`](run-recipe.py) / [`run-recipe.sh`](run-recipe.sh) — run a
@@ -117,7 +129,7 @@ sizing, and more.
 ## DISCLAIMER
 
 This repository is not affiliated with AMD or their subsidiaries. It is a
-community project for running vLLM / llama.cpp on AMD Strix Halo via ROCm.
+community project for running vLLM / llama.cpp on AMD Radeon GPUs via ROCm.
 
 ## CHANGELOG
 

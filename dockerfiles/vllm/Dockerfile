@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.6
 #
-# halo-vllm-docker — vLLM for AMD Strix Halo (Radeon 8060S / gfx1151 / ROCm).
+# radeon-docker — vLLM for AMD Radeon (default: Strix Halo / Radeon 8060S / gfx1151 / ROCm).
 #
 # This recreates, in a single multi-stage build, the approach validated on the
 # InferStation gfx1151 benchmark fleet (halo5 / halo6):

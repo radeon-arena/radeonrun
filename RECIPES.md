@@ -1,9 +1,9 @@
-# halo-vllm-docker Recipe Reference
+# radeon-docker Recipe Reference
 
 A recipe is a YAML file that fully describes how to serve **and reproduce** an
 inference workload on AMD Radeon (ROCm / gfx11xx): model, container, runtime,
 configuration, and the exact command. Every result on
-[Radeon Arena](https://github.com/JoursBleu/halo-vllm-docker) is backed by a
+[Radeon Arena](https://github.com/radeon-arena/radeon-docker) is backed by a
 recipe + a [benchmark profile](benchmarking/README.md), so any number is
 reproducible.
 
@@ -19,7 +19,7 @@ python run-recipe.py recipes/qwen3.6-35b-a3b-bf16-vllm.yaml \
 recipe_version: "2"
 model: Qwen/Qwen3-8B
 runtime: vllm
-container: halo-vllm-opt
+container: vllm
 defaults:
   port: 8000
   tensor_parallel: 1
@@ -40,7 +40,7 @@ When `command` is omitted the runtime generates it from `defaults`.
 | `model`           | string | **yes**     | —               | HF repo (`Qwen/Qwen3-8B`), local path (`/models/Qwen3-8B`), or GGUF spec (`Qwen/Qwen3-8B-GGUF:Q4_K_M`). |
 | `model_revision`  | string | no          | `null`          | Pin to an HF revision (branch, tag, or **commit hash**) for byte-identical, reproducible deployments. |
 | `runtime`         | string | no          | auto-detected   | `vllm` or `llama-cpp`. See [Runtime resolution](#runtime-resolution). |
-| `container`       | string | recommended | runtime default | Container image (`halo-vllm-opt`, `halo-llamacpp`, or a pinned `repo@sha256:…`). |
+| `container`       | string | recommended | runtime default | Logical engine (`vllm`, `vllm-main`, `llamacpp`), resolved per `--device` to `ghcr.io/radeon-arena/<engine>:<gfx>`; or a pinned `repo@sha256:…`. |
 | `mods`            | list   | no          | `[]`            | Patch directories applied before launch (e.g. `mods/fix-gfx11-in-range`). |
 
 GGUF models use colon syntax (`repo:quant`) to download only the matching
@@ -128,7 +128,7 @@ Any key may appear in `defaults`; unknown keys are passed straight through to
 recipe_version: "2"
 model: /models/Qwen3.6-35B-A3B
 runtime: vllm
-container: halo-vllm-opt
+container: vllm
 
 metadata:
   description: Qwen3.6-35B-A3B (BF16) on Strix Halo
@@ -175,7 +175,7 @@ recipe_version: "2"
 model: /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf
 runtime: llama-cpp
 max_nodes: 1
-container: halo-llamacpp
+container: llamacpp
 
 metadata:
   description: Qwen3.6-35B-A3B (UD-Q4_K_M) on Strix Halo

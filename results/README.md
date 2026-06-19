@@ -21,7 +21,7 @@ this directory, not any private/internal pipeline.
     "recipe": "qwen3-6-35b-a3b-bf16",
     "model": "/models/Qwen3.6-35B-A3B",
     "runtime": "vllm",
-    "container": "halo-vllm-opt",
+    "container": "vllm",
     "command": "vllm serve ... --attention-backend TRITON_ATTN",
     "gpu": "Radeon 8060S (Strix Halo, gfx1151)"
   },

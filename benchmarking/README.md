@@ -2,7 +2,7 @@
 
 Standardized benchmarking profile definitions for **halo-arena** / `run-recipe.py`.
 These profiles define the *exact* test grid every result on
-[Radeon Arena](https://github.com/JoursBleu/halo-vllm-docker) is measured
+[Radeon Arena](https://github.com/radeon-arena/radeon-docker) is measured
 against, so any number on the leaderboard is reproducible by anyone.
 
 A profile is the reproducibility contract: it fixes the input/output shapes,
