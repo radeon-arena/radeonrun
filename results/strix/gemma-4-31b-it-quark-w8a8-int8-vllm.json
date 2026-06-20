@@ -1,0 +1,66 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "generated_at": "2026-06-20T08:04:50Z",
+  "meta": {
+    "recipe": "gemma-4-31b-it-quark-w8a8-int8",
+    "model": "/models/Gemma-4-31B-it-Quark-W8A8-INT8",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "vllm serve /models/Gemma-4-31B-it-Quark-W8A8-INT8 --host 0.0.0.0 --port 8000 --max-num-seqs 32 --quantization quark --max-model-len 2304 --gpu-memory-utilization 0.85",
+    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+    "reproduction": {
+      "independent": true,
+      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
+      "weights_used": "nameistoken/Gemma-4-31B-it-Quark-W8A8-INT8",
+      "same_weights_as_recipe": true,
+      "note": "✅ 复现成功(C=32 聚合远超 recipe 标称)"
+    }
+  },
+  "measurements": [
+    {
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 3.08,
+      "ttft_ms": 388.95,
+      "tpot_ms": 324.52,
+      "requests_ok": 1,
+      "requests_total": 1
+    },
+    {
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 11.36,
+      "ttft_ms": 732.07,
+      "tpot_ms": 348.55,
+      "requests_ok": 4,
+      "requests_total": 4
+    },
+    {
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 34.43,
+      "ttft_ms": 1600.06,
+      "tpot_ms": 454.04,
+      "requests_ok": 16,
+      "requests_total": 16
+    },
+    {
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 52.96,
+      "ttft_ms": 2489.19,
+      "tpot_ms": 587.23,
+      "requests_ok": 32,
+      "requests_total": 32
+    }
+  ]
+}

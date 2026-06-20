@@ -1,9 +1,9 @@
-# radeon-docker — vLLM &amp; llama.cpp containers for AMD Radeon (ROCm)
+# radeonrun — build, serve &amp; benchmark vLLM / llama.cpp on AMD Radeon (ROCm)
 
-Build and run recent **vLLM** and **llama.cpp** on **AMD Radeon** GPUs via ROCm:
-container builds, one-click recipes, and a solo launcher with the right GPU
-passthrough. One Dockerfile per framework; the target GPU is selected by a
-device profile in [`devices/`](devices/):
+A toolkit for running recent **vLLM** and **llama.cpp** on **AMD Radeon** GPUs
+via ROCm: container builds, one-click serve recipes, a solo launcher with the
+right GPU passthrough, and a reproducible benchmark harness. One Dockerfile per
+framework; the target GPU is selected by a device profile in [`devices/`](devices/):
 
 | Device | Arch | Status |
 |---|---|---|
@@ -17,9 +17,8 @@ pin a byte-reproducible image, e.g. `halo-llamacpp:fe7c8b2414`); `:latest` is
 also published for convenience.
 
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
-**how the InferStation gfx1151 benchmark fleet (halo5 / halo6) actually builds
-and serves models** — the build steps and serve commands are the same ones that
-produce its daily results (180 vLLM serve runs on 2026-06-18 alone). Use
+**the same build steps and serve commands the InferStation gfx1151 fleet uses to
+produce its reference numbers** — see [8. Reproduction](#8-reproduction). Use
 `build.sh` + `launch-cluster.sh --solo`, or `run-recipe.py <name>` to run a
 recipe's serve command directly.
 
@@ -37,13 +36,14 @@ recipe's serve command directly.
 - [5. Mods and patches](#5-mods-and-patches)
 - [6. Scripts](#6-scripts)
 - [7. gfx1151 notes](#7-gfx1151-notes)
+- [8. Reproduction](#8-reproduction)
 - [CHANGELOG](#changelog)
 
 ## Quick Start
 
 ```bash
-git clone git@github.com:radeon-arena/radeon-docker.git
-cd radeon-docker
+git clone git@github.com:radeon-arena/radeonrun.git
+cd radeonrun
 
 # Build the vLLM image for Strix Halo (gfx1151): clones AMD's ROCm/vllm gfx11
 # branch, applies the C++23 build fix, compiles HIP extensions. ~30-60 min cold.
@@ -95,7 +95,7 @@ APU and our experience is single-node only.
 
 **39 pre-configured serve commands** live in [`recipes/`](recipes/), generated
 from the InferStation gfx1151 units and cross-checked against `runs.json` (each
-corresponds to a config that produced a real decode result on halo5/halo6).
+corresponds to a config that produced a real decode result on the InferStation fleet).
 See [recipes/README.md](recipes/README.md). Examples:
 
 - `qwen3.6-35b-a3b-bf16-vllm`, `qwen3.6-35b-a3b-awq-4bit-vllm`,
@@ -106,6 +106,9 @@ See [recipes/README.md](recipes/README.md). Examples:
 - `diffusiongemma-26b-a4b-bf16` / `-awq-int4` (vLLM **upstream-main** image; needs `--main` build)
 
 List them all: `./run-recipe.py --list`.
+
+All 39 recipes have been independently re-run on real gfx1151 hardware — see
+[8. Reproduction](#8-reproduction).
 
 ## 4. Configuration
 
@@ -131,6 +134,24 @@ See [`mods/`](mods/) — `fix-gfx11-in-range` (build fix) and `force-triton-attn
 on ROCm, AITER, skinny GEMM, the build fix, health-500, llama.cpp `-c`/`-np`
 sizing, and more.
 
+## 8. Reproduction
+
+Every recipe was independently re-run on real Strix Halo (gfx1151) hardware with
+the repo's own `benchmarking/halo-arena-v1.yaml` profile. The measured numbers
+are committed as native result files under [`results/strix/`](results/strix/)
+(one JSON per recipe, each with a `meta.reproduction` block recording the actual
+weights used and a one-line verdict).
+
+See [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md) for the method, the per-recipe
+verdict table, and the cross-cutting findings (e.g. AWQ runs use public
+third-party weights, INT8 shows no decode speedup on dense gfx1151, DiffusionGemma
+needs the `vllm-main` image).
+
+> **Three separate projects** — *radeonrun* (this repo: images + recipes + the
+> benchmark harness), *InferStation* (the gfx1151 fleet that produced the
+> reference numbers), and *Radeon Arena* (the website that displays them) are
+> distinct. "Reference" values are InferStation measurements, not the website's.
+
 ## DISCLAIMER
 
 This repository is not affiliated with AMD or their subsidiaries. It is a
@@ -143,3 +164,5 @@ community project for running vLLM / llama.cpp on AMD Radeon GPUs via ROCm.
   InferStation gfx1151 units and cross-checked against real `runs.json` results;
   solo launcher with ROCm passthrough; build fix for the gfx11 C++23
   `std::in_range`; gfx1151 notes.
+- All 39 recipes independently reproduced on real gfx1151 hardware →
+  [`results/strix/`](results/strix/) + [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md).

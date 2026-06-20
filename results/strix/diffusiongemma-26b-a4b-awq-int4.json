@@ -1,0 +1,67 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "generated_at": "2026-06-20T08:04:50Z",
+  "meta": {
+    "recipe": "diffusiongemma-26b-a4b-awq-int4",
+    "model": "/models/diffusiongemma-26B-A4B-it-AWQ-INT4",
+    "runtime": "vllm",
+    "container": "vllm-main",
+    "command": "vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 \\\n  --served-model-name diffusiongemma-26B-A4B-it-AWQ-INT4 \\\n  --host 0.0.0.0 --port 8000 \\\n  --max-model-len 896 --max-num-seqs 4 \\\n  --gpu-memory-utilization 0.6 \\\n  --generation-config vllm \\\n  --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\\n  --diffusion-config '{\"canvas_length\":256}'",
+    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+    "reproduction": {
+      "independent": true,
+      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
+      "weights_used": "cyankiwi/diffusiongemma-26B-A4B-it-AWQ-INT4",
+      "same_weights_as_recipe": false,
+      "host": "halo6",
+      "note": "✅ 复现成功(可运行 + 性能与 BF16 同量级)"
+    }
+  },
+  "measurements": [
+    {
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 6.69,
+      "ttft_ms": 19137.0,
+      "tpot_ms": null,
+      "requests_ok": 1,
+      "requests_total": 1
+    },
+    {
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 12.12,
+      "ttft_ms": 42241.0,
+      "tpot_ms": null,
+      "requests_ok": 4,
+      "requests_total": 4
+    },
+    {
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 12.3,
+      "ttft_ms": 104067.0,
+      "tpot_ms": null,
+      "requests_ok": 16,
+      "requests_total": 16
+    },
+    {
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 12.29,
+      "ttft_ms": 193515.0,
+      "tpot_ms": null,
+      "requests_ok": 32,
+      "requests_total": 32
+    }
+  ]
+}

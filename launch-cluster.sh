@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 #
-# launch-cluster.sh - Run the radeon-docker container in solo mode.
+# launch-cluster.sh - Run the radeonrun container in solo mode.
 #
 # Solo mode is implemented and uses the GPU passthrough verified on the
 # InferStation gfx1151 nodes. Cluster (multi-node) mode is NOT implemented —

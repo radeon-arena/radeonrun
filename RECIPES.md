@@ -1,11 +1,10 @@
-# radeon-docker Recipe Reference
+# radeonrun Recipe Reference
 
 A recipe is a YAML file that fully describes how to serve **and reproduce** an
 inference workload on AMD Radeon (ROCm / gfx11xx): model, container, runtime,
-configuration, and the exact command. Every result on
-[Radeon Arena](https://github.com/radeon-arena/radeon-docker) is backed by a
-recipe + a [benchmark profile](benchmarking/README.md), so any number is
-reproducible.
+configuration, and the exact command. Every number on the **Radeon Arena**
+leaderboard is backed by a recipe + a [benchmark profile](benchmarking/README.md),
+so it is reproducible.
 
 ```bash
 python run-recipe.py recipes/qwen3.6-35b-a3b-bf16-vllm.yaml            # serve
@@ -217,3 +216,7 @@ python run-recipe.py recipe.yaml \
 Because the recipe pins the model, container, command and engine flags, and the
 profile pins the test grid (shapes, depths, concurrency, repeats), the numbers
 should match within run-to-run noise.
+
+**Worked examples:** all 39 recipes have already been reproduced this way — the
+measured result JSONs are in [`results/strix/`](results/strix/) and the verdicts
+in [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md).
