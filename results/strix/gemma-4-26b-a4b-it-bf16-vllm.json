@@ -1,0 +1,64 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "generated_at": "2026-06-20T08:04:50Z",
+  "meta": {
+    "recipe": "gemma-4-26b-a4b-it-bf16",
+    "model": "/models/gemma-4-26B-A4B-it",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "vllm serve /models/gemma-4-26B-A4B-it --host 0.0.0.0 --port 8000 --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 2304 --gpu-memory-utilization 0.85",
+    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+    "reproduction": {
+      "independent": true,
+      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
+      "note": "✅ 复现成功(C=1 单流锚点吻合;高并发达到/超过InferStation 实测)"
+    }
+  },
+  "measurements": [
+    {
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 22.91,
+      "ttft_ms": 129.42,
+      "tpot_ms": 42.97,
+      "requests_ok": 1,
+      "requests_total": 1
+    },
+    {
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 49.36,
+      "ttft_ms": 497.84,
+      "tpot_ms": 77.6,
+      "requests_ok": 4,
+      "requests_total": 4
+    },
+    {
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 175.88,
+      "ttft_ms": 619.51,
+      "tpot_ms": 86.38,
+      "requests_ok": 16,
+      "requests_total": 16
+    },
+    {
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 231.21,
+      "ttft_ms": 1019.62,
+      "tpot_ms": 131.28,
+      "requests_ok": 32,
+      "requests_total": 32
+    }
+  ]
+}

@@ -10,6 +10,10 @@ A result is the reproducible output of `recipe × profile × gpu`. These JSON fi
 are the **source of truth** for the Radeon Arena leaderboard — the site ingests
 this directory, not any private/internal pipeline.
 
+`strix/` currently holds an independent reproduction of all 39 recipes (re-run on
+real gfx1151 hardware); each file's `meta.reproduction` records the actual weights
+used and a one-line verdict. See [`../docs/REPRODUCTION.md`](../docs/REPRODUCTION.md).
+
 ## Result schema
 
 ```json

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.6
 #
-# radeon-docker — vLLM (upstream main) for AMD Radeon (default: gfx1151 / ROCm).
+# radeonrun — vLLM (upstream main) for AMD Radeon (default: gfx1151 / ROCm).
 #
 # This is the SECOND vLLM line, alongside dockerfiles/vllm/Dockerfile (AMD's ROCm/vllm gfx11
 # branch). It builds upstream `vllm-project/vllm` main instead.

@@ -1,0 +1,66 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "generated_at": "2026-06-20T08:04:50Z",
+  "meta": {
+    "recipe": "qwen3-6-35b-a3b-awq-4bit",
+    "model": "/models/Qwen3.6-35B-A3B-AWQ-4bit",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "vllm serve /models/Qwen3.6-35B-A3B-AWQ-4bit --host 0.0.0.0 --port 8000 --max-num-seqs 32 --dtype float16 --attention-backend TRITON_ATTN --max-model-len 2304 --gpu-memory-utilization 0.85",
+    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+    "reproduction": {
+      "independent": true,
+      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
+      "weights_used": "cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit",
+      "same_weights_as_recipe": false,
+      "note": "✅ 可运行 + 性能合理;⚠️ 非 1:1 同权重对照"
+    }
+  },
+  "measurements": [
+    {
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 24.37,
+      "ttft_ms": 414.92,
+      "tpot_ms": 38.08,
+      "requests_ok": 1,
+      "requests_total": 1
+    },
+    {
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 44.29,
+      "ttft_ms": 1471.92,
+      "tpot_ms": 79.18,
+      "requests_ok": 4,
+      "requests_total": 4
+    },
+    {
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 95.74,
+      "ttft_ms": 5044.17,
+      "tpot_ms": 128.35,
+      "requests_ok": 16,
+      "requests_total": 16
+    },
+    {
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 138.17,
+      "ttft_ms": 7676.16,
+      "tpot_ms": 171.74,
+      "requests_ok": 32,
+      "requests_total": 32
+    }
+  ]
+}

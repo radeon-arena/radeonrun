@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 #
-# build.sh - Build a radeon-docker image for a given framework x device.
+# build.sh - Build a radeonrun image for a given framework x device.
 #
-# radeon-docker ships one Dockerfile per inference framework; the target GPU
+# radeonrun ships one Dockerfile per inference framework; the target GPU
 # (and its base image) is selected by a device profile in devices/*.env. This
 # script wires the two together.
 #

@@ -1,0 +1,64 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "generated_at": "2026-06-20T08:04:50Z",
+  "meta": {
+    "recipe": "gemma-4-26b-a4b-it-q8-0",
+    "model": "/models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-Q8_0.gguf",
+    "runtime": "llama.cpp",
+    "container": "llamacpp",
+    "command": "llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+    "reproduction": {
+      "independent": true,
+      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
+      "note": "✅ 复现成功(单流 TPOT 合理;InferStation 实测该模型 C=1 一条为异常值,见说明)"
+    }
+  },
+  "measurements": [
+    {
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 39.72,
+      "ttft_ms": 67.36,
+      "tpot_ms": 24.84,
+      "requests_ok": 1,
+      "requests_total": 1
+    },
+    {
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 86.67,
+      "ttft_ms": 1106.2,
+      "tpot_ms": 37.67,
+      "requests_ok": 4,
+      "requests_total": 4
+    },
+    {
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 154.31,
+      "ttft_ms": 4059.02,
+      "tpot_ms": 72.16,
+      "requests_ok": 16,
+      "requests_total": 16
+    },
+    {
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128,
+      "decode_toks_per_s": 188.53,
+      "ttft_ms": 4693.18,
+      "tpot_ms": 133.66,
+      "requests_ok": 32,
+      "requests_total": 32
+    }
+  ]
+}

@@ -1,9 +1,8 @@
 # Benchmark Profiles
 
 Standardized benchmarking profile definitions for **halo-arena** / `run-recipe.py`.
-These profiles define the *exact* test grid every result on
-[Radeon Arena](https://github.com/radeon-arena/radeon-docker) is measured
-against, so any number on the leaderboard is reproducible by anyone.
+These profiles define the *exact* test grid every result on the **Radeon Arena**
+leaderboard is measured against, so any number is reproducible by anyone.
 
 A profile is the reproducibility contract: it fixes the input/output shapes,
 context depths, concurrency levels, warm-up, and repeat count. Two people running
