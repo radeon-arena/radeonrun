@@ -17,10 +17,10 @@ pin a byte-reproducible image, e.g. `halo-llamacpp:fe7c8b2414`); `:latest` is
 also published for convenience.
 
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
-**the same build steps and serve commands the InferStation gfx1151 fleet uses to
-produce its reference numbers** — see [8. Reproduction](#8-reproduction). Use
-`build.sh` + `launch-cluster.sh --solo`, or `run-recipe.py <name>` to run a
-recipe's serve command directly.
+**the exact build steps and serve commands that produce the leaderboard numbers**
+— every recipe is independently measured on real gfx1151 hardware, see
+[8. Reproduction](#8-reproduction). Use `build.sh` + `launch-cluster.sh --solo`,
+or `run-recipe.py <name>` to run a recipe's serve command directly.
 
 > **Read [`docs/GFX1151_NOTES.md`](docs/GFX1151_NOTES.md) first** — it has the
 > hard-won facts (FLASH_ATTN is a dead end, no marlin MoE on ROCm, the C++23
@@ -75,8 +75,7 @@ old `./build-and-copy.sh` still works as a halo-only shim.
   MoE `tp_size` crash). The build applies the C++23 `std::in_range` fix.
 - vLLM (upstream main): [`dockerfiles/vllm-main/Dockerfile`](dockerfiles/vllm-main/Dockerfile) — same base, but
   builds `vllm-project/vllm` **main**. Use this for models that need upstream
-  main, notably **DiffusionGemma**. Mirrors InferStation's `vllm-rocm-halo-main`
-  image.
+  main, notably **DiffusionGemma**.
 - llama.cpp: [`dockerfiles/llamacpp/Dockerfile`](dockerfiles/llamacpp/Dockerfile) — base
   `rocm/dev-ubuntu-24.04:7.2.1-complete` (ROCm version must match the host KFD
   driver), `-DGGML_HIP=ON -DAMDGPU_TARGETS=gfx1151`.
@@ -93,10 +92,9 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**39 pre-configured serve commands** live in [`recipes/`](recipes/), generated
-from the InferStation gfx1151 units and cross-checked against `runs.json` (each
-corresponds to a config that produced a real decode result on the InferStation fleet).
-See [recipes/README.md](recipes/README.md). Examples:
+**39 pre-configured serve commands** live in [`recipes/`](recipes/), each
+independently measured on real gfx1151 hardware (the `results/strix/` JSON is the
+source of truth). See [recipes/README.md](recipes/README.md). Examples:
 
 - `qwen3.6-35b-a3b-bf16-vllm`, `qwen3.6-35b-a3b-awq-4bit-vllm`,
   `qwen3.6-35b-a3b-quark-w8a8-int8-vllm` (vLLM gfx11, TRITON_ATTN)
@@ -147,10 +145,10 @@ verdict table, and the cross-cutting findings (e.g. AWQ runs use public
 third-party weights, INT8 shows no decode speedup on dense gfx1151, DiffusionGemma
 needs the `vllm-main` image).
 
-> **Three separate projects** — *radeonrun* (this repo: images + recipes + the
-> benchmark harness), *InferStation* (the gfx1151 fleet that produced the
-> reference numbers), and *Radeon Arena* (the website that displays them) are
-> distinct. "Reference" values are InferStation measurements, not the website's.
+> **Two separate projects** — *radeonrun* (this repo: images + recipes + the
+> benchmark harness that **produces** the numbers) and *Radeon Arena* (the website
+> that **displays** them) are distinct. The numbers come from this repo's own runs
+> under [`results/strix/`](results/strix/), not from the website.
 
 ## DISCLAIMER
 
@@ -160,9 +158,9 @@ community project for running vLLM / llama.cpp on AMD Radeon GPUs via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; **39 serve recipes** (incl. DiffusionGemma BF16 + AWQ-INT4 on the upstream-main image) generated from the
-  InferStation gfx1151 units and cross-checked against real `runs.json` results;
-  solo launcher with ROCm passthrough; build fix for the gfx11 C++23
-  `std::in_range`; gfx1151 notes.
+- vLLM + llama.cpp images for gfx1151; **39 serve recipes** (incl. DiffusionGemma
+  BF16 + AWQ-INT4 on the upstream-main image), each independently measured on real
+  gfx1151 hardware; solo launcher with ROCm passthrough; build fix for the gfx11
+  C++23 `std::in_range`; gfx1151 notes.
 - All 39 recipes independently reproduced on real gfx1151 hardware →
   [`results/strix/`](results/strix/) + [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md).

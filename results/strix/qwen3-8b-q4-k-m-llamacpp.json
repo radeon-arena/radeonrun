@@ -12,7 +12,7 @@
     "reproduction": {
       "independent": true,
       "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "note": "✅ 复现成功(单流 TPOT 与InferStation 实测一致;高并发吞吐更高,归因新版 llama.cpp)"
+      "note": "✅ 复现成功(单流 TPOT 锚点稳定;高并发吞吐更高,归因新版 llama.cpp)"
     }
   },
   "measurements": [

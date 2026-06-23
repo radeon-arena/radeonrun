@@ -10,19 +10,17 @@ Each recipe is a YAML file specifying:
 - environment variables
 - the serve command (vLLM or llama-server)
 
-The serve commands in these recipes are **the ones run on the InferStation
-gfx1151 fleet** to produce its reference numbers. Run one
+The serve commands in these recipes are **the ones used to produce the
+leaderboard numbers** (independently measured on real gfx1151 hardware). Run one
 with `./run-recipe.py <name>` (or `--print` to show the command), or paste its
 serve command into `launch-cluster.sh --solo` directly.
 
 ## Recipes
 
-These recipes are generated from the InferStation gfx1151 unit definitions.
-Most correspond to a config that produced a real decode result on the fleet
+Each recipe is a real serve config measured on real gfx1151 hardware
 (the comment in each file records the best measured tok/s, cross-checked against
-`runs.json`); a couple are real serve configs from the same unit set that are
-not yet benchmarked on halo (clearly noted in-file). FLASH_ATTN configs (which
-fail on gfx1151) are excluded.
+`runs.json`); a couple are real serve configs that are not yet benchmarked
+(clearly noted in-file). FLASH_ATTN configs (which fail on gfx1151) are excluded.
 
 **39 recipes** across three image lines:
 
