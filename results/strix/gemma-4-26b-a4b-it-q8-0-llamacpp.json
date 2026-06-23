@@ -12,7 +12,7 @@
     "reproduction": {
       "independent": true,
       "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "note": "✅ 复现成功(单流 TPOT 合理;InferStation 实测该模型 C=1 一条为异常值,见说明)"
+      "note": "✅ 复现成功(单流 TPOT 合理;该模型 C=1 早期一条为异常值,见说明)"
     }
   },
   "measurements": [

@@ -4,8 +4,8 @@ run-recipe.py - One-click recipe runner.
 
 Loads a recipe YAML, fills the command template with its defaults (plus any CLI
 overrides), and runs it via launch-cluster.sh --solo (or prints it with
---print). The serve commands in the recipes are the ones run on the
-InferStation gfx1151 fleet.
+--print). The serve commands in the recipes are the ones used to produce the
+leaderboard numbers (independently measured on real gfx1151 hardware).
 
 Examples:
   ./run-recipe.py --list

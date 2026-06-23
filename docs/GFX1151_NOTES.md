@@ -1,8 +1,8 @@
 # Strix Halo (gfx1151) vLLM notes
 
 Hard-won facts from running vLLM and llama.cpp on AMD Strix Halo
-(Radeon 8060S iGPU, `gfx1151`, RDNA 3.5) on the InferStation benchmark fleet.
-These are the things that cost real debugging time — read before you fight the
+(Radeon 8060S iGPU, `gfx1151`, RDNA 3.5). These are the things that cost real
+debugging time — read before you fight the
 same battles.
 
 ## Hardware / driver

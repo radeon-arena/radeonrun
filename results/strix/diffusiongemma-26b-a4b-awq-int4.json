@@ -14,7 +14,7 @@
       "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
       "weights_used": "cyankiwi/diffusiongemma-26B-A4B-it-AWQ-INT4",
       "same_weights_as_recipe": false,
-      "host": "halo6",
+      "host": "strix-halo",
       "note": "✅ 复现成功(可运行 + 性能与 BF16 同量级)"
     }
   },

@@ -12,7 +12,7 @@
     "reproduction": {
       "independent": true,
       "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "host": "halo6",
+      "host": "strix-halo",
       "note": "✅ 复现成功(decode ≈ recipe best)"
     }
   },

@@ -12,7 +12,7 @@
     "reproduction": {
       "independent": true,
       "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "note": "✅ 复现成功(C=1 单流锚点吻合;高并发吞吐超InferStation 实测,如实标注)"
+      "note": "✅ 复现成功(C=1 单流锚点稳定;高并发吞吐随 batch 提升,如实标注)"
     }
   },
   "measurements": [
