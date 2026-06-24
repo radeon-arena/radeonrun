@@ -35,7 +35,7 @@ jobs:
 
       - name: Install runner deps (hf CLI + PyYAML)
         run: |
-          python3 -m pip install --user --upgrade pyyaml 'huggingface_hub[cli]'
+          python3 -m pip install --user --break-system-packages --upgrade pyyaml 'huggingface_hub[cli]'
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Log in to ghcr (built-in GITHUB_TOKEN — no PAT)
