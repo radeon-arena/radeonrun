@@ -15,6 +15,8 @@ Examples:
 
 import argparse
 import json
+import os
+import re
 import sys
 from pathlib import Path
 
@@ -30,7 +32,7 @@ ORG = "ghcr.io/radeon-arena"
 # (halo = Strix Halo / Radeon 8060S / gfx1151).
 DEVICE_GFX = {"halo": "gfx1151", "w7900": "gfx1100", "r9700": "gfx1200"}
 # Logical engine -> image-name component.
-ENGINE_IMAGE = {"vllm": "vllm-opt", "vllm-main": "vllm-main", "llamacpp": "llamacpp"}
+ENGINE_IMAGE = {"vllm": "vllm", "vllm-main": "vllm-main", "llamacpp": "llamacpp"}
 # Container names seen in recipes (logical or legacy) -> logical engine.
 _ENGINE_ALIASES = {
     "halo-vllm-opt": "vllm",
@@ -72,7 +74,168 @@ def _resolve_container(recipe: dict, device: str, tag: str = "latest") -> str:
     engine = _engine_of(recipe, raw)
     if engine:
         return f"{ORG}/{device}-{ENGINE_IMAGE[engine]}:{tag}"
-    return raw or f"{ORG}/{device}-vllm-opt:{tag}"
+    return raw or f"{ORG}/{device}-vllm:{tag}"
+
+
+def _host_models_dir() -> Path:
+    """Host models dir that launch-cluster.sh bind-mounts to /models."""
+    return Path(os.environ.get("MODELS_DIR", "/models"))
+
+
+def _host_model_path(model: str) -> Path:
+    """Map a recipe's in-container model path (/models/...) onto the host dir."""
+    rel = model[len("/models/"):] if model.startswith("/models/") else model.lstrip("/")
+    return _host_models_dir() / rel
+
+
+def _gguf_shard_glob(fname: str):
+    """If `fname` is one shard of a split gguf, return the glob for all shards."""
+    m = re.match(r"(.+)-\d{5}-of-\d{5}\.gguf$", fname)
+    return (m.group(1) + "-*-of-*.gguf") if m else None
+
+
+def _fetch_plan(recipe: dict):
+    """Download plan for a recipe: (repo, include, dest_dir, revision) or None.
+
+    Derived from the recipe's `source` (HF repo id) + `model` (in-container
+    path). The download shape is inferred from the model path:
+      - a *.gguf file  -> fetch that file (or every shard of a split gguf)
+      - a directory    -> fetch the whole repo into it
+    Returns None when the recipe declares no `source` (legacy / pre-staged).
+    """
+    source = str(recipe.get("source") or "").strip()
+    model = str(recipe.get("model") or "").strip()
+    if not source or not model:
+        return None
+    revision = str(recipe.get("model_revision") or "").strip() or None
+    host_path = _host_model_path(model)
+    if model.endswith(".gguf"):
+        include = _gguf_shard_glob(host_path.name) or host_path.name
+        return (source, include, host_path.parent, revision)
+    return (source, None, host_path, revision)
+
+
+def _model_present(model: str) -> bool:
+    """True when the recipe's model already exists under host MODELS_DIR."""
+    model = str(model or "").strip()
+    if not model:
+        return False
+    host_path = _host_model_path(model)
+    if model.endswith(".gguf"):
+        return host_path.exists()
+    return host_path.is_dir() and any(host_path.iterdir())
+
+
+def _hf_cli():
+    import shutil
+    for c in ("hf", "huggingface-cli"):
+        if shutil.which(c):
+            return c
+    return None
+
+
+def ensure_image(container: str, recipe: dict, device: str,
+                 build: bool = True, pull: bool = True, push: bool = False) -> int:
+    """Ensure the serve image exists locally; pull or build it if missing.
+
+    Resolution order: local image -> `docker pull` (when `pull`) -> build from
+    dockerfiles/ via build.sh (when `build`). build.sh names the image exactly
+    like `_resolve_container`, so a local source build satisfies the run with no
+    registry at all -- this is what makes the *image* self-contained too. When
+    `push`, a freshly built image is synced back to ghcr so other runners can
+    just pull it.
+    """
+    import subprocess
+    null = subprocess.DEVNULL
+    if subprocess.call(["docker", "image", "inspect", container],
+                       stdout=null, stderr=null) == 0:
+        print(f"[image] present: {container}")
+        return 0
+    if pull:
+        print(f"[image] pulling {container}")
+        if subprocess.call(["docker", "pull", container]) == 0:
+            return 0
+        print("[image] pull failed; building from dockerfiles/ instead")
+    if not build:
+        print(f"[image] missing and build disabled: {container}", file=sys.stderr)
+        return 1
+    engine = _engine_of(recipe, container) or "vllm"
+    build_sh = RECIPES_DIR.parent / "build.sh"
+    cmd = [str(build_sh), "-f", engine, "-d", device, "-t", container]
+    if push:
+        cmd.append("--push")  # sync the freshly built image back to ghcr
+    print(f"[image] building: {' '.join(cmd[1:])}")
+    return subprocess.call(cmd)
+
+
+def setup_model(recipe: dict, force: bool = False) -> int:
+    """Stage a recipe's model from its HF `source` into the host MODELS_DIR.
+
+    Idempotent: skips when the model is already present unless `force`. This is
+    the `setup` half of the self-contained runner pipeline.
+    """
+    plan = _fetch_plan(recipe)
+    if plan is None:
+        print("[setup] recipe declares no `source`; assuming model is pre-staged")
+        return 0
+    repo, include, dest_dir, revision = plan
+    model = str(recipe.get("model") or "")
+    if not force and _model_present(model):
+        print(f"[setup] already staged: {model}")
+        return 0
+    cli = _hf_cli()
+    if cli is None:
+        print("[setup] hf CLI not found. Install: pip install --user 'huggingface_hub[cli]'",
+              file=sys.stderr)
+        return 1
+    import subprocess
+    dest_dir = Path(dest_dir)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    cmd = [cli, "download", repo, "--local-dir", str(dest_dir)]
+    if include:
+        cmd += ["--include", include]
+    if revision:
+        cmd += ["--revision", revision]
+    env = dict(os.environ)
+    env.setdefault("HF_HUB_DISABLE_XET", "1")  # XET backend flakes on parallel pulls
+    print(f"[setup] {' '.join(cmd)}")
+    return subprocess.call(cmd, env=env)
+
+
+def teardown_model(recipe: dict) -> int:
+    """Delete the model staged for this recipe, freeing host disk.
+
+    Only touches paths under the host MODELS_DIR derived from the recipe's
+    `model`. This is the `teardown` half of the pipeline.
+    """
+    model = str(recipe.get("model") or "").strip()
+    if not model:
+        return 0
+    import shutil
+    host_path = _host_model_path(model)
+    if model.endswith(".gguf"):
+        glob = _gguf_shard_glob(host_path.name)
+        targets = sorted(host_path.parent.glob(glob)) if glob else [host_path]
+        for t in targets:
+            try:
+                t.unlink()
+            except FileNotFoundError:
+                pass
+            except OSError as e:
+                print(f"[teardown] failed to remove {t}: {e}", file=sys.stderr)
+        # hf download leaves a .cache/ metadata dir under --local-dir; clear it
+        cache = host_path.parent / ".cache"
+        if cache.is_dir():
+            shutil.rmtree(cache, ignore_errors=True)
+        try:
+            host_path.parent.rmdir()  # drop the containing dir if now empty
+        except OSError:
+            pass
+        print(f"[teardown] removed staged gguf for {model}")
+    else:
+        shutil.rmtree(host_path, ignore_errors=True)
+        print(f"[teardown] removed {host_path}")
+    return 0
 
 
 def list_recipes() -> None:
@@ -125,6 +288,22 @@ def main() -> int:
                         help="Target GPU device profile (default: halo / gfx1151)")
     parser.add_argument("--tag", default="latest",
                         help="Image tag to pull (default: latest; pass a commit id to pin a build)")
+    parser.add_argument("--setup-only", action="store_true",
+                        help="Only stage the model from its HF source, then exit")
+    parser.add_argument("--no-setup", action="store_true",
+                        help="Skip model staging (assume the model is already present)")
+    parser.add_argument("--force-setup", action="store_true",
+                        help="Re-download the model even if it is already staged")
+    parser.add_argument("--cleanup", action="store_true",
+                        help="Delete the staged model after the run (frees host disk)")
+    parser.add_argument("--hf-token",
+                        help="HuggingFace token for gated/private model repos (else $HF_TOKEN)")
+    parser.add_argument("--build", action="store_true",
+                        help="Build the serve image from dockerfiles/ instead of pulling it")
+    parser.add_argument("--no-build", action="store_true",
+                        help="Never build the image; only use a local or pulled one")
+    parser.add_argument("--push", action="store_true",
+                        help="After building an image, push it to ghcr (needs docker login ghcr.io)")
     args = parser.parse_args()
 
     if args.list or not args.recipe:
@@ -151,16 +330,51 @@ def main() -> int:
     inner = " ".join(inner.split())          # collapse whitespace
     full = f'IMAGE={container} {launch} --solo -p {port}:{port} exec {inner}'
 
+    if args.hf_token:
+        os.environ["HF_TOKEN"] = args.hf_token
+    img_build, img_pull = not args.no_build, not args.build
+
+    # --setup-only: stage everything (image + model) and stop.
+    if args.setup_only:
+        rc = ensure_image(container, recipe, args.device, build=img_build, pull=img_pull, push=args.push)
+        if rc != 0:
+            return rc
+        return setup_model(recipe, force=args.force_setup)
+
+    # Print mode (without benchmarking) shouldn't touch the network or disk.
+    if args.print_only and not args.benchmark:
+        print(full)
+        return 0
+
+    # Self-contained pipeline: prepare the image (local -> pull -> build from
+    # dockerfiles/) and stage the model from its `source` before serving, so a
+    # recipe reproduces from nothing but this repo + a HuggingFace pull.
+    if not args.no_setup:
+        rc = ensure_image(container, recipe, args.device, build=img_build, pull=img_pull, push=args.push)
+        if rc != 0:
+            print("[setup] image prepare failed; aborting", file=sys.stderr)
+            return rc
+        rc = setup_model(recipe, force=args.force_setup)
+        if rc != 0:
+            print("[setup] model staging failed; aborting", file=sys.stderr)
+            return rc
+
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:
-        return _benchmark(recipe, full, args)
+        rc = _benchmark(recipe, full, args)
+        if args.cleanup:
+            teardown_model(recipe)
+        return rc
 
     print(full)
     if args.print_only:
         return 0
 
     import subprocess
-    return subprocess.call(full, shell=True)
+    rc = subprocess.call(full, shell=True)
+    if args.cleanup:
+        teardown_model(recipe)
+    return rc
 
 
 def _served_model_name(recipe: dict) -> str:

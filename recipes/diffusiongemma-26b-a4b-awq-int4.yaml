@@ -26,6 +26,7 @@ name: diffusiongemma-26b-a4b-awq-int4
 description: vLLM (upstream main) serving DiffusionGemma-26B-A4B (AWQ-INT4) on Strix Halo
 
 model: /models/diffusiongemma-26B-A4B-it-AWQ-INT4
+source: cyankiwi/diffusiongemma-26B-A4B-it-AWQ-INT4   # HF repo the runner stages this model from (run-recipe.py --setup)
 
 # Built from dockerfiles/vllm-main/Dockerfile (upstream main has DiffusionGemma; gfx11 line does not).
 container: vllm-main

@@ -14,6 +14,7 @@ metadata:
 name: qwen3-4b-bf16
 description: llamacpp serving Qwen3-4B (BF16) on Strix Halo
 model: /models/Qwen3-4B/Qwen3-4B-BF16.gguf
+source: unsloth/Qwen3-4B-GGUF   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
 mods: []
 defaults:

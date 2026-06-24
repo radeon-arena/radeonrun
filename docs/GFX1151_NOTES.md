@@ -119,7 +119,7 @@ docker run --rm -it \
   --device /dev/kfd --device /dev/dri --group-add video \
   --security-opt seccomp=unconfined --ipc host \
   -v /models:/models \
-  ghcr.io/radeon-arena/halo-vllm-opt:latest \
+  ghcr.io/radeon-arena/halo-vllm:latest \
   vllm serve /models/<model> --host 0.0.0.0 --port 8000 --attention-backend TRITON_ATTN
 ```
 

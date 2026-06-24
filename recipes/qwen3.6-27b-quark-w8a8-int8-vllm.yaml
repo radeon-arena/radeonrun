@@ -14,6 +14,7 @@ metadata:
 name: qwen3-6-27b-quark-w8a8-int8
 description: vllm serving Qwen3.6-27B (Quark-W8A8-INT8) on Strix Halo
 model: /models/Qwen3.6-27B-Quark-W8A8-INT8
+source: nameistoken/Qwen3.6-27B-Quark-W8A8-INT8   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: vllm
 mods: []
 defaults:

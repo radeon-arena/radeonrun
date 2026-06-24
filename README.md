@@ -60,7 +60,7 @@ MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
 ## 1. Building the image
 
 ```bash
-./build.sh -f vllm      -d halo    # vLLM gfx11 branch  -> ghcr.io/radeon-arena/halo-vllm-opt:<commit>
+./build.sh -f vllm      -d halo    # vLLM gfx11 branch  -> ghcr.io/radeon-arena/halo-vllm:<commit>
 ./build.sh -f vllm-main -d halo    # vLLM upstream main -> ghcr.io/radeon-arena/halo-vllm-main:<commit>
 ./build.sh -f llamacpp  -d halo    # llama.cpp (HIP)    -> ghcr.io/radeon-arena/halo-llamacpp:<commit>
 ./build.sh -f llamacpp  -d w7900   # same recipe, gfx1100 (RDNA3) -> w7900-llamacpp:<commit>

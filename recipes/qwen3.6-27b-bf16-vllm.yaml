@@ -14,6 +14,7 @@ metadata:
 name: qwen3-6-27b-bf16
 description: vllm serving Qwen3.6-27B (BF16) on Strix Halo
 model: /models/Qwen3.6-27B
+source: Qwen/Qwen3.6-27B   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: vllm
 mods: []
 defaults:

@@ -13,6 +13,7 @@ set -euo pipefail
 #   ./build.sh --framework llamacpp  --device halo      # gfx1151 llama.cpp (HIP)
 #   ./build.sh -f llamacpp -d w7900                      # gfx1100 llama.cpp
 #   ./build.sh -f vllm -d halo -t myrepo/vllm:test       # custom image tag
+#   ./build.sh -f llamacpp -d halo --push                # build, then push to ghcr
 #
 # Frameworks: vllm | vllm-main | llamacpp
 # Devices:    halo (gfx1151) | w7900 (gfx1100) | r9700 (gfx1200)
@@ -20,21 +21,23 @@ set -euo pipefail
 # Image name puts the device first; the tag carries the upstream build commit
 # (byte-reproducible), and `:latest` is also tagged for convenience:
 #   ghcr.io/radeon-arena/<device>-<image>:<commit>   (+ :latest)
-# where <image> = vllm-opt | vllm-main | llamacpp.
+# where <image> = vllm | vllm-main | llamacpp.
 # (Strix Halo is single-node here; multi-node copy is intentionally omitted.)
 
 FRAMEWORK="vllm"
 DEVICE="halo"
 IMAGE_TAG=""
+PUSH=0
 ORG="ghcr.io/radeon-arena"
 
-usage() { sed -n '3,24p' "$0"; exit "${1:-0}"; }
+usage() { sed -n '3,25p' "$0"; exit "${1:-0}"; }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -f|--framework) FRAMEWORK="$2"; shift 2 ;;
     -d|--device)    DEVICE="$2"; shift 2 ;;
     -t|--tag)       IMAGE_TAG="$2"; shift 2 ;;
+    -p|--push)      PUSH=1; shift ;;
     -h|--help)      usage 0 ;;
     *) echo "Unknown arg: $1" >&2; usage 2 ;;
   esac
@@ -54,7 +57,7 @@ source "$ENV_FILE"
 case "$FRAMEWORK" in
   vllm)
     DOCKERFILE="dockerfiles/vllm/Dockerfile"
-    IMAGE="vllm-opt"
+    IMAGE="vllm"
     : "${VLLM_BASE:?device '$DEVICE' has no VLLM_BASE set (see devices/${DEVICE}.env)}"
     CACHEBUST="$(git ls-remote https://github.com/ROCm/vllm.git gfx11 2>/dev/null | cut -f1 || true)"
     CACHEBUST="${CACHEBUST:-gfx11-$(date -u +%Y%m%d)}"
@@ -90,5 +93,15 @@ echo "  dockerfile: ${DOCKERFILE}"
 ( cd "$SCRIPT_DIR" && docker build -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "${REPO}:latest" "${BUILD_ARGS[@]}" . )
 
 echo "Done: ${IMAGE_TAG}"
-echo "Push with:  docker push ${IMAGE_TAG} && docker push ${REPO}:latest"
+if [[ "$PUSH" == "1" ]]; then
+  echo "Pushing ${IMAGE_TAG} and ${REPO}:latest ..."
+  if docker push "$IMAGE_TAG" && docker push "${REPO}:latest"; then
+    echo "Pushed: ${IMAGE_TAG} (+ :latest)"
+  else
+    echo "WARNING: push failed -- image is built and usable locally, but not synced to ghcr." >&2
+    echo "         Check 'docker login ghcr.io' and that the token has packages:write." >&2
+  fi
+else
+  echo "Push with:  docker push ${IMAGE_TAG} && docker push ${REPO}:latest"
+fi
 

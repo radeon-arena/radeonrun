@@ -12,6 +12,44 @@ python run-recipe.py recipes/qwen3.6-35b-a3b-bf16-vllm.yaml \
     --benchmark benchmarking/halo-arena-v1.yaml --out results/        # benchmark
 ```
 
+### Self-contained runs (setup → run → teardown)
+
+`run-recipe.py` stages **both halves** a run needs — the serve **image** and the
+**model** — so a recipe reproduces from nothing but this repo (+ a HuggingFace
+pull), with no pre-staged images or models on the host:
+
+- **Image**: local image → `docker pull` → **build from `dockerfiles/`** (via
+  `build.sh`, which names the image exactly as the run expects, so a local build
+  needs no registry at all).
+- **Model**: downloaded from the recipe's `source` into `$MODELS_DIR`.
+
+```bash
+python run-recipe.py qwen3-8b-q4-k-m-llamacpp --setup-only           # prepare image + model, then stop
+python run-recipe.py qwen3-8b-q4-k-m-llamacpp \
+    --benchmark benchmarking/halo-arena-v1.yaml --out results/ \
+    --cleanup                                                        # setup → serve → bench → delete model
+```
+
+Setup runs automatically before a serve/benchmark unless you pass `--no-setup`.
+Image source control:
+
+| Flag         | Image behaviour                                                                  |
+|--------------|----------------------------------------------------------------------------------|
+| *(default)*  | local → pull → build from `dockerfiles/`                                          |
+| `--build`    | build from source, skip the registry pull                                        |
+| `--no-build` | only use a local or pulled image (never build)                                   |
+| `--push`     | after a build, push `:commit` + `:latest` to ghcr (needs `docker login ghcr.io`) |
+
+With `--push`, a runner that builds an image syncs it back to
+`ghcr.io/radeon-arena/<device>-<engine>` so the next run (here or on any other
+runner) just pulls it instead of rebuilding. Push failures only warn — the
+freshly built image is still used locally.
+
+`--cleanup` deletes the staged model afterwards to free disk; gated/private
+model repos use `--hf-token` (or `$HF_TOKEN`). Models land under `$MODELS_DIR`
+(default `/models`), which `launch-cluster.sh` bind-mounts to `/models` in the
+container.
+
 ## Minimal recipe
 
 ```yaml
@@ -36,8 +74,9 @@ When `command` is omitted the runtime generates it from `defaults`.
 |-------------------|--------|-------------|-----------------|-------------|
 | `recipe_version`  | string | no          | `"2"`           | Schema version. `"2"` is current. |
 | `name`            | string | no          | derived         | Short identifier. |
-| `model`           | string | **yes**     | —               | HF repo (`Qwen/Qwen3-8B`), local path (`/models/Qwen3-8B`), or GGUF spec (`Qwen/Qwen3-8B-GGUF:Q4_K_M`). |
-| `model_revision`  | string | no          | `null`          | Pin to an HF revision (branch, tag, or **commit hash**) for byte-identical, reproducible deployments. |
+| `model`           | string | **yes**     | —               | In-container path the serve command reads: a directory (`/models/Qwen3.6-35B-A3B`) or a `.gguf` file (`/models/Qwen3-8B/Qwen3-8B-Q4_K_M.gguf`). The runner stages it here from `source`. (May also be a bare HF id when no `source` is given.) |
+| `source`          | string | for staging | `null`          | HF repo the runner downloads the model from (`run-recipe.py --setup`). The fetch shape is inferred from `model`: a `.gguf` path pulls that file (or every shard of a split gguf); a directory pulls the whole repo. Omit only when the model is already present on the host. |
+| `model_revision`  | string | no          | `null`          | Pin `source` to an HF revision (branch, tag, or **commit hash**) for byte-identical, reproducible deployments. |
 | `runtime`         | string | no          | auto-detected   | `vllm` or `llama-cpp`. See [Runtime resolution](#runtime-resolution). |
 | `container`       | string | recommended | runtime default | Logical engine (`vllm`, `vllm-main`, `llamacpp`), resolved per `--device`/`--tag` to `ghcr.io/radeon-arena/<device>-<engine>:<commit>`; or a pinned `repo@sha256:…`. Set `image_tag` to pin a build commit. |
 | `mods`            | list   | no          | `[]`            | Patch directories applied before launch (e.g. `mods/fix-gfx11-in-range`). |

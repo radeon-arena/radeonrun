@@ -1,0 +1,64 @@
+name: Reproduce recipe
+
+# Reproduce a leaderboard recipe end-to-end on a self-hosted Radeon runner:
+# prepare the image (build from dockerfiles/ or pull) + download the model from
+# its `source`, serve it, run the benchmark profile, then tear everything down.
+#
+# Auth note: ghcr login uses the built-in GITHUB_TOKEN — there is NO personal
+# access token to create or store. `permissions: packages: write` is what grants
+# that token push rights, so `--push` can sync a freshly built image back to
+# ghcr.io/radeon-arena/<device>-<engine> for the next run to just pull.
+
+on:
+  workflow_dispatch:
+    inputs:
+      recipe:
+        description: "Recipe name (without .yaml), e.g. qwen3-8b-q4-k-m-llamacpp"
+        required: true
+        default: qwen3-8b-q4-k-m-llamacpp
+      device:
+        description: "Device profile"
+        required: true
+        default: halo
+        type: choice
+        options: [halo, w7900, r9700]
+
+permissions:
+  contents: read
+  packages: write        # lets the built-in GITHUB_TOKEN push images to ghcr
+
+jobs:
+  reproduce:
+    runs-on: [self-hosted, gfx1151]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install runner deps (hf CLI + PyYAML)
+        run: |
+          python3 -m pip install --user --upgrade pyyaml 'huggingface_hub[cli]'
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Log in to ghcr (built-in GITHUB_TOKEN — no PAT)
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Reproduce — setup (build+push image, download model) → serve → bench → teardown
+        env:
+          # Optional — every recipe's model repo is currently fully public
+          # (verified: unsloth / Qwen / google / stepfun-ai / cyankiwi / nameistoken
+          # all download without a token). Kept only for a future private model.
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          MODELS_DIR: ${{ runner.temp }}/models    # per-job scratch; --cleanup also wipes it
+        run: |
+          mkdir -p "$MODELS_DIR" results
+          python3 run-recipe.py "${{ inputs.recipe }}" \
+            --device "${{ inputs.device }}" \
+            --benchmark benchmarking/halo-arena-v1.yaml \
+            --out results/ \
+            --build --push --cleanup
+
+      - name: Upload result JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ inputs.recipe }}
+          path: results/
