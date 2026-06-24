@@ -45,7 +45,7 @@ env: {}
 # Verified serve command (the one run on the InferStation halo unit).
 command: |
   vllm serve /models/diffusiongemma-26B-A4B-it \
-    --served-model-name diffusiongemma-26B-A4B-it \
+    --served-model-name diffgemma \
     --host {host} --port {port} \
     --max-model-len 896 --max-num-seqs {nseq} \
     --gpu-memory-utilization 0.6 \

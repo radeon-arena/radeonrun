@@ -45,7 +45,7 @@ env: {}
 # Serve command from the InferStation halo unit (bbf22689c5).
 command: |
   vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 \
-    --served-model-name diffusiongemma-26B-A4B-it-AWQ-INT4 \
+    --served-model-name diffawq \
     --host {host} --port {port} \
     --max-model-len 896 --max-num-seqs {nseq} \
     --gpu-memory-utilization 0.6 \
