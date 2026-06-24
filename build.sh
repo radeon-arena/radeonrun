@@ -90,7 +90,10 @@ IMAGE_TAG="${IMAGE_TAG:-${REPO}:${COMMIT}}"
 
 echo "Building ${FRAMEWORK} for ${DEVICE} (${GFX})  ->  ${IMAGE_TAG}  (+ ${REPO}:latest)"
 echo "  dockerfile: ${DOCKERFILE}"
-( cd "$SCRIPT_DIR" && docker build -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "${REPO}:latest" "${BUILD_ARGS[@]}" . )
+# --network=host: the build's apt-get needs DNS; on hosts using systemd-resolved
+# (127.0.0.53 stub) the default bridge build network can't resolve, so share the
+# host network namespace for the build.
+( cd "$SCRIPT_DIR" && docker build --network=host -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "${REPO}:latest" "${BUILD_ARGS[@]}" . )
 
 echo "Done: ${IMAGE_TAG}"
 if [[ "$PUSH" == "1" ]]; then
