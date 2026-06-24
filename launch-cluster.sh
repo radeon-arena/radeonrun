@@ -49,7 +49,11 @@ if [[ "${#args[@]}" -eq 0 ]]; then
   exit 2
 fi
 
-run=(docker run --rm -it --name "$CONTAINER" "${AMD_DEVICES[@]}"
+# Attach a TTY only when we actually have one. CI / background runs are not
+# interactive, and `docker run -t` fails there with
+# "cannot attach stdin to a TTY-enabled container because stdin is not a terminal".
+DOCKER_TTY=""; [ -t 1 ] && DOCKER_TTY="-it"
+run=(docker run --rm $DOCKER_TTY --name "$CONTAINER" "${AMD_DEVICES[@]}"
      -v "$MODELS_DIR:/models" -v "$HF_CACHE_DIR:/root/.cache/huggingface")
 
 [[ -n "$PORT_MAP" ]] && run+=(-p "$PORT_MAP")
