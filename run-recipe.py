@@ -443,6 +443,10 @@ def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
         print("[benchmark] server ready; running profile")
 
         out = args.out or str(here / "results" / f"{args.recipe}.json")
+        # A directory `--out` (e.g. the workflow passes `results/`) means "write
+        # <recipe>.json in here"; bench.py expects a concrete file path.
+        if out.endswith(os.sep) or os.path.isdir(out):
+            out = os.path.join(out, f"{args.recipe}.json")
         meta = json.dumps({
             "recipe": recipe.get("name", args.recipe),
             "model": recipe.get("model"),
