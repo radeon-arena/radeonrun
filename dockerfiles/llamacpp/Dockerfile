@@ -54,6 +54,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /opt/llama.cpp/build/bin/ /app/
 COPY --from=builder /opt/commit.txt /app/commit.txt
 ENV PATH="/app:${PATH}"
+# llama.cpp builds shared libs (libllama-server-impl.so, libggml*.so) next to the
+# binaries in /app, but the binaries' RUNPATH points at the build dir which no
+# longer exists in this stage. Put /app on the loader path so they resolve.
+ENV LD_LIBRARY_PATH="/app:${LD_LIBRARY_PATH}"
 
 WORKDIR /workspace
 CMD ["/bin/bash"]
