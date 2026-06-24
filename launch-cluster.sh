@@ -53,6 +53,11 @@ fi
 # interactive, and `docker run -t` fails there with
 # "cannot attach stdin to a TTY-enabled container because stdin is not a terminal".
 DOCKER_TTY=""; [ -t 1 ] && DOCKER_TTY="-it"
+# Remove any leftover container with this name first. `docker run --rm` only
+# removes a container when it EXITS, so a previous run's detached server can
+# still be alive holding this name + the port; without this the new run would
+# fail to start and the benchmark would hit the STALE model.
+docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
 run=(docker run --rm $DOCKER_TTY --name "$CONTAINER" "${AMD_DEVICES[@]}"
      -v "$MODELS_DIR:/models" -v "$HF_CACHE_DIR:/root/.cache/huggingface")
 

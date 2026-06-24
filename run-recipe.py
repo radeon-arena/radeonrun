@@ -470,6 +470,12 @@ def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
             server.wait(timeout=30)
         except Exception:  # noqa: BLE001
             server.kill()
+        # `docker run --rm` only removes the container once it EXITS; terminating
+        # the client above leaves the detached server container running (holding
+        # the name + port), which would poison the NEXT recipe's benchmark. Remove
+        # it explicitly. CONTAINER mirrors launch-cluster.sh's default.
+        subprocess.run(["docker", "rm", "-f", os.environ.get("CONTAINER", "radeon_vllm")],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
 
 
 if __name__ == "__main__":
