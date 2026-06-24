@@ -371,6 +371,7 @@ def main() -> int:
         return 0
 
     import subprocess
+    _free_page_cache(args.device)
     rc = subprocess.call(full, shell=True)
     if args.cleanup:
         teardown_model(recipe)
@@ -388,6 +389,27 @@ def _served_model_name(recipe: dict) -> str:
     return model.split("/")[-1].split(":")[0] or "model"
 
 
+def _free_page_cache(device: str = "halo") -> None:
+    """Drop the OS page cache before serving.
+
+    On Strix Halo (gfx1151) the GPU is an APU: its memory is carved from system
+    RAM (GTT). The model files we just staged sit in the page cache, which counts
+    against the "free" memory vLLM probes at startup, so a faithful
+    `--gpu-memory-utilization` can spuriously fail the memory check. Dropping the
+    reclaimable cache restores the GTT headroom. Best-effort: needs passwordless
+    sudo, harmless no-op on discrete-GPU devices.
+    """
+    if device not in ("halo",):
+        return
+    import subprocess
+    try:
+        subprocess.run(["sync"], check=False)
+        subprocess.run(["sudo", "-n", "sh", "-c", "echo 3 > /proc/sys/vm/drop_caches"],
+                       check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
     """Serve the recipe in the background, run the profile, tear down."""
     import subprocess
@@ -399,6 +421,7 @@ def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
     port = args.port or (recipe.get("defaults") or {}).get("port", 8000)
     base_url = args.base_url
 
+    _free_page_cache(args.device)
     print(f"[benchmark] starting server: {recipe.get('name', args.recipe)}")
     server = subprocess.Popen(serve_cmd, shell=True)
     try:
