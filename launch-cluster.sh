@@ -64,8 +64,15 @@ run=(docker run --rm $DOCKER_TTY --name "$CONTAINER" "${AMD_DEVICES[@]}"
 [[ -n "$PORT_MAP" ]] && run+=(-p "$PORT_MAP")
 [[ -n "${HIP_VISIBLE_DEVICES:-}" ]] && run+=(-e "HIP_VISIBLE_DEVICES=${HIP_VISIBLE_DEVICES}")
 
-# Clear the image entrypoint so init can run before the server starts.
-run+=(--entrypoint /bin/bash "$IMAGE" -lc "exec ${args[*]}")
+# Clear the image entrypoint so init can run before the server starts. Quote each
+# argument before handing it to `bash -lc`; recipe commands include JSON strings
+# (for example vLLM diffusion flags) whose quotes must survive the extra shell.
+cmd="exec"
+for a in "${args[@]}"; do
+  printf -v q ' %q' "$a"
+  cmd+="$q"
+done
+run+=(--entrypoint /bin/bash "$IMAGE" -lc "$cmd")
 
 echo "+ ${run[*]}"
 exec "${run[@]}"
