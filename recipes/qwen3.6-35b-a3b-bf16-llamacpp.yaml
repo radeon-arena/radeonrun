@@ -13,7 +13,7 @@ metadata:
     decode_toks_per_s: 52.6
 name: qwen3-6-35b-a3b-bf16
 description: llamacpp serving Qwen3.6-35B-A3B (BF16) on Strix Halo
-model: /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-BF16.gguf
+model: /models/Qwen3.6-35B-A3B/BF16/Qwen3.6-35B-A3B-BF16-00001-of-00002.gguf
 source: unsloth/Qwen3.6-35B-A3B-GGUF   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
 mods: []
@@ -24,4 +24,4 @@ defaults:
   ctx: 32768
 env: {}
 command: |
-  llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}
+  llama-server -m /models/Qwen3.6-35B-A3B/BF16/Qwen3.6-35B-A3B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}
