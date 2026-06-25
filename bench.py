@@ -35,16 +35,38 @@ from pathlib import Path
 from typing import Any
 
 
+def _make_prompt(approx_tokens: int) -> str:
+    """Deterministic ~approx_tokens-token English prompt (~9 tokens/sentence).
+
+    Matches the reproduce harness (bench_stream.py) so prefill/decode behavior —
+    and therefore the numbers — are comparable to the published leaderboard. A
+    degenerate prompt like "token token ..." instead skews tokenization and can
+    trigger early EOS, so it is deliberately avoided.
+    """
+    sentence = "The quick brown fox jumps over the lazy dog. "
+    reps = max(1, approx_tokens // 9 + 1)
+    return (sentence * reps).strip()
+
+
 def _post_stream(base_url: str, model: str, prompt_tokens: int, max_tokens: int):
-    """Issue one streaming completion; return (ttft_s, total_s, out_tokens)."""
-    # A simple synthetic prompt of roughly `prompt_tokens` words.
-    prompt = " ".join(["token"] * max(1, prompt_tokens))
+    """Issue one streaming completion; return (ttft_s, decode_s, out_tokens).
+
+    ttft_s    : time to first streamed token.
+    decode_s  : first->last token wall time (pure decode window; excludes TTFT
+                and the trailing [DONE]/socket-close latency).
+    out_tokens: the server's reported completion_tokens when available, else the
+                streamed-chunk count.
+    These definitions match reproduce/bench_stream.py so results are comparable.
+    """
+    prompt = _make_prompt(prompt_tokens)
     body = json.dumps({
         "model": model,
         "prompt": prompt,
         "max_tokens": max_tokens,
         "stream": True,
         "temperature": 0.0,
+        "ignore_eos": True,                          # force exactly max_tokens of decode
+        "stream_options": {"include_usage": True},   # get exact completion_tokens
     }).encode()
     req = urllib.request.Request(
         base_url.rstrip("/") + "/v1/completions",
@@ -52,9 +74,11 @@ def _post_stream(base_url: str, model: str, prompt_tokens: int, max_tokens: int)
         headers={"Content-Type": "application/json"},
     )
     t0 = time.perf_counter()
-    ttft = None
-    out_tokens = 0
-    with urllib.request.urlopen(req, timeout=600) as resp:
+    t_first = None
+    t_last = t0
+    n_chunks = 0
+    usage = None
+    with urllib.request.urlopen(req, timeout=900) as resp:
         for raw in resp:
             line = raw.decode("utf-8", "replace").strip()
             if not line.startswith("data:"):
@@ -62,17 +86,23 @@ def _post_stream(base_url: str, model: str, prompt_tokens: int, max_tokens: int)
             payload = line[len("data:"):].strip()
             if payload == "[DONE]":
                 break
-            if ttft is None:
-                ttft = time.perf_counter() - t0
             try:
                 chunk = json.loads(payload)
-                text = chunk.get("choices", [{}])[0].get("text", "")
-                if text:
-                    out_tokens += 1
-            except (ValueError, KeyError, IndexError):
-                pass
-    total = time.perf_counter() - t0
-    return ttft if ttft is not None else total, total, out_tokens
+            except ValueError:
+                continue
+            choices = chunk.get("choices") or []
+            if choices and choices[0].get("text"):
+                now = time.perf_counter()
+                if t_first is None:
+                    t_first = now
+                t_last = now
+                n_chunks += 1
+            if chunk.get("usage"):
+                usage = chunk["usage"]
+    out_tokens = (usage or {}).get("completion_tokens") or n_chunks
+    if t_first is None:
+        return None, 0.0, 0
+    return t_first - t0, t_last - t_first, out_tokens
 
 
 def _run_concurrent(base_url: str, model: str, pp: int, tg: int, concurrency: int):
@@ -103,17 +133,21 @@ def _run_concurrent(base_url: str, model: str, pp: int, tg: int, concurrency: in
         return None
     ttfts = [r[0] for r in ok]
     total_out = sum(r[2] for r in ok)
-    # Aggregate decode throughput = all generated tokens / wall time.
+    # Aggregate decode throughput = all generated tokens / wall time (= reproduce
+    # agg_decode_tps). Per-request decode and TPOT use only the first->last decode
+    # window (exclude prefill/TTFT), matching reproduce/bench_stream.py. Aggregate
+    # across the concurrent requests with the mean, as reproduce does.
     decode_toks_s = total_out / wall if wall > 0 else 0.0
-    # Per-request TPOT = (total - ttft) / (out_tokens - 1), averaged.
-    tpots = []
-    for ttft, total, n in ok:
-        if n > 1:
-            tpots.append((total - ttft) / (n - 1) * 1000.0)
+    per_dec, tpots = [], []
+    for _ttft, decode_s, n in ok:
+        if n > 1 and decode_s > 0:
+            per_dec.append((n - 1) / decode_s)
+            tpots.append(decode_s / (n - 1) * 1000.0)
     return {
         "decode_toks_per_s": round(decode_toks_s, 2),
-        "ttft_ms": round(statistics.median(ttfts) * 1000.0, 2),
-        "tpot_ms": round(statistics.median(tpots), 2) if tpots else None,
+        "decode_toks_per_s_per_req": round(statistics.mean(per_dec), 2) if per_dec else None,
+        "ttft_ms": round(statistics.mean(ttfts) * 1000.0, 2),
+        "tpot_ms": round(statistics.mean(tpots), 2) if tpots else None,
         "requests_ok": len(ok),
         "requests_total": len(results),
     }
