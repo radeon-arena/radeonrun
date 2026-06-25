@@ -64,7 +64,7 @@ RUN cd vllm && \
 # Build the wheel (HIP extensions compiled for gfx1151). Takes ~30-60 min cold,
 # faster with ccache warm.
 RUN cd vllm && \
-    python3 -m pip install --no-cache-dir build && \
+    python3 -m pip install --no-cache-dir build setuptools-rust && \
     python3 setup.py bdist_wheel && \
     mkdir -p /wheels && cp dist/*.whl /wheels/
 
