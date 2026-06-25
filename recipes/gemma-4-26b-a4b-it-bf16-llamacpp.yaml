@@ -13,7 +13,7 @@ metadata:
     decode_toks_per_s: 88.5
 name: gemma-4-26b-a4b-it-bf16
 description: llamacpp serving Gemma-4-26B-A4B-it (BF16) on Strix Halo
-model: /models/gemma-4-26B-A4B-it/gemma-4-26B-A4B-it-bf16.gguf
+model: /models/gemma-4-26B-A4B-it/BF16/gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf
 source: unsloth/gemma-4-26B-A4B-it-GGUF   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
 mods: []
@@ -24,4 +24,4 @@ defaults:
   ctx: 32768
 env: {}
 command: |
-  llama-server -m /models/gemma-4-26B-A4B-it/gemma-4-26B-A4B-it-bf16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}
+  llama-server -m /models/gemma-4-26B-A4B-it/BF16/gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}

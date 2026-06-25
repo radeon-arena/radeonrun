@@ -94,6 +94,26 @@ def _gguf_shard_glob(fname: str):
     return (m.group(1) + "-*-of-*.gguf") if m else None
 
 
+def _gguf_fetch_shape(host_path: Path) -> tuple[str, Path]:
+    """Return (HF include pattern, local-dir) for a recipe GGUF path.
+
+    Local model paths are laid out as `/models/<model-dir>/<repo-path>`. For a
+    flat repo file that means `<repo-path>` is just the basename; for split BF16
+    files it can be `BF16/Foo-00001-of-00002.gguf`; for MiMo it is
+    `UD-Q2_K_XL/Foo-00001-of-00004.gguf`. The HF include pattern must be the
+    repo path, while `--local-dir` is the local model directory.
+    """
+    rel = host_path.relative_to(_host_models_dir())
+    parts = rel.parts
+    if len(parts) >= 3:
+        model_dir = _host_models_dir() / parts[0]
+        repo_path = "/".join(parts[1:])
+    else:
+        model_dir = host_path.parent
+        repo_path = host_path.name
+    return (_gguf_shard_glob(repo_path) or repo_path, model_dir)
+
+
 def _fetch_plan(recipe: dict):
     """Download plan for a recipe: (repo, include, dest_dir, revision) or None.
 
@@ -110,8 +130,8 @@ def _fetch_plan(recipe: dict):
     revision = str(recipe.get("model_revision") or "").strip() or None
     host_path = _host_model_path(model)
     if model.endswith(".gguf"):
-        include = _gguf_shard_glob(host_path.name) or host_path.name
-        return (source, include, host_path.parent, revision)
+        include, dest_dir = _gguf_fetch_shape(host_path)
+        return (source, include, dest_dir, revision)
     return (source, None, host_path, revision)
 
 
@@ -122,8 +142,33 @@ def _model_present(model: str) -> bool:
         return False
     host_path = _host_model_path(model)
     if model.endswith(".gguf"):
-        return host_path.exists()
+        if host_path.exists():
+            return True
+        glob = _gguf_shard_glob(host_path.name)
+        return bool(glob and list(host_path.parent.glob(glob)))
     return host_path.is_dir() and any(host_path.iterdir())
+
+
+def _ensure_model_available(model: str) -> bool:
+    """Validate a staged model path and create a convenience symlink for shards."""
+    host_path = _host_model_path(model)
+    if not model.endswith(".gguf"):
+        return host_path.is_dir() and any(host_path.iterdir())
+    if host_path.exists():
+        return True
+    glob = _gguf_shard_glob(host_path.name)
+    if not glob:
+        return False
+    shards = sorted(host_path.parent.glob(glob))
+    if not shards:
+        return False
+    # llama.cpp can expand split GGUFs from the first shard, but recipe paths may
+    # refer to an unsharded convenience name. Point that name at shard 1.
+    try:
+        host_path.symlink_to(shards[0].name)
+    except FileExistsError:
+        pass
+    return host_path.exists()
 
 
 def _hf_cli():
@@ -199,7 +244,13 @@ def setup_model(recipe: dict, force: bool = False) -> int:
     env = dict(os.environ)
     env.setdefault("HF_HUB_DISABLE_XET", "1")  # XET backend flakes on parallel pulls
     print(f"[setup] {' '.join(cmd)}")
-    return subprocess.call(cmd, env=env)
+    rc = subprocess.call(cmd, env=env)
+    if rc != 0:
+        return rc
+    if not _ensure_model_available(model):
+        print(f"[setup] downloaded zero usable files for {model} (include={include})", file=sys.stderr)
+        return 1
+    return 0
 
 
 def teardown_model(recipe: dict) -> int:
