@@ -33,9 +33,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install runner deps (hf CLI + PyYAML)
+      - name: Install runner deps (hf CLI + PyYAML + XET)
         run: |
-          python3 -m pip install --user --break-system-packages --upgrade pyyaml 'huggingface_hub[cli]'
+          python3 -m pip install --user --break-system-packages --upgrade pyyaml 'huggingface_hub[cli]' hf_xet
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Log in to ghcr (built-in GITHUB_TOKEN — no PAT)
