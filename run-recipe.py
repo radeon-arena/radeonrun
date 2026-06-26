@@ -242,7 +242,6 @@ def setup_model(recipe: dict, force: bool = False) -> int:
     if revision:
         cmd += ["--revision", revision]
     env = dict(os.environ)
-    env.setdefault("HF_HUB_DISABLE_XET", "1")  # XET backend flakes on parallel pulls
     print(f"[setup] {' '.join(cmd)}")
     rc = subprocess.call(cmd, env=env)
     if rc != 0:
