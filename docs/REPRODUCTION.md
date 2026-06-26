@@ -6,6 +6,11 @@ result files under [`results/strix/`](../results/strix/) (the same schema the
 site ingests). This page is the human-readable summary; the JSON files are the
 source of truth for the numbers.
 
+To reproduce one of these results yourself, use [`../REPRODUCE.md`](../REPRODUCE.md).
+It explains the local `run-recipe.py` flow, the self-hosted GitHub Actions flow,
+the image naming scheme, and how to compare a new artifact with the committed
+reference JSON.
+
 > **Two separate projects — do not conflate:**
 > - **radeonrun** (this repo) — recipes + container images + the benchmark
 >   harness (`bench.py` / `benchmarking/*.yaml`) that **produces** the numbers.

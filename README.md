@@ -19,7 +19,8 @@ also published for convenience.
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
 **the exact build steps and serve commands that produce the leaderboard numbers**
 — every recipe is independently measured on real gfx1151 hardware, see
-[8. Reproduction](#8-reproduction). Use `build.sh` + `launch-cluster.sh --solo`,
+[8. Reproduction](#8-reproduction). For a step-by-step reproduction flow, start
+with [`REPRODUCE.md`](REPRODUCE.md). Use `build.sh` + `launch-cluster.sh --solo`,
 or `run-recipe.py <name>` to run a recipe's serve command directly.
 
 > **Read [`docs/GFX1151_NOTES.md`](docs/GFX1151_NOTES.md) first** — it has the
@@ -29,6 +30,7 @@ or `run-recipe.py <name>` to run a recipe's serve command directly.
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Reproduce a Result](#reproduce-a-result)
 - [1. Building the image](#1-building-the-image)
 - [2. Running (solo)](#2-running-solo)
 - [3. Recipes](#3-recipes)
@@ -56,6 +58,24 @@ MODELS_DIR=/models ./launch-cluster.sh --solo -p 8000:8000 exec \
     --max-num-seqs 32 --dtype bfloat16 \
     --attention-backend TRITON_ATTN
 ```
+
+## Reproduce a Result
+
+Use [`REPRODUCE.md`](REPRODUCE.md) for the complete flow. In short:
+
+```bash
+MODELS_DIR=/models ./run-recipe.py qwen3-4b-q4-k-m-llamacpp \
+  --device halo \
+  --benchmark benchmarking/halo-arena-v1.yaml \
+  --out /tmp/radeonrun-results/ \
+  --build \
+  --cleanup
+```
+
+The matching reference result is committed under
+`results/strix/qwen3-4b-q4-k-m-llamacpp.json`. The GitHub Actions workflow
+`.github/workflows/reproduce.yml` runs the same command on a self-hosted
+`gfx1151` Radeon runner and uploads a `result-<recipe>` artifact.
 
 ## 1. Building the image
 
@@ -144,6 +164,10 @@ See [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md) for the method, the per-recip
 verdict table, and the cross-cutting findings (e.g. AWQ runs use public
 third-party weights, INT8 shows no decode speedup on dense gfx1151, DiffusionGemma
 needs the `vllm-main` image).
+
+To run a reproduction yourself, use [`REPRODUCE.md`](REPRODUCE.md). It covers the
+local CLI path, the self-hosted GitHub Actions path, where images/recipes/results
+live, and how to compare your output with `results/strix/*.json`.
 
 > **Two separate projects** — *radeonrun* (this repo: images + recipes + the
 > benchmark harness that **produces** the numbers) and *Radeon Arena* (the website
