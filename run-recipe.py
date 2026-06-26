@@ -475,9 +475,9 @@ def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
     print(f"[benchmark] starting server: {recipe.get('name', args.recipe)}")
     server = subprocess.Popen(serve_cmd, shell=True)
     try:
-        # Wait for /v1/models to come up (up to ~10 min for big models).
+        # Wait for /v1/models to come up (up to ~30 min for large BF16 GGUFs).
         ready = False
-        for _ in range(600):
+        for _ in range(1800):
             if server.poll() is not None:
                 print("[benchmark] server exited before becoming ready")
                 return 1
