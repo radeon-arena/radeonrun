@@ -60,21 +60,58 @@ def _engine_of(recipe, container):
     return None
 
 
-def _resolve_container(recipe: dict, device: str, tag: str = "latest") -> str:
+def _resolve_container(recipe: dict, device: str, tag: str | None = None) -> str:
     """Resolve a recipe's logical engine + device to a concrete GHCR image:
     ghcr.io/radeon-arena/<device>-<engine-image>:<tag>.
 
-    `tag` defaults to the `latest` moving tag; pass a commit id (or set the
-    recipe's `image_tag`) to pin a byte-reproducible build. Falls back to the
-    recipe's raw `container` when it names an unknown engine (e.g. a third-party
-    image), so external refs are still honored.
+    Tag precedence: an explicit CLI `tag` (one-off override) > the recipe's
+    pinned `image_tag` > the `latest` moving tag. Radeon Arena is a performance
+    leaderboard, so every recorded number is tied to the specific build that
+    produced it: recipes pin `image_tag`, while `--tag` still wins for ad-hoc
+    verification runs. Falls back to the recipe's raw `container` when it names
+    an unknown engine (e.g. a third-party image), so external refs are honored.
     """
     raw = str(recipe.get("container") or "").strip()
-    tag = str(recipe.get("image_tag") or tag).strip()
+    tag = str(tag or recipe.get("image_tag") or "latest").strip()
     engine = _engine_of(recipe, raw)
     if engine:
         return f"{ORG}/{device}-{ENGINE_IMAGE[engine]}:{tag}"
     return raw or f"{ORG}/{device}-vllm:{tag}"
+
+
+def _image_provenance(container: str) -> dict:
+    """Record the concrete build identity of a serve image for the result meta.
+
+    Radeon Arena is a performance leaderboard, so a number is only meaningful
+    paired with the exact image that produced it. Capture the image ref, its
+    local sha256 id, and the build commit baked in at /app/commit.txt (the
+    llama.cpp / vLLM source commit) so a leaderboard entry pins to a real,
+    reproducible build instead of a moving `:latest` tag. Best-effort: any
+    piece that cannot be resolved is simply omitted.
+    """
+    import subprocess
+    prov = {"image": container}
+    last = container.rsplit("/", 1)[-1]
+    prov["image_tag"] = last.rsplit(":", 1)[-1] if ":" in last else "latest"
+    try:
+        r = subprocess.run(
+            ["docker", "image", "inspect", "--format", "{{.Id}}", container],
+            capture_output=True, text=True, timeout=30)
+        if r.returncode == 0 and r.stdout.strip():
+            prov["image_id"] = r.stdout.strip()
+    except Exception:  # noqa: BLE001
+        pass
+    for path in ("/app/commit.txt", "/commit.txt"):
+        try:
+            r = subprocess.run(
+                ["docker", "run", "--rm", "--entrypoint", "cat", container, path],
+                capture_output=True, text=True, timeout=60)
+            if r.returncode == 0 and r.stdout.strip():
+                prov["image_commit"] = r.stdout.strip().splitlines()[0].strip()
+                break
+        except Exception:  # noqa: BLE001
+            pass
+    return prov
 
 
 def _host_models_dir() -> Path:
@@ -189,6 +226,11 @@ def ensure_image(container: str, recipe: dict, device: str,
     registry at all -- this is what makes the *image* self-contained too. When
     `push`, a freshly built image is synced back to ghcr so other runners can
     just pull it.
+
+    A commit-pinned tag (anything but the `latest` moving tag) is treated as
+    pull-only: building it from the current dockerfiles/ source would yield a
+    different binary mislabeled with that commit and silently corrupt the
+    leaderboard pin, so `--build` is ignored for pinned tags.
     """
     import subprocess
     null = subprocess.DEVNULL
@@ -196,6 +238,12 @@ def ensure_image(container: str, recipe: dict, device: str,
                        stdout=null, stderr=null) == 0:
         print(f"[image] present: {container}")
         return 0
+    last = container.rsplit("/", 1)[-1]
+    if ":" in last and last.rsplit(":", 1)[-1] != "latest":
+        # Commit-pinned: the only faithful source is the registry build.
+        if build and not pull:
+            print(f"[image] {container} is commit-pinned; forcing pull, not a source build")
+        pull, build = True, False
     if pull:
         print(f"[image] pulling {container}")
         if subprocess.call(["docker", "pull", container]) == 0:
@@ -336,8 +384,9 @@ def main() -> int:
                         help="Endpoint to benchmark (default: http://localhost:8000)")
     parser.add_argument("--device", default="halo", choices=sorted(DEVICE_GFX),
                         help="Target GPU device profile (default: halo / gfx1151)")
-    parser.add_argument("--tag", default="latest",
-                        help="Image tag to pull (default: latest; pass a commit id to pin a build)")
+    parser.add_argument("--tag", default=None,
+                        help="Image tag override for a one-off run (default: the recipe's "
+                             "image_tag, else 'latest'). Pass a commit id to pin a build.")
     parser.add_argument("--setup-only", action="store_true",
                         help="Only stage the model from its HF source, then exit")
     parser.add_argument("--no-setup", action="store_true",
@@ -411,7 +460,7 @@ def main() -> int:
 
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:
-        rc = _benchmark(recipe, full, args)
+        rc = _benchmark(recipe, full, args, container)
         if args.cleanup:
             teardown_model(recipe)
         return rc
@@ -460,7 +509,7 @@ def _free_page_cache(device: str = "halo") -> None:
         pass
 
 
-def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
+def _benchmark(recipe: dict, serve_cmd: str, args, container: str) -> int:
     """Serve the recipe in the background, run the profile, tear down."""
     import subprocess
     import time
@@ -497,13 +546,16 @@ def _benchmark(recipe: dict, serve_cmd: str, args) -> int:
         # <recipe>.json in here"; bench.py expects a concrete file path.
         if out.endswith(os.sep) or os.path.isdir(out):
             out = os.path.join(out, f"{args.recipe}.json")
-        meta = json.dumps({
+        meta_obj = {
             "recipe": recipe.get("name", args.recipe),
             "model": recipe.get("model"),
-            "runtime": recipe.get("runtime", "vllm"),
+            "runtime": recipe.get("runtime") or _engine_of(recipe, container) or "vllm",
             "container": recipe.get("container"),
             "command": " ".join((recipe.get("command") or "").split()),
-        })
+        }
+        # Pin the leaderboard number to the exact image build that produced it.
+        meta_obj.update(_image_provenance(container))
+        meta = json.dumps(meta_obj)
         bench_cmd = [
             sys.executable, str(here / "bench.py"),
             "--base-url", base_url,

@@ -16,6 +16,10 @@ description: vllm serving Gemma-4-26B-A4B-it (AWQ-4bit) on Strix Halo
 model: /models/gemma-4-26B-A4B-it-AWQ-4bit
 source: cyankiwi/gemma-4-26B-A4B-it-AWQ-4bit   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: vllm
+# Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
+# number was produced by vLLM (ROCm gfx11) commit f5fa386fe. Pinned so the entry
+# reproduces from this exact build instead of the moving :latest tag.
+image_tag: f5fa386fe
 mods: []
 defaults:
   port: 8000

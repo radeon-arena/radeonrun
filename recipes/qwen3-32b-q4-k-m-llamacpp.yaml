@@ -16,6 +16,10 @@ description: llamacpp serving Qwen3-32B (Q4_K_M) on Strix Halo
 model: /models/Qwen3-32B/Qwen3-32B-Q4_K_M.gguf
 source: unsloth/Qwen3-32B-GGUF   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
+# Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
+# number was produced by llama.cpp commit fe7c8b2414. Pinned for reproducibility
+# — CI --build otherwise rebuilds llama.cpp master HEAD each run and drifts.
+image_tag: fe7c8b2414
 mods: []
 defaults:
   port: 8000
