@@ -77,8 +77,8 @@ case "$FRAMEWORK" in
     DOCKERFILE="dockerfiles/llamacpp/Dockerfile"
     IMAGE="llamacpp"
     LLAMA_HEAD="$(git ls-remote https://github.com/ggml-org/llama.cpp.git master 2>/dev/null | cut -f1 || true)"
+    LLAMA_HEAD="${LLAMA_HEAD:-master-$(date -u +%Y%m%d)}"
     COMMIT="${LLAMA_HEAD:0:10}"
-    COMMIT="${COMMIT:-master-$(date -u +%Y%m%d)}"
     BUILD_ARGS=(--build-arg "ROCM_DOCKER_ARCH=${GFX}" --build-arg "ROCM_VERSION=${ROCM_VERSION:-7.2.1}")
     ;;
   *)
