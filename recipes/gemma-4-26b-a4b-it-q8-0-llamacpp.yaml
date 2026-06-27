@@ -16,6 +16,11 @@ description: llamacpp serving Gemma-4-26B-A4B-it (Q8_0) on Strix Halo
 model: /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-Q8_0.gguf
 source: unsloth/gemma-4-26B-A4B-it-GGUF   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
+# Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
+# decode rate was produced by llama.cpp commit fe7c8b2414. Newer :latest builds
+# regressed the qwen3.6 / gemma-4 architecture ~8-18% at c=1 (up to ~50% at high
+# concurrency), verified by controlled old-vs-new A/B on gfx1151 (2026-06-27).
+image_tag: fe7c8b2414
 mods: []
 defaults:
   port: 8000

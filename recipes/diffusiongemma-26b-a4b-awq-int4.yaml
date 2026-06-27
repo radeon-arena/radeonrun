@@ -30,6 +30,10 @@ source: cyankiwi/diffusiongemma-26B-A4B-it-AWQ-INT4   # HF repo the runner stage
 
 # Built from dockerfiles/vllm-main/Dockerfile (upstream main has DiffusionGemma; gfx11 line does not).
 container: vllm-main
+# Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
+# number was produced by vLLM (upstream main) commit 92221485a. Pinned so the
+# entry reproduces from this exact build instead of the moving :latest tag.
+image_tag: 92221485a
 
 mods: []
 

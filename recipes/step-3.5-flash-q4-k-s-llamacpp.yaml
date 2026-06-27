@@ -16,6 +16,10 @@ description: llamacpp serving Step-3.5-Flash (Q4_K_S) on Strix Halo
 model: /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf
 source: stepfun-ai/Step-3.5-Flash-GGUF-Q4_K_S   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
+# Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
+# number was produced by llama.cpp commit fe7c8b2414. Pinned for reproducibility
+# — CI --build otherwise rebuilds llama.cpp master HEAD each run and drifts.
+image_tag: fe7c8b2414
 mods: []
 defaults:
   port: 8000

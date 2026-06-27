@@ -16,6 +16,10 @@ description: llamacpp serving Qwen3-8B (Q8_0) on Strix Halo
 model: /models/Qwen3-8B/Qwen3-8B-Q8_0.gguf
 source: unsloth/Qwen3-8B-GGUF   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: llamacpp
+# Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
+# number was produced by llama.cpp commit fe7c8b2414. Pinned for reproducibility
+# — CI --build otherwise rebuilds llama.cpp master HEAD each run and drifts.
+image_tag: fe7c8b2414
 mods: []
 defaults:
   port: 8000
