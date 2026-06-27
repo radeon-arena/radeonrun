@@ -1,66 +1,65 @@
 {
   "profile": "halo-arena-v1",
   "framework": "llama-benchy",
-  "generated_at": "2026-06-20T08:04:50Z",
+  "measurements": [
+    {
+      "decode_toks_per_s": 26.06,
+      "decode_toks_per_s_per_req": 30.23,
+      "ttft_ms": 709.21,
+      "tpot_ms": 33.08,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 55.27,
+      "decode_toks_per_s_per_req": 17.07,
+      "ttft_ms": 1765.15,
+      "tpot_ms": 58.91,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 94.66,
+      "decode_toks_per_s_per_req": 7.78,
+      "ttft_ms": 4893.2,
+      "tpot_ms": 130.54,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 115.91,
+      "decode_toks_per_s_per_req": 4.94,
+      "ttft_ms": 8582.83,
+      "tpot_ms": 207.55,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
   "meta": {
     "recipe": "qwen3-6-35b-a3b-awq-4bit",
     "model": "/models/Qwen3.6-35B-A3B-AWQ-4bit",
     "runtime": "vllm",
     "container": "vllm",
-    "command": "vllm serve /models/Qwen3.6-35B-A3B-AWQ-4bit --host 0.0.0.0 --port 8000 --max-num-seqs 32 --dtype float16 --attention-backend TRITON_ATTN --max-model-len 2304 --gpu-memory-utilization 0.85",
-    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-    "reproduction": {
-      "independent": true,
-      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "weights_used": "cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit",
-      "same_weights_as_recipe": false,
-      "note": "✅ 可运行 + 性能合理;⚠️ 非 1:1 同权重对照"
-    }
+    "command": "vllm serve /models/Qwen3.6-35B-A3B-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name q35awq --max-num-seqs {nseq} --dtype float16 --attention-backend TRITON_ATTN --max-model-len 2304 --gpu-memory-utilization 0.85",
+    "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+    "image_tag": "f5fa386fe",
+    "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
-  "measurements": [
-    {
-      "depth": 0,
-      "concurrency": 1,
-      "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 24.37,
-      "ttft_ms": 414.92,
-      "tpot_ms": 38.08,
-      "requests_ok": 1,
-      "requests_total": 1
-    },
-    {
-      "depth": 0,
-      "concurrency": 4,
-      "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 44.29,
-      "ttft_ms": 1471.92,
-      "tpot_ms": 79.18,
-      "requests_ok": 4,
-      "requests_total": 4
-    },
-    {
-      "depth": 0,
-      "concurrency": 16,
-      "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 95.74,
-      "ttft_ms": 5044.17,
-      "tpot_ms": 128.35,
-      "requests_ok": 16,
-      "requests_total": 16
-    },
-    {
-      "depth": 0,
-      "concurrency": 32,
-      "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 138.17,
-      "ttft_ms": 7676.16,
-      "tpot_ms": 171.74,
-      "requests_ok": 32,
-      "requests_total": 32
-    }
-  ]
+  "generated_at": "2026-06-27T14:32:06Z"
 }
