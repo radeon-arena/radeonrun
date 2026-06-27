@@ -104,7 +104,7 @@ def _image_provenance(container: str) -> dict:
     for path in ("/app/commit.txt", "/commit.txt"):
         try:
             r = subprocess.run(
-                ["docker", "run", "--rm", "--entrypoint", "cat", container, path],
+                ["docker", "run", "--rm", "--pull=never", "--entrypoint", "cat", container, path],
                 capture_output=True, text=True, timeout=60)
             if r.returncode == 0 and r.stdout.strip():
                 prov["image_commit"] = r.stdout.strip().splitlines()[0].strip()
@@ -427,7 +427,10 @@ def main() -> int:
     port = args.port or (recipe.get("defaults") or {}).get("port", 8000)
     inner = cmd.replace("\\\n", " ")        # drop line-continuation backslashes
     inner = " ".join(inner.split())          # collapse whitespace
-    full = f'IMAGE={container} {launch} --solo -p {port}:{port} exec {inner}'
+    # Own the container name so teardown removes the exact container we launched
+    # (and distinct recipes don't collide on a shared default name).
+    container_name = os.environ.get("CONTAINER") or f"radeonrun_{args.recipe}"
+    full = f'CONTAINER={container_name} IMAGE={container} {launch} --solo -p {port}:{port} exec {inner}'
 
     if args.hf_token:
         os.environ["HF_TOKEN"] = args.hf_token
@@ -460,7 +463,7 @@ def main() -> int:
 
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:
-        rc = _benchmark(recipe, full, args, container)
+        rc = _benchmark(recipe, full, args, container, container_name)
         if args.cleanup:
             teardown_model(recipe)
         return rc
@@ -509,7 +512,8 @@ def _free_page_cache(device: str = "halo") -> None:
         pass
 
 
-def _benchmark(recipe: dict, serve_cmd: str, args, container: str) -> int:
+def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
+               container_name: str = "radeon_vllm") -> int:
     """Serve the recipe in the background, run the profile, tear down."""
     import subprocess
     import time
@@ -575,8 +579,8 @@ def _benchmark(recipe: dict, serve_cmd: str, args, container: str) -> int:
         # `docker run --rm` only removes the container once it EXITS; terminating
         # the client above leaves the detached server container running (holding
         # the name + port), which would poison the NEXT recipe's benchmark. Remove
-        # it explicitly. CONTAINER mirrors launch-cluster.sh's default.
-        subprocess.run(["docker", "rm", "-f", os.environ.get("CONTAINER", "radeon_vllm")],
+        # the exact container we launched (run-recipe owns the name via CONTAINER).
+        subprocess.run(["docker", "rm", "-f", container_name],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
 
 
