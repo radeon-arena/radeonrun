@@ -1,65 +1,65 @@
 {
   "profile": "halo-arena-v1",
   "framework": "llama-benchy",
-  "generated_at": "2026-06-20T08:04:50Z",
-  "meta": {
-    "recipe": "diffusiongemma-26b-a4b-bf16",
-    "model": "/models/diffusiongemma-26B-A4B-it",
-    "runtime": "vllm",
-    "container": "vllm-main",
-    "command": "vllm serve /models/diffusiongemma-26B-A4B-it \\\n  --served-model-name diffusiongemma-26B-A4B-it \\\n  --host 0.0.0.0 --port 8000 \\\n  --max-model-len 896 --max-num-seqs 4 \\\n  --gpu-memory-utilization 0.6 \\\n  --generation-config vllm \\\n  --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\\n  --diffusion-config '{\"canvas_length\":256}'",
-    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-    "reproduction": {
-      "independent": true,
-      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "host": "strix-halo",
-      "note": "✅ 复现成功(decode ≈ recipe best)"
-    }
-  },
   "measurements": [
     {
+      "decode_toks_per_s": 7.79,
+      "decode_toks_per_s_per_req": null,
+      "ttft_ms": 16440.41,
+      "tpot_ms": null,
+      "requests_ok": 1,
+      "requests_total": 1,
       "depth": 0,
       "concurrency": 1,
       "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 7.93,
-      "ttft_ms": 16134.0,
-      "tpot_ms": null,
-      "requests_ok": 1,
-      "requests_total": 1
+      "tg": 128
     },
     {
+      "decode_toks_per_s": 13.11,
+      "decode_toks_per_s_per_req": null,
+      "ttft_ms": 39044.49,
+      "tpot_ms": null,
+      "requests_ok": 4,
+      "requests_total": 4,
       "depth": 0,
       "concurrency": 4,
       "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 13.29,
-      "ttft_ms": 38529.0,
-      "tpot_ms": null,
-      "requests_ok": 4,
-      "requests_total": 4
+      "tg": 128
     },
     {
+      "decode_toks_per_s": 13.07,
+      "decode_toks_per_s_per_req": null,
+      "ttft_ms": 98017.89,
+      "tpot_ms": null,
+      "requests_ok": 16,
+      "requests_total": 16,
       "depth": 0,
       "concurrency": 16,
       "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 13.19,
-      "ttft_ms": 97046.0,
-      "tpot_ms": null,
-      "requests_ok": 16,
-      "requests_total": 16
+      "tg": 128
     },
     {
+      "decode_toks_per_s": 13.07,
+      "decode_toks_per_s_per_req": null,
+      "ttft_ms": 176346.31,
+      "tpot_ms": null,
+      "requests_ok": 32,
+      "requests_total": 32,
       "depth": 0,
       "concurrency": 32,
       "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 13.18,
-      "ttft_ms": 174968.0,
-      "tpot_ms": null,
-      "requests_ok": 32,
-      "requests_total": 32
+      "tg": 128
     }
-  ]
+  ],
+  "meta": {
+    "recipe": "diffusiongemma-26b-a4b-bf16",
+    "model": "/models/diffusiongemma-26B-A4B-it",
+    "runtime": "vllm-main",
+    "container": "vllm-main",
+    "command": "vllm serve /models/diffusiongemma-26B-A4B-it \\ --served-model-name diffgemma \\ --host {host} --port {port} \\ --max-model-len 896 --max-num-seqs {nseq} \\ --gpu-memory-utilization 0.6 \\ --generation-config vllm \\ --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\ --diffusion-config '{\"canvas_length\":256}'",
+    "image": "ghcr.io/radeon-arena/halo-vllm-main:92221485a",
+    "image_tag": "92221485a",
+    "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
+  },
+  "generated_at": "2026-06-27T09:28:03Z"
 }
