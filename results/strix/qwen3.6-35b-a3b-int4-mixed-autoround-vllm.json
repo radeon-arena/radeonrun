@@ -3,10 +3,10 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 37.3,
-      "decode_toks_per_s_per_req": 40.39,
-      "ttft_ms": 286.36,
-      "tpot_ms": 24.76,
+      "decode_toks_per_s": 37.29,
+      "decode_toks_per_s_per_req": 40.42,
+      "ttft_ms": 289.95,
+      "tpot_ms": 24.74,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -15,10 +15,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 72.05,
-      "decode_toks_per_s_per_req": 20.32,
-      "ttft_ms": 829.54,
-      "tpot_ms": 49.31,
+      "decode_toks_per_s": 79.1,
+      "decode_toks_per_s_per_req": 22.16,
+      "ttft_ms": 712.01,
+      "tpot_ms": 45.2,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -27,10 +27,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 145.29,
-      "decode_toks_per_s_per_req": 13.04,
-      "ttft_ms": 4196.11,
-      "tpot_ms": 77.85,
+      "decode_toks_per_s": 138.38,
+      "decode_toks_per_s_per_req": 12.41,
+      "ttft_ms": 4457.22,
+      "tpot_ms": 81.21,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -39,10 +39,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 172.89,
-      "decode_toks_per_s_per_req": 7.84,
-      "ttft_ms": 7029.7,
-      "tpot_ms": 130.45,
+      "decode_toks_per_s": 172.58,
+      "decode_toks_per_s_per_req": 7.83,
+      "ttft_ms": 7059.26,
+      "tpot_ms": 130.58,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -61,5 +61,5 @@
     "image_tag": "commit-f5fa386fef78",
     "image_id": "sha256:9ef42a112badfb0b46a40752acea8b533266e6870e836ed4c677d5688e22fdeb"
   },
-  "generated_at": "2026-06-29T12:40:21Z"
+  "generated_at": "2026-06-29T14:23:07Z"
 }
