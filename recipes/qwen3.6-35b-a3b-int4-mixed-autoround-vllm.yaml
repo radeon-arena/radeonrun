@@ -1,11 +1,14 @@
 # Recipe: Qwen3.6-35B-A3B (Intel int4-mixed AutoRound) on Strix Halo - vllm
 # Based on the Qwen3.6 deployment notes: this checkpoint's config.json declares
-# quant_method=auto-round, which vLLM maps to INC; if the runner rejects INC on
-# ROCm, patch quant_method to gptq in the staged model config before serving.
+# quant_method=auto-round, which vLLM maps to INC; patch quant_method to gptq in
+# the staged model config before serving. The docs' dynamic lm-head int8 flag is
+# intentionally omitted here: on the pinned halo-vllm:f5fa386fe build it crashes
+# the ROCm wvSplitK_int8 path at higher concurrency, while the arena profile must
+# complete the full 1/4/16/32 sweep.
 
 recipe_version: "2"
 metadata:
-  description: vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound) on Strix Halo
+  description: vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound/GPTQ) on Strix Halo
   maintainer: radeon-arena
   quantization: INT4-mixed-AutoRound
   measured:
@@ -13,7 +16,7 @@ metadata:
     profile: halo-arena-v1
     decode_toks_per_s: null
 name: qwen3-6-35b-a3b-int4-mixed-autoround
-description: vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound) on Strix Halo
+description: vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound/GPTQ) on Strix Halo
 model: /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound
 source: Intel/Qwen3.6-35B-A3B-int4-mixed-AutoRound
 container: vllm
@@ -52,5 +55,4 @@ command: |
     --gpu-memory-utilization 0.85 \
     --attention-backend TRITON_ATTN \
     --mm-encoder-attn-backend TRITON_ATTN \
-    --quantization gptq \
-    --dynamic-lm-head-quantization int8:g32
+    --quantization gptq
