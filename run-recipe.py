@@ -475,7 +475,7 @@ def main() -> int:
     inner = " ".join(inner.split())          # collapse whitespace
     prefix = _env_prefix(recipe)
     if prefix:
-        inner = f"{prefix} {inner}"
+        inner = f"env {prefix} {inner}"
     # Own the container name so teardown removes the exact container we launched
     # (and distinct recipes don't collide on a shared default name).
     container_name = os.environ.get("CONTAINER") or f"radeonrun_{args.recipe}"
