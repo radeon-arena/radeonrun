@@ -23,8 +23,10 @@ model_patches:
   # Intel AutoRound checkpoints declare quant_method=auto-round; vLLM maps that
   # to INC on ROCm and rejects it. The packing is auto_gptq-compatible, so patch
   # the staged config to gptq before serving (config.json.orig is preserved).
-  - type: set_quant_method
-    value: gptq
+  - type: set_quant_config
+    values:
+      quant_method: gptq
+      desc_act: false
 mods: []
 defaults:
   port: 8000
