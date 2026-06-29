@@ -24,7 +24,7 @@ on:
         options: [halo, w7900, r9700]
 
 permissions:
-  contents: read
+  contents: write       # commit the reproduced result + bundle back to the branch
   packages: write        # lets the built-in GITHUB_TOKEN push images to ghcr
 
 jobs:
@@ -55,6 +55,30 @@ jobs:
             --benchmark benchmarking/halo-arena-v1.yaml \
             --out results/ \
             --build --push --cleanup
+
+      - name: Commit reproduced result and bundle
+        run: |
+          set -euo pipefail
+          test -f "results/${{ inputs.recipe }}.json"
+          device="${{ inputs.device }}"
+          case "$device" in
+            halo) dir=strix ;;
+            w7900) dir=w7900 ;;
+            r9700) dir=r9700 ;;
+            *) echo "unknown device: $device" >&2; exit 2 ;;
+          esac
+          mkdir -p "results/$dir"
+          mv "results/${{ inputs.recipe }}.json" "results/$dir/${{ inputs.recipe }}.json"
+          python3 scripts/build-results-bundle.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "results/$dir/${{ inputs.recipe }}.json" results/index.json results/bundle.json
+          if git diff --cached --quiet; then
+            echo "No result changes to commit."
+          else
+            git commit -m "results: reproduce ${{ inputs.recipe }} on $dir"
+            git push
+          fi
 
       - name: Upload result JSON
         if: always()
