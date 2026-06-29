@@ -1,0 +1,65 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "measurements": [
+    {
+      "decode_toks_per_s": 36.14,
+      "decode_toks_per_s_per_req": 39.03,
+      "ttft_ms": 287.08,
+      "tpot_ms": 25.62,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 78.38,
+      "decode_toks_per_s_per_req": 22.35,
+      "ttft_ms": 823.26,
+      "tpot_ms": 44.86,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 138.73,
+      "decode_toks_per_s_per_req": 12.41,
+      "ttft_ms": 4425.91,
+      "tpot_ms": 81.16,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 173.08,
+      "decode_toks_per_s_per_req": 7.84,
+      "ttft_ms": 7005.87,
+      "tpot_ms": 130.44,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "meta": {
+    "recipe": "qwen3-6-35b-a3b-int4-mixed-autoround",
+    "model": "/models/Qwen3.6-35B-A3B-int4-mixed-AutoRound",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \\ --served-model-name qwen36-int4-mixed \\ --host 0.0.0.0 --port {port} \\ --trust-remote-code \\ --dtype float16 \\ --max-model-len 8192 \\ --max-num-seqs {nseq} \\ --max-num-batched-tokens 8192 \\ --gpu-memory-utilization 0.85 \\ --attention-backend TRITON_ATTN \\ --mm-encoder-attn-backend TRITON_ATTN \\ --quantization gptq",
+    "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+    "image_tag": "f5fa386fe",
+    "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
+  },
+  "generated_at": "2026-06-29T10:56:22Z"
+}
