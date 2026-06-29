@@ -362,6 +362,52 @@ def _render_command(recipe: dict, overrides: dict) -> str:
     return cmd
 
 
+def _env_prefix(recipe: dict) -> str:
+    """Shell prefix that exports recipe env vars before the serve command."""
+    import shlex
+    env = recipe.get("env") or {}
+    if not isinstance(env, dict):
+        return ""
+    parts = []
+    for k, v in env.items():
+        if not k or v is None:
+            continue
+        parts.append(f"{k}={shlex.quote(str(v))}")
+    return " ".join(parts)
+
+
+def _apply_model_patches(recipe: dict) -> None:
+    """Apply small, explicit recipe-declared patches to staged model metadata."""
+    patches = recipe.get("model_patches") or []
+    if not isinstance(patches, list):
+        return
+    model = str(recipe.get("model") or "").strip()
+    if not model:
+        return
+    host_path = _host_model_path(model)
+    for patch in patches:
+        if not isinstance(patch, dict):
+            continue
+        if patch.get("type") != "set_quant_method":
+            continue
+        cfg = host_path / "config.json"
+        if not cfg.exists():
+            continue
+        import json
+        original = cfg.read_text()
+        data = json.loads(original)
+        qcfg = data.setdefault("quantization_config", {})
+        before = qcfg.get("quant_method")
+        after = patch.get("value")
+        if after and before != after:
+            backup = cfg.with_suffix(".json.orig")
+            if not backup.exists():
+                backup.write_text(original)
+            qcfg["quant_method"] = after
+            cfg.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+            print(f"[setup] patched {cfg}: quant_method {before!r} -> {after!r}")
+
+
 def main() -> int:
     import yaml
 
@@ -427,6 +473,9 @@ def main() -> int:
     port = args.port or (recipe.get("defaults") or {}).get("port", 8000)
     inner = cmd.replace("\\\n", " ")        # drop line-continuation backslashes
     inner = " ".join(inner.split())          # collapse whitespace
+    prefix = _env_prefix(recipe)
+    if prefix:
+        inner = f"{prefix} {inner}"
     # Own the container name so teardown removes the exact container we launched
     # (and distinct recipes don't collide on a shared default name).
     container_name = os.environ.get("CONTAINER") or f"radeonrun_{args.recipe}"
@@ -460,6 +509,7 @@ def main() -> int:
         if rc != 0:
             print("[setup] model staging failed; aborting", file=sys.stderr)
             return rc
+        _apply_model_patches(recipe)
 
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:

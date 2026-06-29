@@ -1,0 +1,54 @@
+# Recipe: Qwen3.6-35B-A3B (Intel int4-mixed AutoRound) on Strix Halo - vllm
+# Based on the Qwen3.6 deployment notes: this checkpoint's config.json declares
+# quant_method=auto-round, which vLLM maps to INC; if the runner rejects INC on
+# ROCm, patch quant_method to gptq in the staged model config before serving.
+
+recipe_version: "2"
+metadata:
+  description: vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound) on Strix Halo
+  maintainer: radeon-arena
+  quantization: INT4-mixed-AutoRound
+  measured:
+    gpu: "Radeon 8060S (Strix Halo, gfx1151)"
+    profile: halo-arena-v1
+    decode_toks_per_s: null
+name: qwen3-6-35b-a3b-int4-mixed-autoround
+description: vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound) on Strix Halo
+model: /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound
+source: Intel/Qwen3.6-35B-A3B-int4-mixed-AutoRound
+container: vllm
+# Use the same pinned ROCm gfx11 vLLM image as the other Qwen3.6 vLLM results.
+image_tag: f5fa386fe
+model_patches:
+  # Intel AutoRound checkpoints declare quant_method=auto-round; vLLM maps that
+  # to INC on ROCm and rejects it. The packing is auto_gptq-compatible, so patch
+  # the staged config to gptq before serving (config.json.orig is preserved).
+  - type: set_quant_method
+    value: gptq
+mods: []
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  nseq: 32
+env:
+  FLASH_ATTENTION_TRITON_AMD_ENABLE: "TRUE"
+  TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL: "1"
+  TORCH_BLAS_PREFER_HIPBLASLT: "1"
+  VLLM_DISABLE_COMPILE_CACHE: "1"
+  TORCHINDUCTOR_AUTOGRAD_CACHE: "0"
+  VLLM_MOE_HYBRID_W4A16: "1"
+  PYTORCH_ROCM_ARCH: gfx1151
+command: |
+  vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \
+    --served-model-name qwen36-int4-mixed \
+    --host 0.0.0.0 --port {port} \
+    --trust-remote-code \
+    --dtype float16 \
+    --max-model-len 8192 \
+    --max-num-seqs {nseq} \
+    --max-num-batched-tokens 8192 \
+    --gpu-memory-utilization 0.85 \
+    --attention-backend TRITON_ATTN \
+    --mm-encoder-attn-backend TRITON_ATTN \
+    --quantization gptq \
+    --dynamic-lm-head-quantization int8:g32
