@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-06-29T06:06:21.541517+00:00",
+  "generated_at": "2026-06-29T11:52:39.849773+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "14699b65f0d690832955f32b579b8d9c8f2607b4",
-  "short_commit": "14699b6",
+  "commit": "b733eabda1b22f240e598e64cb8a4e0b03901269",
+  "short_commit": "b733eab",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -41,6 +41,7 @@
       "qwen3.6-35b-a3b-awq-4bit-vllm.json",
       "qwen3.6-35b-a3b-bf16-llamacpp.json",
       "qwen3.6-35b-a3b-bf16-vllm.json",
+      "qwen3.6-35b-a3b-int4-mixed-autoround-vllm.json",
       "qwen3.6-35b-a3b-q8-0-llamacpp.json",
       "qwen3.6-35b-a3b-quark-w8a8-int8-vllm.json",
       "qwen3.6-35b-a3b-ud-q4-k-m-llamacpp.json",
@@ -3376,6 +3377,119 @@
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-06-27T08:50:13Z"
+        }
+      },
+      {
+        "file": "results/strix/qwen3.6-35b-a3b-int4-mixed-autoround-vllm.json",
+        "recipe_file": "recipes/qwen3.6-35b-a3b-int4-mixed-autoround-vllm.yaml",
+        "recipe": {
+          "recipe_version": "2",
+          "metadata": {
+            "description": "vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound/GPTQ) on Strix Halo",
+            "maintainer": "radeon-arena",
+            "quantization": "INT4-mixed-AutoRound",
+            "measured": {
+              "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+              "profile": "halo-arena-v1",
+              "decode_toks_per_s": 173.08
+            }
+          },
+          "name": "qwen3-6-35b-a3b-int4-mixed-autoround",
+          "description": "vllm serving Qwen3.6-35B-A3B (Intel int4-mixed AutoRound/GPTQ) on Strix Halo",
+          "model": "/models/Qwen3.6-35B-A3B-int4-mixed-AutoRound",
+          "source": "Intel/Qwen3.6-35B-A3B-int4-mixed-AutoRound",
+          "container": "vllm",
+          "image_tag": "f5fa386fe",
+          "model_patches": [
+            {
+              "type": "set_quant_config",
+              "values": {
+                "quant_method": "gptq",
+                "desc_act": false
+              }
+            }
+          ],
+          "mods": [],
+          "defaults": {
+            "port": 8000,
+            "host": "0.0.0.0",
+            "nseq": 32
+          },
+          "env": {
+            "FLASH_ATTENTION_TRITON_AMD_ENABLE": "TRUE",
+            "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+            "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+            "VLLM_DISABLE_COMPILE_CACHE": "1",
+            "TORCHINDUCTOR_AUTOGRAD_CACHE": "0",
+            "VLLM_MOE_HYBRID_W4A16": "1",
+            "PYTORCH_ROCM_ARCH": "gfx1151"
+          },
+          "command": "vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \\\n  --served-model-name qwen36-int4-mixed \\\n  --host 0.0.0.0 --port {port} \\\n  --trust-remote-code \\\n  --dtype float16 \\\n  --max-model-len 8192 \\\n  --max-num-seqs {nseq} \\\n  --max-num-batched-tokens 8192 \\\n  --gpu-memory-utilization 0.85 \\\n  --attention-backend TRITON_ATTN \\\n  --mm-encoder-attn-backend TRITON_ATTN \\\n  --quantization gptq\n"
+        },
+        "data": {
+          "profile": "halo-arena-v1",
+          "framework": "llama-benchy",
+          "measurements": [
+            {
+              "decode_toks_per_s": 36.14,
+              "decode_toks_per_s_per_req": 39.03,
+              "ttft_ms": 287.08,
+              "tpot_ms": 25.62,
+              "requests_ok": 1,
+              "requests_total": 1,
+              "depth": 0,
+              "concurrency": 1,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 78.38,
+              "decode_toks_per_s_per_req": 22.35,
+              "ttft_ms": 823.26,
+              "tpot_ms": 44.86,
+              "requests_ok": 4,
+              "requests_total": 4,
+              "depth": 0,
+              "concurrency": 4,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 138.73,
+              "decode_toks_per_s_per_req": 12.41,
+              "ttft_ms": 4425.91,
+              "tpot_ms": 81.16,
+              "requests_ok": 16,
+              "requests_total": 16,
+              "depth": 0,
+              "concurrency": 16,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 173.08,
+              "decode_toks_per_s_per_req": 7.84,
+              "ttft_ms": 7005.87,
+              "tpot_ms": 130.44,
+              "requests_ok": 32,
+              "requests_total": 32,
+              "depth": 0,
+              "concurrency": 32,
+              "pp": 512,
+              "tg": 128
+            }
+          ],
+          "meta": {
+            "recipe": "qwen3-6-35b-a3b-int4-mixed-autoround",
+            "model": "/models/Qwen3.6-35B-A3B-int4-mixed-AutoRound",
+            "runtime": "vllm",
+            "container": "vllm",
+            "command": "vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \\ --served-model-name qwen36-int4-mixed \\ --host 0.0.0.0 --port {port} \\ --trust-remote-code \\ --dtype float16 \\ --max-model-len 8192 \\ --max-num-seqs {nseq} \\ --max-num-batched-tokens 8192 \\ --gpu-memory-utilization 0.85 \\ --attention-backend TRITON_ATTN \\ --mm-encoder-attn-backend TRITON_ATTN \\ --quantization gptq",
+            "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+            "image_tag": "f5fa386fe",
+            "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
+          },
+          "generated_at": "2026-06-29T10:56:22Z"
         }
       },
       {
