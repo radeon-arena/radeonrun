@@ -75,7 +75,10 @@ MODELS_DIR=/models ./run-recipe.py qwen3-4b-q4-k-m-llamacpp \
 The matching reference result is committed under
 `results/strix/qwen3-4b-q4-k-m-llamacpp.json`. The GitHub Actions workflow
 `.github/workflows/reproduce.yml` runs the same command on a self-hosted
-`gfx1151` Radeon runner and uploads a `result-<recipe>` artifact.
+`gfx1151` Radeon runner, commits the reproduced result back to
+`results/<device>/`, regenerates `results/index.json` and `results/bundle.json`,
+and pushes those files back to the triggering branch. A `result-<recipe>`
+artifact is still uploaded for audit/debugging.
 
 ## 1. Building the image
 
@@ -112,7 +115,7 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**39 pre-configured serve commands** live in [`recipes/`](recipes/), each
+**40 pre-configured serve commands** live in [`recipes/`](recipes/), each
 independently measured on real gfx1151 hardware (the `results/strix/` JSON is the
 source of truth). See [recipes/README.md](recipes/README.md). Examples:
 
@@ -125,8 +128,12 @@ source of truth). See [recipes/README.md](recipes/README.md). Examples:
 
 List them all: `./run-recipe.py --list`.
 
-All 39 recipes have been independently re-run on real gfx1151 hardware — see
+All 40 recipes have been independently re-run on real gfx1151 hardware — see
 [8. Reproduction](#8-reproduction).
+
+Radeon Arena (the website) reads the browser-facing bundle committed here:
+[`results/bundle.json`](results/bundle.json). [`results/index.json`](results/index.json)
+lists the per-device result files included in that bundle.
 
 ## 4. Configuration
 
@@ -169,10 +176,18 @@ To run a reproduction yourself, use [`REPRODUCE.md`](REPRODUCE.md). It covers th
 local CLI path, the self-hosted GitHub Actions path, where images/recipes/results
 live, and how to compare your output with `results/strix/*.json`.
 
+The GitHub Actions path is closed-loop: `reproduce.yml` runs the selected recipe,
+writes `results/<device>/<recipe>.json`, regenerates `results/index.json` and
+`results/bundle.json`, and pushes those files back to the branch. The
+`validate-results.yml` workflow checks recipe structure, result structure, and
+bundle coverage on pushes and pull requests.
+
 > **Two separate projects** — *radeonrun* (this repo: images + recipes + the
 > benchmark harness that **produces** the numbers) and *Radeon Arena* (the website
 > that **displays** them) are distinct. The numbers come from this repo's own runs
-> under [`results/strix/`](results/strix/), not from the website.
+> under [`results/strix/`](results/strix/) and are served to the static website
+> through [`results/bundle.json`](results/bundle.json), not from a website
+> database.
 
 ## DISCLAIMER
 
@@ -182,9 +197,12 @@ community project for running vLLM / llama.cpp on AMD Radeon GPUs via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; **39 serve recipes** (incl. DiffusionGemma
+- vLLM + llama.cpp images for gfx1151; **40 serve recipes** (incl. DiffusionGemma
   BF16 + AWQ-INT4 on the upstream-main image), each independently measured on real
   gfx1151 hardware; solo launcher with ROCm passthrough; build fix for the gfx11
   C++23 `std::in_range`; gfx1151 notes.
-- All 39 recipes independently reproduced on real gfx1151 hardware →
+- All 40 recipes independently reproduced on real gfx1151 hardware →
   [`results/strix/`](results/strix/) + [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md).
+- `reproduce.yml` now auto-commits reproduced result JSON and regenerated
+  `results/index.json` / `results/bundle.json`; `validate-results.yml` verifies
+  recipe/result structure and bundle coverage.
