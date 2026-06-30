@@ -241,11 +241,11 @@ engine-tuning knobs.
 ## Reproducing a leaderboard number
 
 ```bash
-# 1. Pull the exact recipe behind a result (from its modal on Radeon Arena)
-curl -L https://radeon.anruicloud.com/api/recipes/<id>/raw -o recipe.yaml
+# 1. Pick the exact recipe behind a result
+#    (recipe files live in this repo; the static site reads results/bundle.json)
 
 # 2. Serve + benchmark against the same standardized profile
-python run-recipe.py recipe.yaml \
+python run-recipe.py <recipe-name> \
   --benchmark benchmarking/halo-arena-v1.yaml \
   --out results/
 
@@ -256,6 +256,12 @@ Because the recipe pins the model, container, command and engine flags, and the
 profile pins the test grid (shapes, depths, concurrency, repeats), the numbers
 should match within run-to-run noise.
 
-**Worked examples:** all 39 recipes have already been reproduced this way — the
+**Worked examples:** all 40 recipes have already been reproduced this way — the
 measured result JSONs are in [`results/strix/`](results/strix/) and the verdicts
 in [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md).
+
+The self-hosted GitHub Actions workflow `.github/workflows/reproduce.yml` runs
+the same command, commits `results/<device>/<recipe>.json`, regenerates
+`results/index.json` and `results/bundle.json`, and pushes those generated files
+back to the triggering branch. `validate-results.yml` checks recipe/result
+structure and bundle coverage on PRs and pushes.
