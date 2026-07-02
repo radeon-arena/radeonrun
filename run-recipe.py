@@ -541,11 +541,11 @@ def _served_model_name(recipe: dict) -> str:
     """Best-effort served model name for the benchmark client."""
     cmd = recipe.get("command") or ""
     import re
-    m = re.search(r"--served-model-name[ =]+([^\s\\]+)", cmd) or re.search(r"--alias[ =]+([^\s\\]+)", cmd)
+    m = re.search(r"--served-model-name(?:=|\s+)(\S+)", cmd) or re.search(r"--alias(?:=|\s+)(\S+)", cmd)
     if m:
-        return m.group(1)
+        return m.group(1).rstrip("\\")
     model = str(recipe.get("model", ""))
-    return model.split("/")[-1].split(":")[0] or "model"
+    return model or "model"
 
 
 def _free_page_cache(device: str = "halo") -> None:
@@ -625,7 +625,18 @@ def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
             "--out", out,
             "--meta", meta,
         ]
-        return subprocess.call(bench_cmd)
+        rc = subprocess.call(bench_cmd)
+        if rc != 0:
+            return rc
+        try:
+            data = json.loads(Path(out).read_text())
+            if not data.get("measurements"):
+                print("[benchmark] profile produced zero measurements; treating as failure", file=sys.stderr)
+                return 1
+        except Exception as exc:  # noqa: BLE001
+            print(f"[benchmark] could not validate result file: {exc}", file=sys.stderr)
+            return 1
+        return 0
     finally:
         print("[benchmark] stopping server")
         server.terminate()
