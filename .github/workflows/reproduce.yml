@@ -22,6 +22,12 @@ on:
         default: halo
         type: choice
         options: [halo, w7900, r9700]
+      runner:
+        description: "Self-hosted runner target (halo only)"
+        required: true
+        default: any
+        type: choice
+        options: [any, halo3-gfx1151, halo4-gfx1151, halo5-gfx1151, halo6-gfx1151]
 
 permissions:
   contents: write       # commit the reproduced result + bundle back to the branch
@@ -29,7 +35,7 @@ permissions:
 
 jobs:
   reproduce:
-    runs-on: [self-hosted, gfx1151]
+    runs-on: ${{ inputs.runner == 'any' && fromJSON('["self-hosted","gfx1151"]') || fromJSON(format('["self-hosted","{0}"]', inputs.runner)) }}
     steps:
       - uses: actions/checkout@v4
 
