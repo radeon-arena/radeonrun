@@ -17,6 +17,7 @@ import argparse
 import json
 import os
 import re
+import socket
 import sys
 from pathlib import Path
 
@@ -362,6 +363,24 @@ def _render_command(recipe: dict, overrides: dict) -> str:
     return cmd
 
 
+def _find_free_port(preferred: int = 8000) -> int:
+    """Return a free localhost port, preferring the recipe/default port."""
+    def available(port: int) -> bool:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            try:
+                s.bind(("127.0.0.1", port))
+            except OSError:
+                return False
+        return True
+
+    if available(preferred):
+        return preferred
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return int(s.getsockname()[1])
+
+
 def _env_prefix(recipe: dict) -> str:
     """Shell prefix that exports recipe env vars before the serve command."""
     import shlex
@@ -468,7 +487,11 @@ def main() -> int:
         return 2
 
     recipe = yaml.safe_load(path.read_text())
-    cmd = _render_command(recipe, {"port": args.port, "nseq": args.nseq, "ctx": args.ctx})
+    default_port = int(args.port or (recipe.get("defaults") or {}).get("port", 8000))
+    run_port = _find_free_port(default_port) if args.benchmark else default_port
+    if args.benchmark and run_port != default_port:
+        print(f"[benchmark] port {default_port} is busy; using {run_port}")
+    cmd = _render_command(recipe, {"port": run_port, "nseq": args.nseq, "ctx": args.ctx})
     if not cmd:
         print(f"Recipe '{args.recipe}' has no command.")
         return 2
@@ -477,7 +500,7 @@ def main() -> int:
     # Build the launch-cluster.sh invocation. The recipe command already has
     # the model path baked in; we just wrap it in the solo launcher.
     launch = (RECIPES_DIR.parent / "launch-cluster.sh")
-    port = args.port or (recipe.get("defaults") or {}).get("port", 8000)
+    port = run_port
     inner = cmd.replace("\\\n", " ")        # drop line-continuation backslashes
     inner = " ".join(inner.split())          # collapse whitespace
     prefix = _env_prefix(recipe)
@@ -520,7 +543,7 @@ def main() -> int:
 
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:
-        rc = _benchmark(recipe, full, args, container, container_name)
+        rc = _benchmark(recipe, full, args, container, container_name, port=run_port)
         if args.cleanup:
             teardown_model(recipe)
         return rc
@@ -570,7 +593,7 @@ def _free_page_cache(device: str = "halo") -> None:
 
 
 def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
-               container_name: str = "radeon_vllm") -> int:
+               container_name: str = "radeon_vllm", port: int | None = None) -> int:
     """Serve the recipe in the background, run the profile, tear down."""
     import subprocess
     import time
@@ -578,8 +601,8 @@ def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
 
     here = Path(__file__).resolve().parent
     model_name = _served_model_name(recipe)
-    port = args.port or (recipe.get("defaults") or {}).get("port", 8000)
-    base_url = args.base_url
+    port = int(port or args.port or (recipe.get("defaults") or {}).get("port", 8000))
+    base_url = args.base_url if args.base_url != "http://localhost:8000" else f"http://localhost:{port}"
 
     _free_page_cache(args.device)
     print(f"[benchmark] starting server: {recipe.get('name', args.recipe)}")
