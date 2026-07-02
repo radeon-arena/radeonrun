@@ -152,6 +152,36 @@ def _gguf_fetch_shape(host_path: Path) -> tuple[str, Path]:
     return (_gguf_shard_glob(repo_path) or repo_path, model_dir)
 
 
+def _directory_model_complete(host_path: Path) -> bool:
+    """True when a staged HF directory has enough files to serve.
+
+    A failed/partial HF download can leave a directory with only config.json or
+    one shard. Treating that as staged causes vLLM to fail later with missing
+    tokenizer or checkpoint-shard errors, so validate the minimal HF layout here.
+    """
+    if not host_path.is_dir():
+        return False
+    if not (host_path / "config.json").is_file():
+        return False
+    has_tokenizer = any(
+        (host_path / name).is_file()
+        for name in ("tokenizer.json", "tokenizer.model", "vocab.json", "merges.txt")
+    )
+    if not has_tokenizer:
+        return False
+
+    index_path = host_path / "model.safetensors.index.json"
+    if index_path.is_file():
+        try:
+            data = json.loads(index_path.read_text())
+            shards = set(data.get("weight_map", {}).values())
+        except Exception:  # noqa: BLE001
+            return False
+        return bool(shards) and all((host_path / shard).is_file() for shard in shards)
+
+    return any(host_path.glob("*.safetensors")) or any(host_path.glob("*.bin"))
+
+
 def _fetch_plan(recipe: dict):
     """Download plan for a recipe: (repo, include, dest_dir, revision) or None.
 
@@ -184,14 +214,14 @@ def _model_present(model: str) -> bool:
             return True
         glob = _gguf_shard_glob(host_path.name)
         return bool(glob and list(host_path.parent.glob(glob)))
-    return host_path.is_dir() and any(host_path.iterdir())
+    return _directory_model_complete(host_path)
 
 
 def _ensure_model_available(model: str) -> bool:
     """Validate a staged model path and create a convenience symlink for shards."""
     host_path = _host_model_path(model)
     if not model.endswith(".gguf"):
-        return host_path.is_dir() and any(host_path.iterdir())
+        return _directory_model_complete(host_path)
     if host_path.exists():
         return True
     glob = _gguf_shard_glob(host_path.name)
