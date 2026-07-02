@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-02T09:21:36.533610+00:00",
+  "generated_at": "2026-06-29T14:23:09.234289+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "536943aebb95826fc7a2d2d30a7be0be24fed614",
-  "short_commit": "536943a",
+  "commit": "f65fcd851bb4354c1be7ddd1d25cd03b8ae68f63",
+  "short_commit": "f65fcd8",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -2165,19 +2165,66 @@
         "data": {
           "profile": "halo-arena-v1",
           "framework": "llama-benchy",
-          "measurements": [],
+          "generated_at": "2026-06-20T08:04:50Z",
           "meta": {
             "recipe": "qwen3-4b-q4-k-m",
             "model": "/models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf",
-            "runtime": "llamacpp",
+            "runtime": "llama.cpp",
             "container": "llamacpp",
-            "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/radeon-arena/halo-llamacpp:fe7c8b2414",
-            "image_tag": "fe7c8b2414",
-            "image_id": "sha256:5077b6005bcc24076e7dffb6c8fd74fbb6665632b1fb848b521c4595f8acfdbd",
-            "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+            "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+            "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
+            "reproduction": {
+              "independent": true,
+              "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
+              "note": "✅ 复现成功(单流 TPOT 锚点稳定;高并发吞吐更高,归因新版 llama.cpp)"
+            }
           },
-          "generated_at": "2026-07-02T09:21:36Z"
+          "measurements": [
+            {
+              "depth": 0,
+              "concurrency": 1,
+              "pp": 512,
+              "tg": 128,
+              "decode_toks_per_s": 67.48,
+              "ttft_ms": 16.66,
+              "tpot_ms": 14.8,
+              "requests_ok": 1,
+              "requests_total": 1
+            },
+            {
+              "depth": 0,
+              "concurrency": 4,
+              "pp": 512,
+              "tg": 128,
+              "decode_toks_per_s": 134.22,
+              "ttft_ms": 595.93,
+              "tpot_ms": 25.24,
+              "requests_ok": 4,
+              "requests_total": 4
+            },
+            {
+              "depth": 0,
+              "concurrency": 16,
+              "pp": 512,
+              "tg": 128,
+              "decode_toks_per_s": 268.8,
+              "ttft_ms": 2276.95,
+              "tpot_ms": 41.71,
+              "requests_ok": 16,
+              "requests_total": 16
+            },
+            {
+              "depth": 0,
+              "concurrency": 32,
+              "pp": 512,
+              "tg": 128,
+              "decode_toks_per_s": 377.97,
+              "ttft_ms": 3327.1,
+              "tpot_ms": 58.7,
+              "requests_ok": 32,
+              "requests_total": 32
+            }
+          ]
         }
       },
       {
