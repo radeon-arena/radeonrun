@@ -205,6 +205,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
         points = [(d, c) for d in depths for c in concs]
 
     measurements = []
+    failed_points = 0
     for depth, conc in points:
         for pp in pps:
             for tg in tgs:
@@ -224,6 +225,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
                         run_results.append(r)
                 if not run_results:
                     print(f"  depth={depth} c={conc} pp={pp} tg={tg}: all runs failed", file=sys.stderr)
+                    failed_points += 1
                     continue
                 # Median by decode throughput.
                 run_results.sort(key=lambda x: x["decode_toks_per_s"])
@@ -238,6 +240,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
         "profile": (profile.get("metadata") or {}).get("name", "unknown"),
         "framework": profile.get("framework", "halo-arena"),
         "measurements": measurements,
+        "failed_points": failed_points,
     }
 
 
@@ -256,6 +259,9 @@ def main() -> int:
           f"with profile {profile.get('metadata', {}).get('name', args.profile)}")
 
     result = run_profile(args.base_url, args.model, profile)
+    if result.get("failed_points"):
+        print(f"Benchmark failed: {result['failed_points']} profile points produced no valid runs", file=sys.stderr)
+        return 1
     if args.meta:
         try:
             result["meta"] = json.loads(args.meta)
