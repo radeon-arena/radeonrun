@@ -224,7 +224,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
                     if r:
                         run_results.append(r)
                 if not run_results:
-                    print(f"  depth={depth} c={conc} pp={pp} tg={tg}: all runs failed", file=sys.stderr)
+                    print(f"  depth={depth} c={conc} pp={pp} tg={tg}: all runs failed", file=sys.stderr, flush=True)
                     failed_points += 1
                     continue
                 # Median by decode throughput.
@@ -234,7 +234,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
                 measurements.append(med)
                 print(f"  depth={depth:6d} c={conc:2d} pp={pp} tg={tg}: "
                       f"decode={med['decode_toks_per_s']:.1f} tok/s "
-                      f"ttft={med['ttft_ms']:.0f}ms tpot={med['tpot_ms']}")
+                        f"ttft={med['ttft_ms']:.0f}ms tpot={med['tpot_ms']}", flush=True)
 
     return {
         "profile": (profile.get("metadata") or {}).get("name", "unknown"),
@@ -256,11 +256,11 @@ def main() -> int:
     import yaml
     profile = yaml.safe_load(Path(args.profile).read_text())
     print(f"Benchmarking {args.model} @ {args.base_url} "
-          f"with profile {profile.get('metadata', {}).get('name', args.profile)}")
+          f"with profile {profile.get('metadata', {}).get('name', args.profile)}", flush=True)
 
     result = run_profile(args.base_url, args.model, profile)
     if result.get("failed_points"):
-        print(f"Benchmark failed: {result['failed_points']} profile points produced no valid runs", file=sys.stderr)
+        print(f"Benchmark failed: {result['failed_points']} profile points produced no valid runs", file=sys.stderr, flush=True)
         return 1
     if args.meta:
         try:
@@ -273,7 +273,7 @@ def main() -> int:
     if args.out:
         Path(args.out).parent.mkdir(parents=True, exist_ok=True)
         Path(args.out).write_text(out_json)
-        print(f"Wrote {args.out} ({len(result['measurements'])} points)")
+        print(f"Wrote {args.out} ({len(result['measurements'])} points)", flush=True)
     else:
         print(out_json)
     return 0

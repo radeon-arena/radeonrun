@@ -431,9 +431,9 @@ def _profile_required_ctx(profile_path: str | None) -> int | None:
     if isinstance(schedule, list):
         depths.extend(int(p["depth"]) for p in schedule if isinstance(p, dict) and "depth" in p)
 
-    # Synthetic prompts are approximate-token text; leave room for tokenizer
-    # drift so the deepest point does not exceed vLLM by a token or two.
-    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128)) + 256
+    # Synthetic prompts are approximate-token text; leave enough room for
+    # tokenizer drift at the deepest long-context point.
+    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128)) + 4096
 
 
 def _env_prefix(recipe: dict) -> str:
