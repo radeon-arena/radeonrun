@@ -16,7 +16,7 @@ metadata:
   version: "2"
 
 args:
-  depth: [0, 4096, 8192, 16384, 32768, 65536, 100000]
+  depth: [0, 4096, 8192, 16384, 32768, 65535, 100000]
   pp: [2048]
   tg: [128]
   concurrency: [1, 2, 5, 10]
@@ -29,32 +29,32 @@ args:
 # heat-soaks the GPU and depresses later numbers). Generated deterministically
 # (seed=42) so the ordering itself is reproducible.
 schedule:
-  # bucket-tiered heat-aware schedule, seed=42, 28 points
-  - { depth: 100000, concurrency: 1 }
-  - { depth: 32768, concurrency: 2 }
-  - { depth: 32768, concurrency: 10 }
-  - { depth: 4096, concurrency: 5 }
-  - { depth: 0, concurrency: 10 }
-  - { depth: 65536, concurrency: 2 }
-  - { depth: 4096, concurrency: 10 }
-  - { depth: 65536, concurrency: 10 }
-  - { depth: 4096, concurrency: 2 }
-  - { depth: 0, concurrency: 2 }
-  - { depth: 32768, concurrency: 5 }
-  - { depth: 65536, concurrency: 1 }
-  - { depth: 100000, concurrency: 5 }
-  - { depth: 8192, concurrency: 2 }
-  - { depth: 0, concurrency: 5 }
-  - { depth: 16384, concurrency: 10 }
+  # Same heat-aware schedule as Spark Arena's spark-arena-v2 profile.
   - { depth: 8192, concurrency: 5 }
-  - { depth: 65536, concurrency: 5 }
-  - { depth: 32768, concurrency: 1 }
-  - { depth: 4096, concurrency: 1 }
-  - { depth: 100000, concurrency: 2 }
-  - { depth: 16384, concurrency: 5 }
-  - { depth: 100000, concurrency: 10 }
-  - { depth: 16384, concurrency: 2 }
-  - { depth: 0, concurrency: 1 }
+  - { depth: 4096, concurrency: 5 }
   - { depth: 8192, concurrency: 10 }
+  - { depth: 8192, concurrency: 2 }
+  - { depth: 4096, concurrency: 2 }
+  - { depth: 100000, concurrency: 5 }
+  - { depth: 100000, concurrency: 2 }
+  - { depth: 65535, concurrency: 10 }
+  - { depth: 65535, concurrency: 1 }
+  - { depth: 0, concurrency: 1 }
+  - { depth: 65535, concurrency: 5 }
+  - { depth: 32768, concurrency: 2 }
+  - { depth: 4096, concurrency: 10 }
   - { depth: 16384, concurrency: 1 }
   - { depth: 8192, concurrency: 1 }
+  - { depth: 32768, concurrency: 5 }
+  - { depth: 0, concurrency: 10 }
+  - { depth: 16384, concurrency: 10 }
+  - { depth: 32768, concurrency: 1 }
+  - { depth: 0, concurrency: 5 }
+  - { depth: 16384, concurrency: 5 }
+  - { depth: 100000, concurrency: 1 }
+  - { depth: 32768, concurrency: 10 }
+  - { depth: 16384, concurrency: 2 }
+  - { depth: 0, concurrency: 2 }
+  - { depth: 65535, concurrency: 2 }
+  - { depth: 4096, concurrency: 1 }
+  - { depth: 100000, concurrency: 10 }

@@ -52,7 +52,7 @@ jobs:
           mkdir -p "$MODELS_DIR" results
           python3 run-recipe.py "${{ inputs.recipe }}" \
             --device "${{ inputs.device }}" \
-            --benchmark benchmarking/halo-arena-v1.yaml \
+            --benchmark benchmarking/halo-arena-v2.yaml \
             --out results/ \
             --build --push --cleanup
 
