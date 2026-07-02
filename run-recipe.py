@@ -381,6 +381,29 @@ def _find_free_port(preferred: int = 8000) -> int:
         return int(s.getsockname()[1])
 
 
+def _profile_required_ctx(profile_path: str | None) -> int | None:
+    """Return the minimum server context length required by a benchmark profile."""
+    if not profile_path:
+        return None
+    import yaml
+
+    profile = yaml.safe_load(Path(profile_path).read_text()) or {}
+    args = profile.get("args") or {}
+
+    def values(name: str, default: int) -> list[int]:
+        raw = args.get(name, [default])
+        if not isinstance(raw, list):
+            raw = [raw]
+        return [int(v) for v in raw]
+
+    depths = values("depth", 0)
+    schedule = profile.get("schedule") or []
+    if isinstance(schedule, list):
+        depths.extend(int(p["depth"]) for p in schedule if isinstance(p, dict) and "depth" in p)
+
+    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128))
+
+
 def _env_prefix(recipe: dict) -> str:
     """Shell prefix that exports recipe env vars before the serve command."""
     import shlex
@@ -491,7 +514,11 @@ def main() -> int:
     run_port = _find_free_port(default_port) if args.benchmark else default_port
     if args.benchmark and run_port != default_port:
         print(f"[benchmark] port {default_port} is busy; using {run_port}")
-    cmd = _render_command(recipe, {"port": run_port, "nseq": args.nseq, "ctx": args.ctx})
+    profile_ctx = _profile_required_ctx(args.benchmark) if args.benchmark else None
+    run_ctx = args.ctx if args.ctx is not None else profile_ctx
+    if args.benchmark and profile_ctx:
+        print(f"[benchmark] profile requires context length >= {profile_ctx}")
+    cmd = _render_command(recipe, {"port": run_port, "nseq": args.nseq, "ctx": run_ctx})
     if not cmd:
         print(f"Recipe '{args.recipe}' has no command.")
         return 2
@@ -522,8 +549,9 @@ def main() -> int:
             return rc
         return setup_model(recipe, force=args.force_setup)
 
-    # Print mode (without benchmarking) shouldn't touch the network or disk.
-    if args.print_only and not args.benchmark:
+    # Print mode shouldn't touch the network or disk, even when showing the
+    # benchmark-specific rendered serve command.
+    if args.print_only:
         print(full)
         return 0
 
