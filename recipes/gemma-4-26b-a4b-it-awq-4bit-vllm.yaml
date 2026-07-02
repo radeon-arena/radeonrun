@@ -25,6 +25,7 @@ defaults:
   port: 8000
   host: 0.0.0.0
   nseq: 32
+  ctx: 2304
 env: {}
 command: |
-  vllm serve /models/gemma-4-26B-A4B-it-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name g26bawq --max-num-seqs {nseq} --dtype float16 --max-model-len 2304 --gpu-memory-utilization 0.85
+  vllm serve /models/gemma-4-26B-A4B-it-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name g26bawq --max-num-seqs {nseq} --dtype float16 --max-model-len {ctx} --gpu-memory-utilization 0.85
