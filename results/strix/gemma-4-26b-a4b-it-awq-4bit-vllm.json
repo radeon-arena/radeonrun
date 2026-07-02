@@ -1,56 +1,7 @@
 {
-  "profile": "halo-arena-v1",
+  "profile": "halo-arena-v2",
   "framework": "llama-benchy",
-  "measurements": [
-    {
-      "decode_toks_per_s": 42.19,
-      "decode_toks_per_s_per_req": 43.7,
-      "ttft_ms": 126.51,
-      "tpot_ms": 22.88,
-      "requests_ok": 1,
-      "requests_total": 1,
-      "depth": 0,
-      "concurrency": 1,
-      "pp": 512,
-      "tg": 128
-    },
-    {
-      "decode_toks_per_s": 97.37,
-      "decode_toks_per_s_per_req": 25.53,
-      "ttft_ms": 257.98,
-      "tpot_ms": 39.18,
-      "requests_ok": 4,
-      "requests_total": 4,
-      "depth": 0,
-      "concurrency": 4,
-      "pp": 512,
-      "tg": 128
-    },
-    {
-      "decode_toks_per_s": 207.9,
-      "decode_toks_per_s_per_req": 13.35,
-      "ttft_ms": 295.27,
-      "tpot_ms": 74.9,
-      "requests_ok": 16,
-      "requests_total": 16,
-      "depth": 0,
-      "concurrency": 16,
-      "pp": 512,
-      "tg": 128
-    },
-    {
-      "decode_toks_per_s": 432.09,
-      "decode_toks_per_s_per_req": 14.08,
-      "ttft_ms": 433.96,
-      "tpot_ms": 71.05,
-      "requests_ok": 32,
-      "requests_total": 32,
-      "depth": 0,
-      "concurrency": 32,
-      "pp": 512,
-      "tg": 128
-    }
-  ],
+  "measurements": [],
   "meta": {
     "recipe": "gemma-4-26b-a4b-it-awq-4bit",
     "model": "/models/gemma-4-26B-A4B-it-AWQ-4bit",
@@ -61,5 +12,5 @@
     "image_tag": "f5fa386fe",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
-  "generated_at": "2026-06-27T07:24:01Z"
+  "generated_at": "2026-07-02T09:36:12Z"
 }
