@@ -33,7 +33,7 @@ jobs:
                   print(f'{p}: missing pinned image_tag')
                   ok = False
           for p in sorted(glob.glob('results/*/*.json')):
-              if '/results/strix/' not in p and '/results/w7900/' not in p and '/results/r9700/' not in p:
+              if not (p.startswith('results/strix/') or p.startswith('results/w7900/') or p.startswith('results/r9700/')):
                   continue
               stem = os.path.splitext(os.path.basename(p))[0]
               if not os.path.exists(f'recipes/{stem}.yaml'):
