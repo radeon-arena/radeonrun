@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Any
 
 
-def _make_prompt(approx_tokens: int) -> str:
+def _make_prompt(approx_tokens: int, salt: str = "") -> str:
     """Deterministic ~approx_tokens-token English prompt (~9 tokens/sentence).
 
     Matches the reproduce harness (bench_stream.py) so prefill/decode behavior —
@@ -45,10 +45,23 @@ def _make_prompt(approx_tokens: int) -> str:
     """
     sentence = "The quick brown fox jumps over the lazy dog. "
     reps = max(1, approx_tokens // 9 + 1)
-    return (sentence * reps).strip()
+    text = (sentence * reps).strip()
+    return f"{text} {salt}".strip() if salt else text
 
 
-def _post_stream(base_url: str, model: str, prompt_tokens: int, max_tokens: int):
+def _make_measured_prompt(depth: int, pp: int, salt: str = "") -> str:
+    """Build a prompt with a reusable prefix plus a measured suffix.
+
+    When `depth > 0`, the prefix is stable across warm-up and timed requests so
+    engines with prefix caching can reuse it. The suffix varies by request/run to
+    avoid turning the measured `pp` segment itself into a full-prompt cache hit.
+    """
+    prefix = _make_prompt(depth, "shared prefix") if depth > 0 else ""
+    suffix = _make_prompt(pp, salt)
+    return f"{prefix}\n{suffix}" if prefix else suffix
+
+
+def _post_stream_text(base_url: str, model: str, prompt: str, max_tokens: int):
     """Issue one streaming completion; return (ttft_s, decode_s, out_tokens).
 
     ttft_s    : time to first streamed token.
@@ -58,7 +71,6 @@ def _post_stream(base_url: str, model: str, prompt_tokens: int, max_tokens: int)
                 streamed-chunk count.
     These definitions match reproduce/bench_stream.py so results are comparable.
     """
-    prompt = _make_prompt(prompt_tokens)
     body = json.dumps({
         "model": model,
         "prompt": prompt,
@@ -105,14 +117,31 @@ def _post_stream(base_url: str, model: str, prompt_tokens: int, max_tokens: int)
     return t_first - t0, t_last - t_first, out_tokens
 
 
-def _run_concurrent(base_url: str, model: str, pp: int, tg: int, concurrency: int):
+def _post_stream(base_url: str, model: str, depth: int, pp: int, tg: int, salt: str = ""):
+    prompt = _make_measured_prompt(depth, pp, salt)
+    return _post_stream_text(base_url, model, prompt, tg)
+
+
+def _prime_prefix(base_url: str, model: str, depth: int) -> None:
+    if depth <= 0:
+        return
+    _post_stream_text(base_url, model, _make_prompt(depth, "shared prefix"), 1)
+
+
+def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, concurrency: int, prefix_caching: bool, run_id: int):
     """Run `concurrency` streaming requests in parallel; aggregate metrics."""
     results: list[tuple[float, float, int]] = []
     lock = threading.Lock()
 
-    def worker():
+    if prefix_caching and depth > 0:
         try:
-            r = _post_stream(base_url, model, pp, tg)
+            _prime_prefix(base_url, model, depth)
+        except Exception as exc:  # noqa: BLE001
+            print(f"    prefix prime failed: {exc}", file=sys.stderr)
+
+    def worker(worker_id: int):
+        try:
+            r = _post_stream(base_url, model, depth, pp, tg, salt=f"run {run_id} worker {worker_id}")
             with lock:
                 results.append(r)
         except Exception as exc:  # noqa: BLE001 — record failure, keep going
@@ -120,7 +149,7 @@ def _run_concurrent(base_url: str, model: str, pp: int, tg: int, concurrency: in
                 results.append((float("nan"), float("nan"), 0))
             print(f"    request failed: {exc}", file=sys.stderr)
 
-    threads = [threading.Thread(target=worker) for _ in range(concurrency)]
+    threads = [threading.Thread(target=worker, args=(i,)) for i in range(concurrency)]
     wall_t0 = time.perf_counter()
     for t in threads:
         t.start()
@@ -138,14 +167,19 @@ def _run_concurrent(base_url: str, model: str, pp: int, tg: int, concurrency: in
     # window (exclude prefill/TTFT), matching reproduce/bench_stream.py. Aggregate
     # across the concurrent requests with the mean, as reproduce does.
     decode_toks_s = total_out / wall if wall > 0 else 0.0
-    per_dec, tpots = [], []
+    per_dec, tpots, prefills = [], [], []
     for _ttft, decode_s, n in ok:
         if n > 1 and decode_s > 0:
+            step_s = decode_s / (n - 1)
             per_dec.append((n - 1) / decode_s)
-            tpots.append(decode_s / (n - 1) * 1000.0)
+            tpots.append(step_s * 1000.0)
+            prefill_s = _ttft - step_s
+            if prefill_s > 0:
+                prefills.append(pp / prefill_s)
     return {
         "decode_toks_per_s": round(decode_toks_s, 2),
         "decode_toks_per_s_per_req": round(statistics.mean(per_dec), 2) if per_dec else None,
+        "prefill_toks_per_s": round(statistics.mean(prefills), 2) if prefills else None,
         "ttft_ms": round(statistics.mean(ttfts) * 1000.0, 2),
         "tpot_ms": round(statistics.mean(tpots), 2) if tpots else None,
         "requests_ok": len(ok),
@@ -161,6 +195,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
     depths = args.get("depth", [0])
     runs = int(args.get("runs", 3))
     warmup = int(args.get("warmup", 1))
+    prefix_caching = bool(args.get("prefix_caching", False))
 
     # Honor an explicit heat-aware schedule if present; otherwise sweep the grid.
     schedule = profile.get("schedule")
@@ -176,13 +211,15 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
                 # Warm-up (discarded).
                 for _ in range(warmup):
                     try:
-                        _post_stream(base_url, model, pp, tg)
+                        if prefix_caching:
+                            _prime_prefix(base_url, model, depth)
+                        _post_stream(base_url, model, depth, pp, tg, salt="warmup")
                     except Exception:  # noqa: BLE001
                         pass
                 # Timed runs; keep the median point.
                 run_results = []
-                for _ in range(runs):
-                    r = _run_concurrent(base_url, model, pp, tg, conc)
+                for run_idx in range(runs):
+                    r = _run_concurrent(base_url, model, depth, pp, tg, conc, prefix_caching, run_idx)
                     if r:
                         run_results.append(r)
                 if not run_results:

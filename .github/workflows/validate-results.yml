@@ -44,8 +44,11 @@ jobs:
                   print(f'{p}: no measurements')
                   ok = False
               for m in d.get('measurements', []):
-                  if 'decode_toks_per_s' not in m or 'concurrency' not in m:
+                  if ('decode_toks_per_s' not in m and 'prefill_toks_per_s' not in m) or 'concurrency' not in m:
                       print(f'{p}: incomplete measurement {m}')
+                      ok = False
+                  if d.get('profile') == 'halo-arena-v2' and 'depth' not in m:
+                      print(f'{p}: v2 measurement missing depth {m}')
                       ok = False
           if not ok:
               sys.exit(1)
