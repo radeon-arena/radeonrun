@@ -433,7 +433,7 @@ def _profile_required_ctx(profile_path: str | None) -> int | None:
 
     # Synthetic prompts are approximate-token text; leave enough room for
     # tokenizer drift at the deepest long-context point.
-    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128)) + 4096
+    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128)) + 8192
 
 
 def _env_prefix(recipe: dict) -> str:
