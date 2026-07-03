@@ -648,6 +648,7 @@ def _free_page_cache(device: str = "halo") -> None:
         subprocess.run(["sync"], check=False)
         subprocess.run(["sudo", "-n", "sh", "-c", "echo 3 > /proc/sys/vm/drop_caches"],
                        check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["free", "-h"], check=False)
     except Exception:  # noqa: BLE001
         pass
 

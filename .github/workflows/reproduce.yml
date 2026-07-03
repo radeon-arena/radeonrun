@@ -55,6 +55,11 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           MODELS_DIR: ${{ runner.temp }}/models    # per-job scratch; --cleanup also wipes it
         run: |
+          if [ "${{ inputs.device }}" = "halo" ]; then
+            sync
+            sudo -n sh -c 'echo 3 > /proc/sys/vm/drop_caches' || true
+            free -h
+          fi
           mkdir -p "$MODELS_DIR" results
           python3 run-recipe.py "${{ inputs.recipe }}" \
             --device "${{ inputs.device }}" \
