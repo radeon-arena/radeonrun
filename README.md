@@ -117,7 +117,15 @@ APU and our experience is single-node only.
 
 **40 pre-configured serve commands** live in [`recipes/`](recipes/), each
 independently measured on real gfx1151 hardware (the `results/strix/` JSON is the
-source of truth). See [recipes/README.md](recipes/README.md). Examples:
+source of truth). See [recipes/README.md](recipes/README.md). A static recipe
+browser can be generated with:
+
+```bash
+python3 scripts/build-recipe-site.py --out docs/recipes.html
+```
+
+Open [`docs/recipes.html`](docs/recipes.html) locally, or publish it with the
+included GitHub Pages workflow. Examples:
 
 - `qwen3.6-35b-a3b-bf16-vllm`, `qwen3.6-35b-a3b-awq-4bit-vllm`,
   `qwen3.6-35b-a3b-quark-w8a8-int8-vllm` (vLLM gfx11, TRITON_ATTN)
