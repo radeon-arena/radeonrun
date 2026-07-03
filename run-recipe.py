@@ -462,7 +462,7 @@ def _apply_model_patches(recipe: dict) -> None:
     for patch in patches:
         if not isinstance(patch, dict):
             continue
-        if patch.get("type") not in {"set_quant_method", "set_quant_config"}:
+        if patch.get("type") not in {"set_quant_method", "set_quant_config", "set_config"}:
             continue
         cfg = host_path / "config.json"
         if not cfg.exists():
@@ -470,21 +470,29 @@ def _apply_model_patches(recipe: dict) -> None:
         import json
         original = cfg.read_text()
         data = json.loads(original)
-        qcfg = data.setdefault("quantization_config", {})
         changes = {}
         if patch.get("type") == "set_quant_method":
+            qcfg = data.setdefault("quantization_config", {})
             changes["quant_method"] = patch.get("value")
+            target = qcfg
+        elif patch.get("type") == "set_quant_config":
+            qcfg = data.setdefault("quantization_config", {})
+            values = patch.get("values") or {}
+            if isinstance(values, dict):
+                changes.update(values)
+            target = qcfg
         else:
             values = patch.get("values") or {}
             if isinstance(values, dict):
                 changes.update(values)
+            target = data
         changes = {k: v for k, v in changes.items() if k and v is not None}
-        if changes and any(qcfg.get(k) != v for k, v in changes.items()):
+        if changes and any(target.get(k) != v for k, v in changes.items()):
             backup = cfg.with_suffix(".json.orig")
             if not backup.exists():
                 backup.write_text(original)
-            before = {k: qcfg.get(k) for k in changes}
-            qcfg.update(changes)
+            before = {k: target.get(k) for k in changes}
+            target.update(changes)
             cfg.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
             print(f"[setup] patched {cfg}: {before!r} -> {changes!r}")
 
