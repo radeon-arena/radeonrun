@@ -35,6 +35,7 @@ defaults:
   port: 8000
   host: 0.0.0.0
   nseq: 32
+  ctx: 8192
 env:
   FLASH_ATTENTION_TRITON_AMD_ENABLE: "TRUE"
   TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL: "1"
@@ -49,7 +50,7 @@ command: |
     --host 0.0.0.0 --port {port} \
     --trust-remote-code \
     --dtype float16 \
-    --max-model-len 8192 \
+    --max-model-len {ctx} \
     --max-num-seqs {nseq} \
     --max-num-batched-tokens 8192 \
     --gpu-memory-utilization 0.85 \
