@@ -547,6 +547,8 @@ def main() -> int:
     if args.benchmark and run_port != default_port:
         print(f"[benchmark] port {default_port} is busy; using {run_port}")
     profile_ctx = _profile_required_ctx(args.benchmark) if args.benchmark else None
+    if args.benchmark and recipe.get("benchmark_ctx") is not None:
+        profile_ctx = int(recipe["benchmark_ctx"])
     run_ctx = args.ctx if args.ctx is not None else profile_ctx
     if args.benchmark and profile_ctx:
         print(f"[benchmark] profile requires context length >= {profile_ctx}")

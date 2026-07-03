@@ -1,0 +1,29 @@
+# Recipe: Qwen3-30B-A3B (BF16 + YaRN) on Strix Halo - vllm
+# Long-context variant of qwen3-30b-a3b-bf16-vllm. Qwen documents native
+# context around 32k/40k config, and 131072 tokens with YaRN/RoPE scaling.
+
+recipe_version: "2"
+metadata:
+  description: vllm serving Qwen3-30B-A3B (BF16 + YaRN long context) on Strix Halo
+  maintainer: radeon-arena
+  quantization: BF16+YaRN
+  measured:
+    gpu: "Radeon 8060S (Strix Halo, gfx1151)"
+    profile: halo-arena-v2
+    decode_toks_per_s: null
+name: qwen3-30b-a3b-bf16-yarn
+runtime: vllm
+description: vllm serving Qwen3-30B-A3B (BF16 + YaRN long context) on Strix Halo
+model: /models/Qwen3-30B-A3B-bf16
+source: Qwen/Qwen3-30B-A3B
+container: vllm
+image_tag: f5fa386fe
+mods: []
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  nseq: 32
+  ctx: 131072
+env: {}
+command: |
+  vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b-yarn --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --rope-scaling '{"rope_type":"yarn","factor":4.0,"original_max_position_embeddings":32768}' --max-model-len {ctx} --gpu-memory-utilization 0.85

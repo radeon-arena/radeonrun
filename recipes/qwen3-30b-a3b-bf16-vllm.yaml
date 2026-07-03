@@ -4,7 +4,7 @@
 
 recipe_version: "2"
 metadata:
-  description: vllm serving Qwen3-30B-A3B (BF16) on Strix Halo
+  description: vllm serving Qwen3-30B-A3B (BF16, native context) on Strix Halo
   maintainer: radeon-arena
   quantization: BF16
   measured:
@@ -12,10 +12,11 @@ metadata:
     profile: halo-arena-v1
     decode_toks_per_s: 165.3
 name: qwen3-30b-a3b-bf16
-description: vllm serving Qwen3-30B-A3B (BF16) on Strix Halo
+description: vllm serving Qwen3-30B-A3B (BF16, native context) on Strix Halo
 model: /models/Qwen3-30B-A3B-bf16
 source: Qwen/Qwen3-30B-A3B   # HF repo the runner stages this model from (run-recipe.py --setup)
 container: vllm
+benchmark_ctx: 40960
 # Perf-leaderboard pin (Radeon Arena tracks numbers, not image releases): this
 # number was produced by vLLM (ROCm gfx11) commit f5fa386fe. Pinned so the entry
 # reproduces from this exact build instead of the moving :latest tag.
@@ -25,7 +26,7 @@ defaults:
   port: 8000
   host: 0.0.0.0
   nseq: 32
-  ctx: 2304
+  ctx: 40960
 env: {}
 command: |
   vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85
