@@ -35,6 +35,9 @@ from pathlib import Path
 from typing import Any
 
 
+_PROMPT_CACHE: dict[tuple[str, str, int, str], str] = {}
+
+
 def _make_prompt(approx_tokens: int, salt: str = "") -> str:
     """Deterministic ~approx_tokens-token English prompt (~9 tokens/sentence).
 
@@ -49,15 +52,62 @@ def _make_prompt(approx_tokens: int, salt: str = "") -> str:
     return f"{text} {salt}".strip() if salt else text
 
 
-def _make_measured_prompt(depth: int, pp: int, salt: str = "") -> str:
+def _token_count(base_url: str, model: str, prompt: str) -> int | None:
+    body = json.dumps({"model": model, "prompt": prompt}).encode()
+    req = urllib.request.Request(
+        base_url.rstrip("/") + "/tokenize",
+        data=body,
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            data = json.loads(resp.read().decode("utf-8", "replace"))
+    except Exception:  # noqa: BLE001
+        return None
+    if "count" in data:
+        return int(data["count"])
+    tokens = data.get("tokens") or data.get("input_ids")
+    return len(tokens) if isinstance(tokens, list) else None
+
+
+def _make_prompt_bounded(base_url: str, model: str, approx_tokens: int, salt: str = "") -> str:
+    key = (base_url.rstrip("/"), model, int(approx_tokens), salt)
+    if key in _PROMPT_CACHE:
+        return _PROMPT_CACHE[key]
+
+    prompt = _make_prompt(approx_tokens, salt)
+    count = _token_count(base_url, model, prompt)
+    if count is None or count <= approx_tokens:
+        _PROMPT_CACHE[key] = prompt
+        return prompt
+
+    # Trim by characters against the server tokenizer. Leave a small cushion
+    # because vLLM validates against tokenized request length, not our estimate.
+    target = max(1, approx_tokens - 16)
+    lo, hi = 1, len(prompt)
+    best = prompt
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        candidate = prompt[:mid].rstrip()
+        n = _token_count(base_url, model, candidate)
+        if n is not None and n <= target:
+            best = candidate
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    _PROMPT_CACHE[key] = best
+    return best
+
+
+def _make_measured_prompt(base_url: str, model: str, depth: int, pp: int, salt: str = "") -> str:
     """Build a prompt with a reusable prefix plus a measured suffix.
 
     When `depth > 0`, the prefix is stable across warm-up and timed requests so
     engines with prefix caching can reuse it. The suffix varies by request/run to
     avoid turning the measured `pp` segment itself into a full-prompt cache hit.
     """
-    prefix = _make_prompt(depth, "shared prefix") if depth > 0 else ""
-    suffix = _make_prompt(pp, salt)
+    prefix = _make_prompt_bounded(base_url, model, depth, "shared prefix") if depth > 0 else ""
+    suffix = _make_prompt_bounded(base_url, model, pp, salt)
     return f"{prefix}\n{suffix}" if prefix else suffix
 
 
@@ -118,14 +168,14 @@ def _post_stream_text(base_url: str, model: str, prompt: str, max_tokens: int):
 
 
 def _post_stream(base_url: str, model: str, depth: int, pp: int, tg: int, salt: str = ""):
-    prompt = _make_measured_prompt(depth, pp, salt)
+    prompt = _make_measured_prompt(base_url, model, depth, pp, salt)
     return _post_stream_text(base_url, model, prompt, tg)
 
 
 def _prime_prefix(base_url: str, model: str, depth: int) -> None:
     if depth <= 0:
         return
-    _post_stream_text(base_url, model, _make_prompt(depth, "shared prefix"), 1)
+    _post_stream_text(base_url, model, _make_prompt_bounded(base_url, model, depth, "shared prefix"), 1)
 
 
 def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, concurrency: int, prefix_caching: bool, run_id: int):
