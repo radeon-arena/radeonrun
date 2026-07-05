@@ -22,6 +22,7 @@ import sys
 from pathlib import Path
 
 RECIPES_DIR = Path(__file__).resolve().parent / "recipes"
+MODEL_CONTEXTS = Path(__file__).resolve().parent / "benchmarking" / "model-contexts.yaml"
 
 # Image registry + device profiles. A recipe names a logical engine
 # (vllm | vllm-main | llamacpp); the concrete image is
@@ -436,6 +437,67 @@ def _profile_required_ctx(profile_path: str | None) -> int | None:
     return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128)) + 8192
 
 
+def _benchmark_context_metadata() -> dict:
+    if not MODEL_CONTEXTS.is_file():
+        return {}
+    import yaml
+    return yaml.safe_load(MODEL_CONTEXTS.read_text()) or {}
+
+
+def _recipe_name_from_path(recipe: dict) -> str | None:
+    name = str(recipe.get("name") or "").strip()
+    # Historical recipe names omit the runtime suffix; workflow recipes use the
+    # file stem. Prefer an explicit helper field if present, else caller fills it.
+    return str(recipe.get("_recipe_name") or name or "").strip() or None
+
+
+def _model_ctx_for_recipe(recipe: dict) -> int | None:
+    meta = _benchmark_context_metadata()
+    recipe_name = _recipe_name_from_path(recipe)
+    if recipe_name:
+        raw = (meta.get("recipes") or {}).get(recipe_name, {}).get("model_ctx")
+        if raw is not None:
+            return int(raw)
+    source = str(recipe.get("source") or "").strip()
+    raw = (meta.get("sources") or {}).get(source, {}).get("model_ctx")
+    return int(raw) if raw is not None else None
+
+
+def _recipe_benchmark_ctx(recipe: dict) -> int | None:
+    """Per-request context limit to enforce while measuring a profile."""
+    meta = _benchmark_context_metadata()
+    recipe_name = _recipe_name_from_path(recipe)
+    if recipe_name:
+        raw = (meta.get("recipes") or {}).get(recipe_name, {}).get("benchmark_ctx")
+        if raw is not None:
+            return int(raw)
+    raw = recipe.get("benchmark_ctx")
+    if raw is not None:
+        return int(raw)
+    return _model_ctx_for_recipe(recipe)
+
+
+def _serve_ctx_for_recipe(recipe: dict, container: str, nseq: int | None = None,
+                          effective_ctx: int | None = None) -> int | None:
+    """Context value rendered into the serve command.
+
+    vLLM `--max-model-len` is per request. llama.cpp server `-c` is total KV
+    cache shared across `-np` slots, so to support a per-request benchmark cap at
+    concurrency N it needs roughly cap*N total context. Clamp to the model
+    context if no benchmark cap is known.
+    """
+    benchmark_ctx = effective_ctx or _recipe_benchmark_ctx(recipe)
+    defaults = recipe.get("defaults") or {}
+    default_ctx = int(defaults["ctx"]) if defaults.get("ctx") is not None else None
+    if _engine_of(recipe, container) != "llamacpp":
+        return benchmark_ctx or default_ctx
+    per_request = benchmark_ctx or default_ctx
+    if per_request is None:
+        return None
+    slots = int(nseq or defaults.get("nseq") or 1)
+    return per_request * max(1, slots)
+
+
 def _env_prefix(recipe: dict) -> str:
     """Shell prefix that exports recipe env vars before the serve command."""
     import shlex
@@ -550,22 +612,27 @@ def main() -> int:
         return 2
 
     recipe = yaml.safe_load(path.read_text())
+    recipe["_recipe_name"] = args.recipe
     default_port = int(args.port or (recipe.get("defaults") or {}).get("port", 8000))
     run_port = _find_free_port(default_port) if args.benchmark else default_port
     if args.benchmark and run_port != default_port:
         print(f"[benchmark] port {default_port} is busy; using {run_port}")
     profile_ctx = _profile_required_ctx(args.benchmark) if args.benchmark else None
-    if args.benchmark and recipe.get("benchmark_ctx") is not None:
-        profile_ctx = int(recipe["benchmark_ctx"])
-    run_ctx = args.ctx if args.ctx is not None else profile_ctx
+    container = _resolve_container(recipe, args.device, args.tag)
+    benchmark_ctx = _recipe_benchmark_ctx(recipe) if args.benchmark else None
+    if benchmark_ctx is not None:
+        profile_ctx = min(profile_ctx, benchmark_ctx) if profile_ctx else benchmark_ctx
+    run_ctx = args.ctx if args.ctx is not None else _serve_ctx_for_recipe(recipe, container, args.nseq, profile_ctx)
     if args.benchmark and profile_ctx:
-        print(f"[benchmark] profile requires context length >= {profile_ctx}")
+        if benchmark_ctx is not None:
+            print(f"[benchmark] effective context length = {profile_ctx} (recipe benchmark_ctx={benchmark_ctx})")
+        else:
+            print(f"[benchmark] profile requires context length >= {profile_ctx}")
     cmd = _render_command(recipe, {"port": run_port, "nseq": args.nseq, "ctx": run_ctx})
     if not cmd:
         print(f"Recipe '{args.recipe}' has no command.")
         return 2
 
-    container = _resolve_container(recipe, args.device, args.tag)
     # Build the launch-cluster.sh invocation. The recipe command already has
     # the model path baked in; we just wrap it in the solo launcher.
     launch = (RECIPES_DIR.parent / "launch-cluster.sh")
@@ -575,6 +642,8 @@ def main() -> int:
     prefix = _env_prefix(recipe)
     if prefix:
         inner = f"env {prefix} {inner}"
+    if _engine_of(recipe, container) == "llamacpp":
+        inner = f"env LD_LIBRARY_PATH=/app {inner}"
     # Own the container name so teardown removes the exact container we launched
     # (and distinct recipes don't collide on a shared default name).
     container_name = os.environ.get("CONTAINER") or f"radeonrun_{args.recipe}"
@@ -613,7 +682,7 @@ def main() -> int:
 
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:
-        rc = _benchmark(recipe, full, args, container, container_name, port=run_port)
+        rc = _benchmark(recipe, full, args, container, container_name, port=run_port, max_context=benchmark_ctx)
         if args.cleanup:
             teardown_model(recipe)
         return rc
@@ -664,7 +733,8 @@ def _free_page_cache(device: str = "halo") -> None:
 
 
 def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
-               container_name: str = "radeon_vllm", port: int | None = None) -> int:
+               container_name: str = "radeon_vllm", port: int | None = None,
+               max_context: int | None = None) -> int:
     """Serve the recipe in the background, run the profile, tear down."""
     import subprocess
     import time
@@ -719,6 +789,8 @@ def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
             "--out", out,
             "--meta", meta,
         ]
+        if max_context is not None:
+            bench_cmd.extend(["--max-context", str(max_context)])
         rc = subprocess.call(bench_cmd)
         if rc != 0:
             return rc

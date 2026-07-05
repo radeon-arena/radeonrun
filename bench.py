@@ -99,7 +99,27 @@ def _make_prompt_bounded(base_url: str, model: str, approx_tokens: int, salt: st
     return best
 
 
-def _make_measured_prompt(base_url: str, model: str, depth: int, pp: int, salt: str = "") -> str:
+def _trim_prompt_to_context(base_url: str, model: str, prompt: str, max_input_tokens: int | None) -> str:
+    if max_input_tokens is None:
+        return prompt
+    count = _token_count(base_url, model, prompt)
+    if count is None or count <= max_input_tokens:
+        return prompt
+    lo, hi = 1, len(prompt)
+    best = prompt[:1]
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        candidate = prompt[:mid].rstrip()
+        n = _token_count(base_url, model, candidate)
+        if n is not None and n <= max_input_tokens:
+            best = candidate
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return best
+
+
+def _make_measured_prompt(base_url: str, model: str, depth: int, pp: int, tg: int, max_context: int | None = None, salt: str = "") -> str:
     """Build a prompt with a reusable prefix plus a measured suffix.
 
     When `depth > 0`, the prefix is stable across warm-up and timed requests so
@@ -108,7 +128,9 @@ def _make_measured_prompt(base_url: str, model: str, depth: int, pp: int, salt: 
     """
     prefix = _make_prompt_bounded(base_url, model, depth, "shared prefix") if depth > 0 else ""
     suffix = _make_prompt_bounded(base_url, model, pp, salt)
-    return f"{prefix}\n{suffix}" if prefix else suffix
+    prompt = f"{prefix}\n{suffix}" if prefix else suffix
+    max_input = max_context - tg - 1 if max_context is not None else None
+    return _trim_prompt_to_context(base_url, model, prompt, max_input)
 
 
 def _post_stream_text(base_url: str, model: str, prompt: str, max_tokens: int):
@@ -167,31 +189,33 @@ def _post_stream_text(base_url: str, model: str, prompt: str, max_tokens: int):
     return t_first - t0, t_last - t_first, out_tokens
 
 
-def _post_stream(base_url: str, model: str, depth: int, pp: int, tg: int, salt: str = ""):
-    prompt = _make_measured_prompt(base_url, model, depth, pp, salt)
+def _post_stream(base_url: str, model: str, depth: int, pp: int, tg: int, max_context: int | None = None, salt: str = ""):
+    prompt = _make_measured_prompt(base_url, model, depth, pp, tg, max_context, salt)
     return _post_stream_text(base_url, model, prompt, tg)
 
 
-def _prime_prefix(base_url: str, model: str, depth: int) -> None:
+def _prime_prefix(base_url: str, model: str, depth: int, max_context: int | None = None) -> None:
     if depth <= 0:
         return
-    _post_stream_text(base_url, model, _make_prompt_bounded(base_url, model, depth, "shared prefix"), 1)
+    prompt = _make_prompt_bounded(base_url, model, depth, "shared prefix")
+    max_input = max_context - 2 if max_context is not None else None
+    _post_stream_text(base_url, model, _trim_prompt_to_context(base_url, model, prompt, max_input), 1)
 
 
-def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, concurrency: int, prefix_caching: bool, run_id: int):
+def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, concurrency: int, prefix_caching: bool, run_id: int, max_context: int | None = None):
     """Run `concurrency` streaming requests in parallel; aggregate metrics."""
     results: list[tuple[float, float, int]] = []
     lock = threading.Lock()
 
     if prefix_caching and depth > 0:
         try:
-            _prime_prefix(base_url, model, depth)
+            _prime_prefix(base_url, model, depth, max_context)
         except Exception as exc:  # noqa: BLE001
             print(f"    prefix prime failed: {exc}", file=sys.stderr)
 
     def worker(worker_id: int):
         try:
-            r = _post_stream(base_url, model, depth, pp, tg, salt=f"run {run_id} worker {worker_id}")
+            r = _post_stream(base_url, model, depth, pp, tg, max_context, salt=f"run {run_id} worker {worker_id}")
             with lock:
                 results.append(r)
         except Exception as exc:  # noqa: BLE001 — record failure, keep going
@@ -237,7 +261,11 @@ def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, con
     }
 
 
-def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str, Any]:
+def _point_required_ctx(depth: int, pp: int, tg: int) -> int:
+    return int(depth) + int(pp) + int(tg)
+
+
+def run_profile(base_url: str, model: str, profile: dict[str, Any], max_context: int | None = None) -> dict[str, Any]:
     args = profile.get("args", {})
     pps = args.get("pp", [512])
     tgs = args.get("tg", [128])
@@ -256,21 +284,28 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
 
     measurements = []
     failed_points = 0
+    skipped_points = 0
     for depth, conc in points:
         for pp in pps:
             for tg in tgs:
+                if max_context is not None and _point_required_ctx(depth, pp, tg) > max_context:
+                    print(f"  depth={depth} c={conc} pp={pp} tg={tg}: skipped "
+                          f"(requires context >= {_point_required_ctx(depth, pp, tg)}, max_context={max_context})",
+                          flush=True)
+                    skipped_points += 1
+                    continue
                 # Warm-up (discarded).
                 for _ in range(warmup):
                     try:
                         if prefix_caching:
-                            _prime_prefix(base_url, model, depth)
-                        _post_stream(base_url, model, depth, pp, tg, salt="warmup")
+                            _prime_prefix(base_url, model, depth, max_context)
+                        _post_stream(base_url, model, depth, pp, tg, max_context, salt="warmup")
                     except Exception:  # noqa: BLE001
                         pass
                 # Timed runs; keep the median point.
                 run_results = []
                 for run_idx in range(runs):
-                    r = _run_concurrent(base_url, model, depth, pp, tg, conc, prefix_caching, run_idx)
+                    r = _run_concurrent(base_url, model, depth, pp, tg, conc, prefix_caching, run_idx, max_context)
                     if r:
                         run_results.append(r)
                 if not run_results:
@@ -291,6 +326,8 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any]) -> dict[str,
         "framework": profile.get("framework", "halo-arena"),
         "measurements": measurements,
         "failed_points": failed_points,
+        "skipped_points": skipped_points,
+        "max_context": max_context,
     }
 
 
@@ -301,6 +338,8 @@ def main() -> int:
     ap.add_argument("--profile", required=True, help="benchmark profile YAML")
     ap.add_argument("--out", help="output JSON path (default: stdout)")
     ap.add_argument("--meta", help="extra JSON merged into the result (recipe/gpu info)")
+    ap.add_argument("--max-context", type=int,
+                    help="Skip profile points whose depth+pp+tg+cushion exceeds this context limit")
     args = ap.parse_args()
 
     import yaml
@@ -308,7 +347,11 @@ def main() -> int:
     print(f"Benchmarking {args.model} @ {args.base_url} "
           f"with profile {profile.get('metadata', {}).get('name', args.profile)}", flush=True)
 
-    result = run_profile(args.base_url, args.model, profile)
+    result = run_profile(args.base_url, args.model, profile, max_context=args.max_context)
+    if not result.get("measurements") and result.get("skipped_points"):
+        print("Benchmark failed: profile has zero points compatible with "
+              f"max_context={args.max_context}", file=sys.stderr, flush=True)
+        return 1
     if result.get("failed_points"):
         print(f"Benchmark failed: {result['failed_points']} profile points produced no valid runs", file=sys.stderr, flush=True)
         return 1

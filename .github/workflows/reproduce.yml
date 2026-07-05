@@ -28,6 +28,12 @@ on:
         default: any
         type: choice
         options: [any, halo3-gfx1151, halo4-gfx1151, halo5-gfx1151, halo6-gfx1151]
+      profile:
+        description: "Benchmark profile"
+        required: true
+        default: halo-arena-v1.yaml
+        type: choice
+        options: [halo-arena-v1.yaml, halo-arena-v2.yaml]
 
 permissions:
   contents: write       # commit the reproduced result + bundle back to the branch
@@ -63,7 +69,7 @@ jobs:
           mkdir -p "$MODELS_DIR" results
           python3 run-recipe.py "${{ inputs.recipe }}" \
             --device "${{ inputs.device }}" \
-            --benchmark benchmarking/halo-arena-v2.yaml \
+            --benchmark "benchmarking/${{ inputs.profile }}" \
             --out results/ \
             --build --push --cleanup
 
