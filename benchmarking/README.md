@@ -16,6 +16,11 @@ numbers (within run-to-run noise).
 | `halo-arena-v1.yaml` | llama-benchy | 0 | 512 / 128 | 1, 4, 16, 32 | 3 | Quick daily sweep (the in512/out128 streaming scenario) |
 | `halo-arena-v2.yaml` | llama-benchy | 0 … 100000 | 2048 / 128 | 1, 2, 5, 10 | 3 | Full long-context sweep |
 
+`halo-arena-v1.yaml` is the default reproduction profile. `halo-arena-v2.yaml`
+is a long-context sweep and is cropped by `run-recipe.py`/`bench.py` using
+[`model-contexts.yaml`](model-contexts.yaml), so recipes are measured only at
+context depths supported by the actual model/serve configuration.
+
 ## How a profile is consumed
 
 ```bash

@@ -1,0 +1,90 @@
+# Per-model context limits used to crop benchmark profiles safely.
+#
+# model_ctx is the model/request context limit from HF config/README. For
+# llama.cpp, run-recipe.py converts this per-request cap into total `-c` by
+# multiplying by the requested slot count (`-np`). benchmark_ctx is a deliberate
+# lower served-context cap when the recipe command is intentionally smaller than
+# the model's theoretical context (for example DiffusionGemma block-diffusion
+# recipes).
+
+sources:
+  cyankiwi/diffusiongemma-26B-A4B-it-AWQ-INT4:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144; sliding_window=1024"
+  google/diffusiongemma-26B-A4B-it:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144; sliding_window=1024"
+  cyankiwi/gemma-4-26B-A4B-it-AWQ-4bit:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144; sliding_window=1024"
+  unsloth/gemma-4-26B-A4B-it-GGUF:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144; sliding_window=1024"
+  google/gemma-4-26b-a4b-it:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144; sliding_window=1024"
+  nameistoken/Gemma-4-31B-it-Quark-W8A8-INT8:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144; sliding_window=1024"
+  unsloth/Llama-3.1-8B-Instruct-GGUF:
+    model_ctx: 131072
+    evidence: "HF config max_position_embeddings=131072"
+  unsloth/MiMo-V2.5-GGUF:
+    model_ctx: 1000000
+    evidence: "HF README: Context Length up to 1M tokens"
+  unsloth/Qwen3-4B-GGUF:
+    model_ctx: 40960
+    evidence: "HF config max_position_embeddings=40960"
+  unsloth/Qwen3-8B-GGUF:
+    model_ctx: 40960
+    evidence: "HF config max_position_embeddings=40960"
+  unsloth/Qwen3-14B-GGUF:
+    model_ctx: 40960
+    evidence: "HF config max_position_embeddings=40960"
+  unsloth/Qwen3-30B-A3B-GGUF:
+    model_ctx: 40960
+    evidence: "HF config max_position_embeddings=40960"
+  Qwen/Qwen3-30B-A3B:
+    model_ctx: 40960
+    evidence: "HF config max_position_embeddings=40960; YaRN recipe overrides model_ctx"
+  unsloth/Qwen3-32B-GGUF:
+    model_ctx: 40960
+    evidence: "HF config max_position_embeddings=40960"
+  unsloth/Qwen3.6-27B-GGUF:
+    model_ctx: 262144
+    evidence: "HF README: default context length 262144 tokens"
+  Qwen/Qwen3.6-27B:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144"
+  nameistoken/Qwen3.6-27B-Quark-W8A8-INT8:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144"
+  cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144"
+  unsloth/Qwen3.6-35B-A3B-GGUF:
+    model_ctx: 262144
+    evidence: "HF README: default context length 262144 tokens"
+  Qwen/Qwen3.6-35B-A3B:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144"
+  Intel/Qwen3.6-35B-A3B-int4-mixed-AutoRound:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144"
+  nameistoken/Qwen3.6-35B-A3B-Quark-W8A8-INT8:
+    model_ctx: 262144
+    evidence: "HF config text_config.max_position_embeddings=262144"
+  stepfun-ai/Step-3.5-Flash-GGUF-Q4_K_S:
+    model_ctx: 262144
+    evidence: "HF config max_position_embeddings=262144"
+
+recipes:
+  diffusiongemma-26b-a4b-awq-int4:
+    benchmark_ctx: 896
+    evidence: "Recipe intentionally serves with --max-model-len 896 for block diffusion"
+  diffusiongemma-26b-a4b-bf16:
+    benchmark_ctx: 896
+    evidence: "Recipe intentionally serves with --max-model-len 896 for block diffusion"
+  qwen3-30b-a3b-bf16-yarn-vllm:
+    model_ctx: 131072
+    evidence: "Recipe applies YaRN/RoPE scaling for 131072-token context"
