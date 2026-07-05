@@ -3,9 +3,10 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 9.2,
+      "decode_toks_per_s": 8.8,
       "decode_toks_per_s_per_req": null,
-      "ttft_ms": 13913.04,
+      "prefill_toks_per_s": null,
+      "ttft_ms": 14499.72,
       "tpot_ms": null,
       "requests_ok": 1,
       "requests_total": 1,
@@ -15,9 +16,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 12.29,
+      "decode_toks_per_s": 11.61,
       "decode_toks_per_s_per_req": null,
-      "ttft_ms": 41673.23,
+      "prefill_toks_per_s": null,
+      "ttft_ms": 44056.93,
       "tpot_ms": null,
       "requests_ok": 4,
       "requests_total": 4,
@@ -27,9 +29,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 12.2,
+      "decode_toks_per_s": 11.54,
       "decode_toks_per_s_per_req": null,
-      "ttft_ms": 104879.17,
+      "prefill_toks_per_s": null,
+      "ttft_ms": 110751.9,
       "tpot_ms": null,
       "requests_ok": 16,
       "requests_total": 16,
@@ -39,9 +42,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 12.16,
+      "decode_toks_per_s": 11.52,
       "decode_toks_per_s_per_req": null,
-      "ttft_ms": 189348.36,
+      "prefill_toks_per_s": null,
+      "ttft_ms": 199841.79,
       "tpot_ms": null,
       "requests_ok": 32,
       "requests_total": 32,
@@ -51,6 +55,9 @@
       "tg": 128
     }
   ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 896,
   "meta": {
     "recipe": "diffusiongemma-26b-a4b-awq-int4",
     "model": "/models/diffusiongemma-26B-A4B-it-AWQ-INT4",
@@ -61,5 +68,5 @@
     "image_tag": "92221485a",
     "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
   },
-  "generated_at": "2026-06-27T07:54:45Z"
+  "generated_at": "2026-07-05T23:44:22Z"
 }
