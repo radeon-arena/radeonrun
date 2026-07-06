@@ -3,10 +3,10 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 8.8,
+      "decode_toks_per_s": 8.71,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
-      "ttft_ms": 14499.72,
+      "ttft_ms": 14652.8,
       "tpot_ms": null,
       "requests_ok": 1,
       "requests_total": 1,
@@ -16,10 +16,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 11.61,
+      "decode_toks_per_s": 11.56,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
-      "ttft_ms": 44056.93,
+      "ttft_ms": 44258.31,
       "tpot_ms": null,
       "requests_ok": 4,
       "requests_total": 4,
@@ -32,7 +32,7 @@
       "decode_toks_per_s": 11.54,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
-      "ttft_ms": 110751.9,
+      "ttft_ms": 110767.03,
       "tpot_ms": null,
       "requests_ok": 16,
       "requests_total": 16,
@@ -42,10 +42,10 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 11.52,
+      "decode_toks_per_s": 11.53,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
-      "ttft_ms": 199841.79,
+      "ttft_ms": 199589.61,
       "tpot_ms": null,
       "requests_ok": 32,
       "requests_total": 32,
@@ -68,5 +68,5 @@
     "image_tag": "92221485a",
     "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
   },
-  "generated_at": "2026-07-05T23:44:22Z"
+  "generated_at": "2026-07-06T04:56:55Z"
 }
