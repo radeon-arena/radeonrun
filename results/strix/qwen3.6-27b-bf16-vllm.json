@@ -5,8 +5,9 @@
     {
       "decode_toks_per_s": 4.29,
       "decode_toks_per_s_per_req": 4.4,
-      "ttft_ms": 918.54,
-      "tpot_ms": 227.53,
+      "prefill_toks_per_s": 725.2,
+      "ttft_ms": 933.18,
+      "tpot_ms": 227.17,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -15,10 +16,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 14.87,
-      "decode_toks_per_s_per_req": 4.16,
-      "ttft_ms": 3750.58,
-      "tpot_ms": 240.31,
+      "decode_toks_per_s": 15.09,
+      "decode_toks_per_s_per_req": 4.13,
+      "prefill_toks_per_s": 293.83,
+      "ttft_ms": 2954.49,
+      "tpot_ms": 242.37,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -27,10 +29,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 38.78,
-      "decode_toks_per_s_per_req": 3.05,
-      "ttft_ms": 10165.26,
-      "tpot_ms": 331.04,
+      "decode_toks_per_s": 41.18,
+      "decode_toks_per_s_per_req": 3.15,
+      "prefill_toks_per_s": 125.67,
+      "ttft_ms": 8473.1,
+      "tpot_ms": 320.73,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -39,10 +42,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 52.85,
-      "decode_toks_per_s_per_req": 2.27,
-      "ttft_ms": 18945.35,
-      "tpot_ms": 452.13,
+      "decode_toks_per_s": 57.32,
+      "decode_toks_per_s_per_req": 2.39,
+      "prefill_toks_per_s": 81.07,
+      "ttft_ms": 16080.16,
+      "tpot_ms": 427.23,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -51,15 +55,18 @@
       "tg": 128
     }
   ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 262144,
   "meta": {
     "recipe": "qwen3-6-27b-bf16",
     "model": "/models/Qwen3.6-27B",
     "runtime": "vllm",
     "container": "vllm",
-    "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port {port} --served-model-name q27b --max-num-seqs {nseq} --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
+    "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port {port} --served-model-name q27b --max-num-seqs {nseq} --dtype bfloat16 --max-model-len {ctx} --gpu-memory-utilization 0.9",
     "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
     "image_tag": "f5fa386fe",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
-  "generated_at": "2026-06-27T08:28:19Z"
+  "generated_at": "2026-07-06T10:13:28Z"
 }
