@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T04:04:33.969289+00:00",
+  "generated_at": "2026-07-06T04:10:55.526848+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "85044ab494208b51c4e9fd572902776af162c8c7",
-  "short_commit": "85044ab",
+  "commit": "0dcc87c23991e761030ec2841ccc73d9806ec6a2",
+  "short_commit": "0dcc87c",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -2317,33 +2317,75 @@
         "data": {
           "profile": "halo-arena-v1",
           "framework": "llama-benchy",
-          "generated_at": "2026-06-20T08:04:50Z",
-          "meta": {
-            "recipe": "mimo-v2-5-ud-q2-k-xl",
-            "model": "/models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf",
-            "runtime": "llama.cpp",
-            "container": "llamacpp",
-            "command": "llama-server -m /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf -ngl 999 -fa off --no-mmap --host 0.0.0.0 --port 8000 -c 32768 -np 32",
-            "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-            "reproduction": {
-              "independent": true,
-              "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-              "note": "✅ 复现成功(需特殊内存配置,见下)"
-            }
-          },
           "measurements": [
             {
+              "decode_toks_per_s": 19.27,
+              "decode_toks_per_s_per_req": 19.44,
+              "prefill_toks_per_s": 9619.97,
+              "ttft_ms": 104.68,
+              "tpot_ms": 51.45,
+              "requests_ok": 1,
+              "requests_total": 1,
               "depth": 0,
               "concurrency": 1,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 22.3,
-              "ttft_ms": 55.3,
-              "tpot_ms": 44.75,
-              "requests_ok": 1,
-              "requests_total": 1
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 26.95,
+              "decode_toks_per_s_per_req": 7.42,
+              "prefill_toks_per_s": 295.37,
+              "ttft_ms": 1868.28,
+              "tpot_ms": 134.84,
+              "requests_ok": 4,
+              "requests_total": 4,
+              "depth": 0,
+              "concurrency": 4,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 37.54,
+              "decode_toks_per_s_per_req": 2.96,
+              "prefill_toks_per_s": 45.63,
+              "ttft_ms": 11573.5,
+              "tpot_ms": 337.49,
+              "requests_ok": 16,
+              "requests_total": 16,
+              "depth": 0,
+              "concurrency": 16,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 39.86,
+              "decode_toks_per_s_per_req": 1.53,
+              "prefill_toks_per_s": 26.75,
+              "ttft_ms": 19804.04,
+              "tpot_ms": 652.32,
+              "requests_ok": 32,
+              "requests_total": 32,
+              "depth": 0,
+              "concurrency": 32,
+              "pp": 512,
+              "tg": 128
             }
-          ]
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 1000000,
+          "meta": {
+            "recipe": "mimo-v2-5-ud-q2-k-xl",
+            "model": "/models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf",
+            "runtime": "llamacpp",
+            "container": "llamacpp",
+            "command": "llama-server -m /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf -ngl 999 -fa off --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
+            "image": "ghcr.io/radeon-arena/halo-llamacpp:fe7c8b2414",
+            "image_tag": "fe7c8b2414",
+            "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
+            "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+          },
+          "generated_at": "2026-07-06T04:10:52Z"
         }
       },
       {
