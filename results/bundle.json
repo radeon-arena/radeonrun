@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T10:13:29.899406+00:00",
+  "generated_at": "2026-07-06T10:26:30.443500+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "8165ddedcc69464d416f13c02089506e064498cf",
-  "short_commit": "8165dde",
+  "commit": "7152a4cb16f2fcfe5550eacf6ef9c86a8ba35548",
+  "short_commit": "7152a4c",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -191,9 +191,10 @@
           "framework": "llama-benchy",
           "measurements": [
             {
-              "decode_toks_per_s": 7.79,
+              "decode_toks_per_s": 7.72,
               "decode_toks_per_s_per_req": null,
-              "ttft_ms": 16440.41,
+              "prefill_toks_per_s": null,
+              "ttft_ms": 16566.51,
               "tpot_ms": null,
               "requests_ok": 1,
               "requests_total": 1,
@@ -203,9 +204,10 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 13.11,
+              "decode_toks_per_s": 12.96,
               "decode_toks_per_s_per_req": null,
-              "ttft_ms": 39044.49,
+              "prefill_toks_per_s": null,
+              "ttft_ms": 39476.92,
               "tpot_ms": null,
               "requests_ok": 4,
               "requests_total": 4,
@@ -215,9 +217,10 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 13.07,
+              "decode_toks_per_s": 12.96,
               "decode_toks_per_s_per_req": null,
-              "ttft_ms": 98017.89,
+              "prefill_toks_per_s": null,
+              "ttft_ms": 98579.85,
               "tpot_ms": null,
               "requests_ok": 16,
               "requests_total": 16,
@@ -227,9 +230,10 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 13.07,
+              "decode_toks_per_s": 12.97,
               "decode_toks_per_s_per_req": null,
-              "ttft_ms": 176346.31,
+              "prefill_toks_per_s": null,
+              "ttft_ms": 177307.54,
               "tpot_ms": null,
               "requests_ok": 32,
               "requests_total": 32,
@@ -239,6 +243,9 @@
               "tg": 128
             }
           ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 896,
           "meta": {
             "recipe": "diffusiongemma-26b-a4b-bf16",
             "model": "/models/diffusiongemma-26B-A4B-it",
@@ -249,7 +256,7 @@
             "image_tag": "92221485a",
             "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
           },
-          "generated_at": "2026-06-27T09:28:03Z"
+          "generated_at": "2026-07-06T10:26:28Z"
         }
       },
       {
