@@ -3,10 +3,11 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 7.64,
-      "decode_toks_per_s_per_req": 8.17,
-      "ttft_ms": 1205.4,
-      "tpot_ms": 122.36,
+      "decode_toks_per_s": 7.75,
+      "decode_toks_per_s_per_req": 8.21,
+      "prefill_toks_per_s": 604.15,
+      "ttft_ms": 969.34,
+      "tpot_ms": 121.87,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -15,10 +16,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 20.93,
-      "decode_toks_per_s_per_req": 6.18,
-      "ttft_ms": 3772.26,
-      "tpot_ms": 162.56,
+      "decode_toks_per_s": 21.51,
+      "decode_toks_per_s_per_req": 6.23,
+      "prefill_toks_per_s": 262.32,
+      "ttft_ms": 3211.74,
+      "tpot_ms": 161.05,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -27,10 +29,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 39.12,
-      "decode_toks_per_s_per_req": 3.19,
-      "ttft_ms": 11464.45,
-      "tpot_ms": 318.2,
+      "decode_toks_per_s": 41.45,
+      "decode_toks_per_s_per_req": 3.28,
+      "prefill_toks_per_s": 116.19,
+      "ttft_ms": 9690.56,
+      "tpot_ms": 309.33,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -39,10 +42,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 52.15,
-      "decode_toks_per_s_per_req": 2.32,
-      "ttft_ms": 21024.67,
-      "tpot_ms": 445.03,
+      "decode_toks_per_s": 56.15,
+      "decode_toks_per_s_per_req": 2.44,
+      "prefill_toks_per_s": 74.81,
+      "ttft_ms": 18299.24,
+      "tpot_ms": 422.5,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -51,15 +55,18 @@
       "tg": 128
     }
   ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 262144,
   "meta": {
     "recipe": "qwen3-6-27b-quark-w8a8-int8",
     "model": "/models/Qwen3.6-27B-Quark-W8A8-INT8",
     "runtime": "vllm",
     "container": "vllm",
-    "command": "vllm serve /models/Qwen3.6-27B-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name q27q --max-num-seqs {nseq} --quantization quark --max-model-len 2304 --gpu-memory-utilization 0.85",
+    "command": "vllm serve /models/Qwen3.6-27B-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name q27q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
     "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
     "image_tag": "f5fa386fe",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
-  "generated_at": "2026-06-27T08:29:23Z"
+  "generated_at": "2026-07-06T02:52:47Z"
 }
