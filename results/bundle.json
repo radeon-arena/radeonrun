@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T06:00:09.893360+00:00",
+  "generated_at": "2026-07-06T06:09:34.026283+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "278811314df7de222db97e2c65d32017f34d215f",
-  "short_commit": "2788113",
+  "commit": "ac4c30edf43d9fb122e845b7cd0573742f32425b",
+  "short_commit": "ac4c30e",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -1820,66 +1820,75 @@
         "data": {
           "profile": "halo-arena-v1",
           "framework": "llama-benchy",
-          "generated_at": "2026-06-20T08:04:50Z",
-          "meta": {
-            "recipe": "llama-3-1-8b-instruct-q4-k-m",
-            "model": "/models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf",
-            "runtime": "llama.cpp",
-            "container": "llamacpp",
-            "command": "llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
-            "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-            "reproduction": {
-              "independent": true,
-              "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-              "note": "✅ 复现成功(单流 TPOT 锚点稳定;高并发吞吐更高,归因新版 llama.cpp)"
-            }
-          },
           "measurements": [
             {
+              "decode_toks_per_s": 41.12,
+              "decode_toks_per_s_per_req": 41.41,
+              "prefill_toks_per_s": 25344.12,
+              "ttft_ms": 44.35,
+              "tpot_ms": 24.15,
+              "requests_ok": 1,
+              "requests_total": 1,
               "depth": 0,
               "concurrency": 1,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 41.33,
-              "ttft_ms": 27.34,
-              "tpot_ms": 24.16,
-              "requests_ok": 1,
-              "requests_total": 1
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 100.4,
+              "decode_toks_per_s_per_req": 25.4,
+              "prefill_toks_per_s": 9125.98,
+              "ttft_ms": 95.47,
+              "tpot_ms": 39.37,
+              "requests_ok": 4,
+              "requests_total": 4,
               "depth": 0,
               "concurrency": 4,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 81.67,
-              "ttft_ms": 1106.31,
-              "tpot_ms": 40.57,
-              "requests_ok": 4,
-              "requests_total": 4
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 335.26,
+              "decode_toks_per_s_per_req": 22.1,
+              "prefill_toks_per_s": 1646.98,
+              "ttft_ms": 356.12,
+              "tpot_ms": 45.24,
+              "requests_ok": 16,
+              "requests_total": 16,
               "depth": 0,
               "concurrency": 16,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 182.33,
-              "ttft_ms": 4226.13,
-              "tpot_ms": 54.69,
-              "requests_ok": 16,
-              "requests_total": 16
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 454.32,
+              "decode_toks_per_s_per_req": 15.09,
+              "prefill_toks_per_s": 985.25,
+              "ttft_ms": 586.14,
+              "tpot_ms": 66.26,
+              "requests_ok": 32,
+              "requests_total": 32,
               "depth": 0,
               "concurrency": 32,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 259.05,
-              "ttft_ms": 6141.69,
-              "tpot_ms": 75.6,
-              "requests_ok": 32,
-              "requests_total": 32
+              "tg": 128
             }
-          ]
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 131072,
+          "meta": {
+            "recipe": "llama-3-1-8b-instruct-q4-k-m",
+            "model": "/models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+            "runtime": "llamacpp",
+            "container": "llamacpp",
+            "command": "llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
+            "image": "ghcr.io/radeon-arena/halo-llamacpp:fe7c8b2414",
+            "image_tag": "fe7c8b2414",
+            "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
+            "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+          },
+          "generated_at": "2026-07-06T06:09:32Z"
         }
       },
       {
