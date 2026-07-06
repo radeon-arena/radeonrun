@@ -432,9 +432,7 @@ def _profile_required_ctx(profile_path: str | None) -> int | None:
     if isinstance(schedule, list):
         depths.extend(int(p["depth"]) for p in schedule if isinstance(p, dict) and "depth" in p)
 
-    # Synthetic prompts are approximate-token text; leave enough room for
-    # tokenizer drift at the deepest long-context point.
-    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128)) + 8192
+    return max(depths or [0]) + max(values("pp", 512)) + max(values("tg", 128))
 
 
 def _benchmark_context_metadata() -> dict:
@@ -490,12 +488,14 @@ def _serve_ctx_for_recipe(recipe: dict, container: str, nseq: int | None = None,
     defaults = recipe.get("defaults") or {}
     default_ctx = int(defaults["ctx"]) if defaults.get("ctx") is not None else None
     if _engine_of(recipe, container) != "llamacpp":
-        return benchmark_ctx or default_ctx
+        if benchmark_ctx is None:
+            return default_ctx
+        return max(default_ctx or 0, benchmark_ctx)
     per_request = benchmark_ctx or default_ctx
     if per_request is None:
         return None
     slots = int(nseq or defaults.get("nseq") or 1)
-    return per_request * max(1, slots)
+    return max(default_ctx or 0, per_request * max(1, slots))
 
 
 def _env_prefix(recipe: dict) -> str:
