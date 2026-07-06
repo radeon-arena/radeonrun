@@ -4,10 +4,10 @@
   "measurements": [
     {
       "decode_toks_per_s": 43.29,
-      "decode_toks_per_s_per_req": 44.07,
-      "prefill_toks_per_s": 10503.24,
-      "ttft_ms": 71.44,
-      "tpot_ms": 22.69,
+      "decode_toks_per_s_per_req": 44.1,
+      "prefill_toks_per_s": 10238.26,
+      "ttft_ms": 72.69,
+      "tpot_ms": 22.68,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -16,11 +16,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 104.75,
-      "decode_toks_per_s_per_req": 27.64,
-      "prefill_toks_per_s": 2016.65,
-      "ttft_ms": 290.06,
-      "tpot_ms": 36.17,
+      "decode_toks_per_s": 102.82,
+      "decode_toks_per_s_per_req": 27.08,
+      "prefill_toks_per_s": 2074.65,
+      "ttft_ms": 283.72,
+      "tpot_ms": 36.93,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -29,11 +29,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 190.82,
-      "decode_toks_per_s_per_req": 13.42,
-      "prefill_toks_per_s": 434.81,
-      "ttft_ms": 1253.59,
-      "tpot_ms": 74.5,
+      "decode_toks_per_s": 187.4,
+      "decode_toks_per_s_per_req": 13.15,
+      "prefill_toks_per_s": 435.26,
+      "ttft_ms": 1253.91,
+      "tpot_ms": 76.04,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -42,11 +42,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 204.53,
-      "decode_toks_per_s_per_req": 8.29,
-      "prefill_toks_per_s": 112.25,
-      "ttft_ms": 4682.25,
-      "tpot_ms": 120.67,
+      "decode_toks_per_s": 206.88,
+      "decode_toks_per_s_per_req": 8.31,
+      "prefill_toks_per_s": 116.98,
+      "ttft_ms": 4497.45,
+      "tpot_ms": 120.34,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -69,5 +69,5 @@
     "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
     "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
   },
-  "generated_at": "2026-07-06T02:24:19Z"
+  "generated_at": "2026-07-06T04:39:48Z"
 }
