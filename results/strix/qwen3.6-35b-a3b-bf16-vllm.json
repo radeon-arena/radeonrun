@@ -3,10 +3,11 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 17.47,
-      "decode_toks_per_s_per_req": 18.51,
-      "ttft_ms": 465.55,
-      "tpot_ms": 54.02,
+      "decode_toks_per_s": 17.3,
+      "decode_toks_per_s_per_req": 18.41,
+      "prefill_toks_per_s": 1362.35,
+      "ttft_ms": 430.14,
+      "tpot_ms": 54.32,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -15,10 +16,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 39.95,
-      "decode_toks_per_s_per_req": 10.94,
-      "ttft_ms": 1171.87,
-      "tpot_ms": 91.48,
+      "decode_toks_per_s": 38.03,
+      "decode_toks_per_s_per_req": 10.3,
+      "prefill_toks_per_s": 730.76,
+      "ttft_ms": 1012.32,
+      "tpot_ms": 97.13,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -27,10 +29,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 90.3,
-      "decode_toks_per_s_per_req": 6.59,
-      "ttft_ms": 3091.09,
-      "tpot_ms": 152.21,
+      "decode_toks_per_s": 93.57,
+      "decode_toks_per_s_per_req": 6.7,
+      "prefill_toks_per_s": 348.22,
+      "ttft_ms": 2551.02,
+      "tpot_ms": 149.75,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -39,10 +42,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 123.16,
-      "decode_toks_per_s_per_req": 4.72,
-      "ttft_ms": 5590.65,
-      "tpot_ms": 213.48,
+      "decode_toks_per_s": 122.48,
+      "decode_toks_per_s_per_req": 4.57,
+      "prefill_toks_per_s": 234.44,
+      "ttft_ms": 4831.94,
+      "tpot_ms": 220.12,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -51,15 +55,18 @@
       "tg": 128
     }
   ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 262144,
   "meta": {
     "recipe": "qwen3-6-35b-a3b-bf16",
     "model": "/models/Qwen3.6-35B-A3B",
     "runtime": "vllm",
     "container": "vllm",
-    "command": "vllm serve /models/Qwen3.6-35B-A3B --host 0.0.0.0 --port {port} --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --served-model-name qwen36-35b",
+    "command": "vllm serve /models/Qwen3.6-35B-A3B --host 0.0.0.0 --port {port} --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --served-model-name qwen36-35b --max-model-len {ctx}",
     "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
     "image_tag": "f5fa386fe",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
-  "generated_at": "2026-06-27T08:50:13Z"
+  "generated_at": "2026-07-06T10:33:50Z"
 }
