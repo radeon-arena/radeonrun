@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T07:25:15.280156+00:00",
+  "generated_at": "2026-07-06T07:47:22.498426+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "f0c478b1a1ec7d1c92386ad2372e3b182b37f363",
-  "short_commit": "f0c478b",
+  "commit": "6e78cecc8716d8b3b3b2a75f41fd361d5db4619e",
+  "short_commit": "6e78cec",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -3828,66 +3828,75 @@
         "data": {
           "profile": "halo-arena-v1",
           "framework": "llama-benchy",
-          "generated_at": "2026-06-20T08:04:50Z",
-          "meta": {
-            "recipe": "qwen3-6-27b-bf16",
-            "model": "/models/Qwen3.6-27B/Qwen3.6-27B-BF16.gguf",
-            "runtime": "llama.cpp",
-            "container": "llamacpp",
-            "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
-            "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-            "reproduction": {
-              "independent": true,
-              "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-              "note": "✅ C=1 单流复现(命中带宽屋顶);⚠️ C=32 聚合低于 recipe 标称(如实标注)"
-            }
-          },
           "measurements": [
             {
+              "decode_toks_per_s": 4.15,
+              "decode_toks_per_s_per_req": 4.2,
+              "prefill_toks_per_s": 1631.04,
+              "ttft_ms": 552.27,
+              "tpot_ms": 238.36,
+              "requests_ok": 1,
+              "requests_total": 1,
               "depth": 0,
               "concurrency": 1,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 4.19,
-              "ttft_ms": 287.0,
-              "tpot_ms": 238.34,
-              "requests_ok": 1,
-              "requests_total": 1
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 11.94,
+              "decode_toks_per_s_per_req": 3.05,
+              "prefill_toks_per_s": 722.19,
+              "ttft_ms": 1111.05,
+              "tpot_ms": 327.49,
+              "requests_ok": 4,
+              "requests_total": 4,
               "depth": 0,
               "concurrency": 4,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 11.87,
-              "ttft_ms": 1393.68,
-              "tpot_ms": 327.34,
-              "requests_ok": 4,
-              "requests_total": 4
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 17.1,
+              "decode_toks_per_s_per_req": 1.13,
+              "prefill_toks_per_s": 133.12,
+              "ttft_ms": 6714.09,
+              "tpot_ms": 883.5,
+              "requests_ok": 16,
+              "requests_total": 16,
               "depth": 0,
               "concurrency": 16,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 18.0,
-              "ttft_ms": 2843.18,
-              "tpot_ms": 868.68,
-              "requests_ok": 16,
-              "requests_total": 16
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 23.78,
+              "decode_toks_per_s_per_req": 1.02,
+              "prefill_toks_per_s": 10.97,
+              "ttft_ms": 47699.1,
+              "tpot_ms": 978.34,
+              "requests_ok": 32,
+              "requests_total": 32,
               "depth": 0,
               "concurrency": 32,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 31.51,
-              "ttft_ms": 4024.02,
-              "tpot_ms": 983.92,
-              "requests_ok": 32,
-              "requests_total": 32
+              "tg": 128
             }
-          ]
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 262144,
+          "meta": {
+            "recipe": "qwen3-6-27b-bf16",
+            "model": "/models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf",
+            "runtime": "llamacpp",
+            "container": "llamacpp",
+            "command": "llama-server -m /models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
+            "image": "ghcr.io/radeon-arena/halo-llamacpp:fe7c8b2414",
+            "image_tag": "fe7c8b2414",
+            "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
+            "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+          },
+          "generated_at": "2026-07-06T07:47:20Z"
         }
       },
       {
