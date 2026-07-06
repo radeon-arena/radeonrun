@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T06:57:29.381330+00:00",
+  "generated_at": "2026-07-06T07:06:07.160657+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "b34580ecc18a67abfc26792a2400b4f1f74dcc44",
-  "short_commit": "b34580e",
+  "commit": "6321feb7e3a76e994e601970abc1e3bacfd3cc99",
+  "short_commit": "6321feb",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -3093,66 +3093,75 @@
         "data": {
           "profile": "halo-arena-v1",
           "framework": "llama-benchy",
-          "generated_at": "2026-06-20T08:04:50Z",
-          "meta": {
-            "recipe": "qwen3-32b-q8-0",
-            "model": "/models/Qwen3-32B/Qwen3-32B-Q8_0.gguf",
-            "runtime": "llama.cpp",
-            "container": "llamacpp",
-            "command": "llama-server -m /models/Qwen3-32B/Qwen3-32B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
-            "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-            "reproduction": {
-              "independent": true,
-              "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-              "note": "✅ 复现成功(单流 TPOT 锚点稳定;高并发吞吐更高,归因新版 llama.cpp)"
-            }
-          },
           "measurements": [
             {
+              "decode_toks_per_s": 6.47,
+              "decode_toks_per_s_per_req": 6.47,
+              "prefill_toks_per_s": 27027.63,
+              "ttft_ms": 173.38,
+              "tpot_ms": 154.44,
+              "requests_ok": 1,
+              "requests_total": 1,
               "depth": 0,
               "concurrency": 1,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 6.46,
-              "ttft_ms": 156.65,
-              "tpot_ms": 154.9,
-              "requests_ok": 1,
-              "requests_total": 1
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 24.69,
+              "decode_toks_per_s_per_req": 6.23,
+              "prefill_toks_per_s": 3444.75,
+              "ttft_ms": 309.17,
+              "tpot_ms": 160.54,
+              "requests_ok": 4,
+              "requests_total": 4,
               "depth": 0,
               "concurrency": 4,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 19.6,
-              "ttft_ms": 4359.07,
-              "tpot_ms": 171.08,
-              "requests_ok": 4,
-              "requests_total": 4
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 74.31,
+              "decode_toks_per_s_per_req": 4.81,
+              "prefill_toks_per_s": 537.12,
+              "ttft_ms": 1161.03,
+              "tpot_ms": 207.8,
+              "requests_ok": 16,
+              "requests_total": 16,
               "depth": 0,
               "concurrency": 16,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 43.16,
-              "ttft_ms": 16463.25,
-              "tpot_ms": 242.21,
-              "requests_ok": 16,
-              "requests_total": 16
+              "tg": 128
             },
             {
+              "decode_toks_per_s": 85.8,
+              "decode_toks_per_s_per_req": 2.78,
+              "prefill_toks_per_s": 296.81,
+              "ttft_ms": 2084.42,
+              "tpot_ms": 359.38,
+              "requests_ok": 32,
+              "requests_total": 32,
               "depth": 0,
               "concurrency": 32,
               "pp": 512,
-              "tg": 128,
-              "decode_toks_per_s": 54.05,
-              "ttft_ms": 24196.07,
-              "tpot_ms": 403.25,
-              "requests_ok": 32,
-              "requests_total": 32
+              "tg": 128
             }
-          ]
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 40960,
+          "meta": {
+            "recipe": "qwen3-32b-q8-0",
+            "model": "/models/Qwen3-32B/Qwen3-32B-Q8_0.gguf",
+            "runtime": "llamacpp",
+            "container": "llamacpp",
+            "command": "llama-server -m /models/Qwen3-32B/Qwen3-32B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
+            "image": "ghcr.io/radeon-arena/halo-llamacpp:fe7c8b2414",
+            "image_tag": "fe7c8b2414",
+            "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
+            "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+          },
+          "generated_at": "2026-07-06T07:06:05Z"
         }
       },
       {
