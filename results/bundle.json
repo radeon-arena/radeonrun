@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T02:52:49.565131+00:00",
+  "generated_at": "2026-07-06T02:53:58.743148+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "8bc7141fcb330557581e1a2661040183536715ae",
-  "short_commit": "8bc7141",
+  "commit": "eeede04b667cb29e42af594f52a20fa4f8c2d07c",
+  "short_commit": "eeede04",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -2767,10 +2767,11 @@
           "framework": "llama-benchy",
           "measurements": [
             {
-              "decode_toks_per_s": 25.28,
-              "decode_toks_per_s_per_req": 25.88,
-              "ttft_ms": 156.05,
-              "tpot_ms": 38.63,
+              "decode_toks_per_s": 25.29,
+              "decode_toks_per_s_per_req": 25.82,
+              "prefill_toks_per_s": 8924.31,
+              "ttft_ms": 96.11,
+              "tpot_ms": 38.74,
               "requests_ok": 1,
               "requests_total": 1,
               "depth": 0,
@@ -2779,10 +2780,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 46.05,
-              "decode_toks_per_s_per_req": 11.72,
-              "ttft_ms": 261.21,
-              "tpot_ms": 85.31,
+              "decode_toks_per_s": 45.58,
+              "decode_toks_per_s_per_req": 11.64,
+              "prefill_toks_per_s": 13407.62,
+              "ttft_ms": 226.34,
+              "tpot_ms": 85.91,
               "requests_ok": 4,
               "requests_total": 4,
               "depth": 0,
@@ -2791,10 +2793,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 226.32,
-              "decode_toks_per_s_per_req": 15.09,
-              "ttft_ms": 594.84,
-              "tpot_ms": 66.28,
+              "decode_toks_per_s": 159.87,
+              "decode_toks_per_s_per_req": 10.39,
+              "prefill_toks_per_s": 10121.85,
+              "ttft_ms": 426.84,
+              "tpot_ms": 96.26,
               "requests_ok": 16,
               "requests_total": 16,
               "depth": 0,
@@ -2803,10 +2806,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 379.38,
-              "decode_toks_per_s_per_req": 12.25,
-              "ttft_ms": 404.26,
-              "tpot_ms": 81.65,
+              "decode_toks_per_s": 239.65,
+              "decode_toks_per_s_per_req": 7.8,
+              "prefill_toks_per_s": 1053.85,
+              "ttft_ms": 626.18,
+              "tpot_ms": 128.17,
               "requests_ok": 32,
               "requests_total": 32,
               "depth": 0,
@@ -2815,17 +2819,20 @@
               "tg": 128
             }
           ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 40960,
           "meta": {
             "recipe": "qwen3-30b-a3b-bf16",
             "model": "/models/Qwen3-30B-A3B-bf16",
             "runtime": "vllm",
             "container": "vllm",
-            "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 2304 --gpu-memory-utilization 0.85",
+            "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
             "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
             "image_tag": "f5fa386fe",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
-          "generated_at": "2026-06-27T08:05:56Z"
+          "generated_at": "2026-07-06T02:53:56Z"
         }
       },
       {
