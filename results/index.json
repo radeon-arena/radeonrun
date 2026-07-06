@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-06T02:24:27.328895+00:00",
+  "generated_at": "2026-07-06T02:29:17.519909+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "01603035e4894153f2de5c7755e7b16f5590937a",
-  "short_commit": "0160303",
+  "commit": "08ad8c653b2037ba7a7411c56ee3fa53d57508cc",
+  "short_commit": "08ad8c6",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
