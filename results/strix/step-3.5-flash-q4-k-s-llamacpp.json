@@ -1,31 +1,73 @@
 {
   "profile": "halo-arena-v1",
   "framework": "llama-benchy",
-  "generated_at": "2026-06-20T08:04:50Z",
-  "meta": {
-    "recipe": "step-3-5-flash-q4-k-s",
-    "model": "/models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf",
-    "runtime": "llama.cpp",
-    "container": "llamacpp",
-    "command": "llama-server -m /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf -ngl 999 -fa on --no-mmap --host 0.0.0.0 --port 8000 -c 32768 -np 32",
-    "gpu": "Radeon 8060S (Strix Halo, gfx1151)",
-    "reproduction": {
-      "independent": true,
-      "tool": "stdlib client equivalent to bench.py (single timed run; mean TTFT/TPOT)",
-      "note": "✅ 复现成功(需特殊内存配置,见下)"
-    }
-  },
   "measurements": [
     {
+      "decode_toks_per_s": 23.53,
+      "decode_toks_per_s_per_req": 23.74,
+      "prefill_toks_per_s": 11034.31,
+      "ttft_ms": 88.52,
+      "tpot_ms": 42.12,
+      "requests_ok": 1,
+      "requests_total": 1,
       "depth": 0,
       "concurrency": 1,
       "pp": 512,
-      "tg": 128,
-      "decode_toks_per_s": 23.55,
-      "ttft_ms": 48.14,
-      "tpot_ms": 42.41,
-      "requests_ok": 1,
-      "requests_total": 1
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 44.27,
+      "decode_toks_per_s_per_req": 11.2,
+      "prefill_toks_per_s": 3714.34,
+      "ttft_ms": 227.09,
+      "tpot_ms": 89.25,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 95.44,
+      "decode_toks_per_s_per_req": 6.33,
+      "prefill_toks_per_s": 491.92,
+      "ttft_ms": 1261.99,
+      "tpot_ms": 158.03,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 117.57,
+      "decode_toks_per_s_per_req": 4.05,
+      "prefill_toks_per_s": 182.57,
+      "ttft_ms": 3233.95,
+      "tpot_ms": 246.8,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
     }
-  ]
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 262144,
+  "meta": {
+    "recipe": "step-3-5-flash-q4-k-s",
+    "model": "/models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "llama-server -m /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf -ngl 999 -fa on --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
+    "image": "ghcr.io/radeon-arena/halo-llamacpp:fe7c8b2414",
+    "image_tag": "fe7c8b2414",
+    "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
+    "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+  },
+  "generated_at": "2026-07-06T08:38:28Z"
 }
