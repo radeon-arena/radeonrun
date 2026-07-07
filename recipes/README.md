@@ -10,6 +10,11 @@ Each recipe is a YAML file specifying:
 - environment variables
 - the serve command (vLLM or llama-server)
 
+Use [`TEMPLATE.md`](TEMPLATE.md) when adding a new recipe. The template keeps the
+serve configuration in the recipe and points benchmark workload settings to
+`benchmarking/*.yaml` / `benchmarking/model-contexts.yaml`, so runtime launch
+parameters do not get mixed with test-profile parameters.
+
 The serve commands in these recipes are **the ones used to produce the
 leaderboard numbers** (independently measured on real gfx1151 hardware). Run one
 with `./run-recipe.py <name>` (or `--print` to show the command), or paste its
@@ -22,10 +27,10 @@ Each recipe is a real serve config measured on real gfx1151 hardware
 `runs.json`); a couple are real serve configs that are not yet benchmarked
 (clearly noted in-file). FLASH_ATTN configs (which fail on gfx1151) are excluded.
 
-**39 recipes** across three image lines:
+**41 recipes** across three image lines:
 
-- **vLLM gfx11** (`container: vllm`, 9): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
-  Quark-W8A8), Qwen3.6-27B (BF16 / Quark), Qwen3-30B-A3B (BF16),
+- **vLLM gfx11** (`container: vllm`, 11): Qwen3.6-35B-A3B (BF16 / AWQ-4bit /
+  Quark-W8A8 / AutoRound INT4), Qwen3.6-27B (BF16 / Quark), Qwen3-30B-A3B (BF16 / YaRN),
   Gemma-4-26B-A4B (BF16 / AWQ-4bit), Gemma-4-31B (Quark-W8A8). vLLM uses
   `--attention-backend TRITON_ATTN` (only stable vLLM attention on gfx1151).
 - **llama.cpp HIP** (`container: llamacpp`, 28): Qwen3 4B/8B/14B/32B,
