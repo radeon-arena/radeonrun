@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T00:44:12.982750+00:00",
+  "generated_at": "2026-07-07T00:54:33.326921+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "58f2a8ef08e409bb5db3acfa8d7cdb23260c865d",
-  "short_commit": "58f2a8e",
+  "commit": "bd0e3edf2460c84cf7c8839a6945af798f2fa196",
+  "short_commit": "bd0e3ed",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -3839,9 +3839,9 @@
             {
               "decode_toks_per_s": 4.15,
               "decode_toks_per_s_per_req": 4.2,
-              "prefill_toks_per_s": 1631.04,
-              "ttft_ms": 552.27,
-              "tpot_ms": 238.36,
+              "prefill_toks_per_s": 1634.1,
+              "ttft_ms": 551.62,
+              "tpot_ms": 238.3,
               "requests_ok": 1,
               "requests_total": 1,
               "depth": 0,
@@ -3852,9 +3852,9 @@
             {
               "decode_toks_per_s": 11.94,
               "decode_toks_per_s_per_req": 3.05,
-              "prefill_toks_per_s": 722.19,
-              "ttft_ms": 1111.05,
-              "tpot_ms": 327.49,
+              "prefill_toks_per_s": 729.06,
+              "ttft_ms": 1104.91,
+              "tpot_ms": 327.42,
               "requests_ok": 4,
               "requests_total": 4,
               "depth": 0,
@@ -3863,11 +3863,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 17.1,
-              "decode_toks_per_s_per_req": 1.13,
-              "prefill_toks_per_s": 133.12,
-              "ttft_ms": 6714.09,
-              "tpot_ms": 883.5,
+              "decode_toks_per_s": 17.2,
+              "decode_toks_per_s_per_req": 1.15,
+              "prefill_toks_per_s": 68.41,
+              "ttft_ms": 8665.71,
+              "tpot_ms": 866.41,
               "requests_ok": 16,
               "requests_total": 16,
               "depth": 0,
@@ -3876,11 +3876,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 23.78,
+              "decode_toks_per_s": 23.21,
               "decode_toks_per_s_per_req": 1.02,
-              "prefill_toks_per_s": 10.97,
-              "ttft_ms": 47699.1,
-              "tpot_ms": 978.34,
+              "prefill_toks_per_s": 10.04,
+              "ttft_ms": 52023.07,
+              "tpot_ms": 978.11,
               "requests_ok": 32,
               "requests_total": 32,
               "depth": 0,
@@ -3903,7 +3903,7 @@
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
-          "generated_at": "2026-07-06T07:47:20Z"
+          "generated_at": "2026-07-07T00:54:31Z"
         }
       },
       {
