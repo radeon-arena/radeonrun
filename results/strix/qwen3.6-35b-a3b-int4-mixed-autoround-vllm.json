@@ -62,10 +62,10 @@
     "recipe": "qwen3-6-35b-a3b-int4-mixed-autoround",
     "model": "/models/Qwen3.6-35B-A3B-int4-mixed-AutoRound",
     "runtime": "vllm",
-    "container": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+    "container": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
     "command": "vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \\ --served-model-name qwen36-int4-mixed \\ --host 0.0.0.0 --port {port} \\ --trust-remote-code \\ --dtype float16 \\ --max-model-len {ctx} \\ --max-num-seqs {nseq} \\ --max-num-batched-tokens 8192 \\ --gpu-memory-utilization 0.85 \\ --attention-backend TRITON_ATTN \\ --mm-encoder-attn-backend TRITON_ATTN \\ --quantization gptq",
-    "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
-    "image_tag": "commit-f5fa386fef78",
+    "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+    "image_tag": "f5fa386fe",
     "image_id": "sha256:9ef42a112badfb0b46a40752acea8b533266e6870e836ed4c677d5688e22fdeb"
   },
   "generated_at": "2026-07-06T04:33:17Z"
