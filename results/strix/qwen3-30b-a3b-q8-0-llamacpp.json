@@ -3,11 +3,11 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 50.13,
-      "decode_toks_per_s_per_req": 50.67,
-      "prefill_toks_per_s": 21575.88,
-      "ttft_ms": 43.47,
-      "tpot_ms": 19.74,
+      "decode_toks_per_s": 50.1,
+      "decode_toks_per_s_per_req": 50.57,
+      "prefill_toks_per_s": 22570.31,
+      "ttft_ms": 42.46,
+      "tpot_ms": 19.77,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -16,11 +16,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 98.98,
-      "decode_toks_per_s_per_req": 25.05,
-      "prefill_toks_per_s": 8489.19,
-      "ttft_ms": 100.24,
-      "tpot_ms": 39.92,
+      "decode_toks_per_s": 98.58,
+      "decode_toks_per_s_per_req": 25.09,
+      "prefill_toks_per_s": 8774.25,
+      "ttft_ms": 98.21,
+      "tpot_ms": 39.86,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -29,11 +29,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 245.69,
-      "decode_toks_per_s_per_req": 17.68,
-      "prefill_toks_per_s": 475.0,
-      "ttft_ms": 1134.6,
-      "tpot_ms": 56.57,
+      "decode_toks_per_s": 237.46,
+      "decode_toks_per_s_per_req": 17.06,
+      "prefill_toks_per_s": 464.0,
+      "ttft_ms": 1162.16,
+      "tpot_ms": 58.63,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -42,11 +42,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 247.01,
-      "decode_toks_per_s_per_req": 8.0,
-      "prefill_toks_per_s": 890.88,
-      "ttft_ms": 699.69,
-      "tpot_ms": 124.97,
+      "decode_toks_per_s": 263.6,
+      "decode_toks_per_s_per_req": 8.46,
+      "prefill_toks_per_s": 1288.74,
+      "ttft_ms": 515.52,
+      "tpot_ms": 118.21,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -69,5 +69,5 @@
     "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
     "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
   },
-  "generated_at": "2026-07-07T00:43:51Z"
+  "generated_at": "2026-07-07T06:55:34Z"
 }
