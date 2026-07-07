@@ -115,9 +115,10 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**40 pre-configured serve commands** live in [`recipes/`](recipes/), each
+**41 pre-configured serve commands** live in [`recipes/`](recipes/), each
 independently measured on real gfx1151 hardware (the `results/strix/` JSON is the
-source of truth). See [recipes/README.md](recipes/README.md). A static recipe
+source of truth). Use [recipes/TEMPLATE.md](recipes/TEMPLATE.md) when adding a
+new recipe. See [recipes/README.md](recipes/README.md). A static recipe
 browser can be generated with:
 
 ```bash
@@ -136,7 +137,7 @@ included GitHub Pages workflow. Examples:
 
 List them all: `./run-recipe.py --list`.
 
-All 40 recipes have been independently re-run on real gfx1151 hardware — see
+All 41 recipes have been independently re-run on real gfx1151 hardware — see
 [8. Reproduction](#8-reproduction).
 
 Radeon Arena (the website) reads the browser-facing bundle committed here:
