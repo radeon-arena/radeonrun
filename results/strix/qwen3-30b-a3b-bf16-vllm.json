@@ -3,11 +3,11 @@
   "framework": "llama-benchy",
   "measurements": [
     {
-      "decode_toks_per_s": 25.29,
-      "decode_toks_per_s_per_req": 25.82,
-      "prefill_toks_per_s": 8924.31,
-      "ttft_ms": 96.11,
-      "tpot_ms": 38.74,
+      "decode_toks_per_s": 25.25,
+      "decode_toks_per_s_per_req": 25.78,
+      "prefill_toks_per_s": 8954.93,
+      "ttft_ms": 95.97,
+      "tpot_ms": 38.8,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -16,11 +16,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 45.58,
-      "decode_toks_per_s_per_req": 11.64,
-      "prefill_toks_per_s": 13407.62,
-      "ttft_ms": 226.34,
-      "tpot_ms": 85.91,
+      "decode_toks_per_s": 45.52,
+      "decode_toks_per_s_per_req": 11.63,
+      "prefill_toks_per_s": 13241.54,
+      "ttft_ms": 237.46,
+      "tpot_ms": 85.95,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -29,11 +29,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 159.87,
-      "decode_toks_per_s_per_req": 10.39,
-      "prefill_toks_per_s": 10121.85,
-      "ttft_ms": 426.84,
-      "tpot_ms": 96.26,
+      "decode_toks_per_s": 158.32,
+      "decode_toks_per_s_per_req": 10.42,
+      "prefill_toks_per_s": 6456.49,
+      "ttft_ms": 487.67,
+      "tpot_ms": 96.01,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -42,11 +42,11 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 239.65,
-      "decode_toks_per_s_per_req": 7.8,
-      "prefill_toks_per_s": 1053.85,
-      "ttft_ms": 626.18,
-      "tpot_ms": 128.17,
+      "decode_toks_per_s": 231.67,
+      "decode_toks_per_s_per_req": 7.58,
+      "prefill_toks_per_s": 831.34,
+      "ttft_ms": 748.74,
+      "tpot_ms": 131.9,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -68,5 +68,5 @@
     "image_tag": "f5fa386fe",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
-  "generated_at": "2026-07-06T02:53:56Z"
+  "generated_at": "2026-07-07T00:23:22Z"
 }
