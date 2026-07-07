@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-07-07T00:33:24.319967+00:00",
+  "generated_at": "2026-07-07T00:44:12.982750+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "74a69d4b133a0d37ae51e8da69c2c44498fb9143",
-  "short_commit": "74a69d4",
+  "commit": "58f2a8ef08e409bb5db3acfa8d7cdb23260c865d",
+  "short_commit": "58f2a8e",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -2787,11 +2787,11 @@
           "framework": "llama-benchy",
           "measurements": [
             {
-              "decode_toks_per_s": 49.93,
-              "decode_toks_per_s_per_req": 50.5,
-              "prefill_toks_per_s": 19776.77,
-              "ttft_ms": 45.69,
-              "tpot_ms": 19.8,
+              "decode_toks_per_s": 50.13,
+              "decode_toks_per_s_per_req": 50.67,
+              "prefill_toks_per_s": 21575.88,
+              "ttft_ms": 43.47,
+              "tpot_ms": 19.74,
               "requests_ok": 1,
               "requests_total": 1,
               "depth": 0,
@@ -2800,11 +2800,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 99.24,
-              "decode_toks_per_s_per_req": 25.13,
-              "prefill_toks_per_s": 8407.79,
-              "ttft_ms": 100.7,
-              "tpot_ms": 39.79,
+              "decode_toks_per_s": 98.98,
+              "decode_toks_per_s_per_req": 25.05,
+              "prefill_toks_per_s": 8489.19,
+              "ttft_ms": 100.24,
+              "tpot_ms": 39.92,
               "requests_ok": 4,
               "requests_total": 4,
               "depth": 0,
@@ -2813,11 +2813,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 237.95,
-              "decode_toks_per_s_per_req": 16.99,
-              "prefill_toks_per_s": 483.38,
-              "ttft_ms": 1118.15,
-              "tpot_ms": 58.84,
+              "decode_toks_per_s": 245.69,
+              "decode_toks_per_s_per_req": 17.68,
+              "prefill_toks_per_s": 475.0,
+              "ttft_ms": 1134.6,
+              "tpot_ms": 56.57,
               "requests_ok": 16,
               "requests_total": 16,
               "depth": 0,
@@ -2826,11 +2826,11 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 257.96,
-              "decode_toks_per_s_per_req": 8.37,
-              "prefill_toks_per_s": 893.87,
-              "ttft_ms": 692.28,
-              "tpot_ms": 119.48,
+              "decode_toks_per_s": 247.01,
+              "decode_toks_per_s_per_req": 8.0,
+              "prefill_toks_per_s": 890.88,
+              "ttft_ms": 699.69,
+              "tpot_ms": 124.97,
               "requests_ok": 32,
               "requests_total": 32,
               "depth": 0,
@@ -2853,7 +2853,7 @@
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
-          "generated_at": "2026-07-06T04:22:37Z"
+          "generated_at": "2026-07-07T00:43:51Z"
         }
       },
       {
