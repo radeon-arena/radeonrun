@@ -15,6 +15,12 @@ serve configuration in the recipe and points benchmark workload settings to
 `benchmarking/*.yaml` / `benchmarking/model-contexts.yaml`, so runtime launch
 parameters do not get mixed with test-profile parameters.
 
+The public recipe browser is part of Radeon Arena:
+
+```text
+https://radeon-arena.com/strix/recipes/
+```
+
 The serve commands in these recipes are **the ones used to produce the
 leaderboard numbers** (independently measured on real gfx1151 hardware). Run one
 with `./run-recipe.py <name>` (or `--print` to show the command), or paste its
