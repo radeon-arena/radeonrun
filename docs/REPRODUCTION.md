@@ -1,10 +1,10 @@
-# Reproduction — independent verification of every recipe
+# Reproduction — independent verification snapshot
 
-Every `recipes/*.yaml` in this repo was independently re-run on real AMD
-Strix Halo (gfx1151) hardware and the measured numbers committed as native
-result files under [`results/strix/`](../results/strix/) (the same schema the
-site ingests). This page is the human-readable summary; the JSON files are the
-source of truth for the numbers.
+The original recipe set in this repo was independently re-run on real AMD Strix
+Halo (gfx1151) hardware and the measured numbers committed as native result
+files under [`results/strix/`](../results/strix/) (the same schema the site
+ingests). This page is the human-readable snapshot for that reproduction pass;
+the JSON files are the source of truth for current numbers.
 
 To reproduce one of these results yourself, use [`../REPRODUCE.md`](../REPRODUCE.md).
 It explains the local `run-recipe.py` flow, the self-hosted GitHub Actions flow,
@@ -27,7 +27,7 @@ reference JSON.
 - Anchor for "reproduced" = **C=1 single-stream TPOT** (unambiguous, scheduler-
   independent). High-concurrency throughput is reported but treated as
   version/kernel-dependent, not a 1:1 match.
-- Each result file carries a `meta.reproduction` block (independent flag, the
+- Reproduced result files carry a `meta.reproduction` block (independent flag, the
   actual quantized weights used where the recipe's are not public, the gfx1151
   host, and a one-line verdict).
 
@@ -40,7 +40,14 @@ physically impossible. The verdicts below are based on this repo's own
 `results/strix/` measurements (the real per-concurrency numbers), **not** the
 templated value.
 
-## Results (39 recipes)
+## Results (39-recipe reproduction snapshot)
+
+This table is the original independent reproduction snapshot. The current
+`results/strix/` directory contains 41 result JSON files; the two newer entries
+(`qwen3-30b-a3b-bf16-yarn-vllm` and
+`qwen3.6-35b-a3b-int4-mixed-autoround-vllm`) are tracked in the JSON source of
+truth and the public Recipes page, but are not backfilled into this historical
+summary table yet.
 
 | Recipe | Engine | C=1 (decode/TPOT) | C=32 decode | Verdict | JSON |
 |---|---|---|---|---|---|

@@ -118,15 +118,20 @@ APU and our experience is single-node only.
 **41 pre-configured serve commands** live in [`recipes/`](recipes/), each
 independently measured on real gfx1151 hardware (the `results/strix/` JSON is the
 source of truth). Use [recipes/TEMPLATE.md](recipes/TEMPLATE.md) when adding a
-new recipe. See [recipes/README.md](recipes/README.md). A static recipe
-browser can be generated with:
+new recipe. See [recipes/README.md](recipes/README.md). The public recipe
+browser lives on Radeon Arena:
+
+```text
+https://radeon-arena.com/strix/recipes/
+```
+
+A standalone local HTML browser can still be generated with:
 
 ```bash
 python3 scripts/build-recipe-site.py --out docs/recipes.html
 ```
 
-Open [`docs/recipes.html`](docs/recipes.html) locally, or publish it with the
-included GitHub Pages workflow. Examples:
+Open [`docs/recipes.html`](docs/recipes.html) locally for offline review. Examples:
 
 - `qwen3.6-35b-a3b-bf16-vllm`, `qwen3.6-35b-a3b-awq-4bit-vllm`,
   `qwen3.6-35b-a3b-quark-w8a8-int8-vllm` (vLLM gfx11, TRITON_ATTN)
@@ -206,11 +211,11 @@ community project for running vLLM / llama.cpp on AMD Radeon GPUs via ROCm.
 ## CHANGELOG
 
 ### Unreleased
-- vLLM + llama.cpp images for gfx1151; **40 serve recipes** (incl. DiffusionGemma
+- vLLM + llama.cpp images for gfx1151; **41 serve recipes** (incl. DiffusionGemma
   BF16 + AWQ-INT4 on the upstream-main image), each independently measured on real
   gfx1151 hardware; solo launcher with ROCm passthrough; build fix for the gfx11
   C++23 `std::in_range`; gfx1151 notes.
-- All 40 recipes independently reproduced on real gfx1151 hardware →
+- All 41 recipes independently reproduced/recorded on real gfx1151 hardware →
   [`results/strix/`](results/strix/) + [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md).
 - `reproduce.yml` now auto-commits reproduced result JSON and regenerated
   `results/index.json` / `results/bundle.json`; `validate-results.yml` verifies
