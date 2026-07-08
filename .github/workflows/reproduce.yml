@@ -37,7 +37,21 @@ jobs:
   reproduce:
     runs-on: ${{ fromJSON(inputs.device == 'r9700' && '["self-hosted","gfx1201"]' || inputs.device == 'w7900' && '["self-hosted","gfx1100"]' || '["self-hosted","gfx1151"]') }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository via codeload tarball
+        run: |
+          set -euo pipefail
+          rm -rf ./* ./.??* 2>/dev/null || true
+          curl -fL --connect-timeout 20 --max-time 120 \
+            -o /tmp/radeonrun-${GITHUB_RUN_ID}.tgz \
+            "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/${GITHUB_SHA}"
+          tar -xzf /tmp/radeonrun-${GITHUB_RUN_ID}.tgz --strip-components=1
+          git init
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git checkout -B "${GITHUB_REF_NAME:-main}"
+          git add .
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m "checkout ${GITHUB_SHA}" >/dev/null
 
       - name: Install runner deps (hf CLI + PyYAML + XET)
         run: |
