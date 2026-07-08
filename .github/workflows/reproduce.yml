@@ -22,12 +22,6 @@ on:
         default: halo
         type: choice
         options: [halo, w7900, r9700]
-      runner:
-        description: "Self-hosted runner target (halo only)"
-        required: true
-        default: any
-        type: choice
-        options: [any, halo3-gfx1151, halo4-gfx1151, halo5-gfx1151, halo6-gfx1151]
       profile:
         description: "Benchmark profile"
         required: true
@@ -41,7 +35,7 @@ permissions:
 
 jobs:
   reproduce:
-    runs-on: ${{ inputs.runner == 'any' && fromJSON('["self-hosted","gfx1151"]') || fromJSON(format('["self-hosted","{0}"]', inputs.runner)) }}
+    runs-on: [self-hosted, gfx1151]
     steps:
       - uses: actions/checkout@v4
 
@@ -55,10 +49,6 @@ jobs:
 
       - name: Reproduce — setup (build+push image, download model) → serve → bench → teardown
         env:
-          # Optional — every recipe's model repo is currently fully public
-          # (verified: unsloth / Qwen / google / stepfun-ai / cyankiwi / nameistoken
-          # all download without a token). Kept only for a future private model.
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
           MODELS_DIR: ${{ runner.temp }}/models    # per-job scratch; --cleanup also wipes it
         run: |
           if [ "${{ inputs.device }}" = "halo" ]; then
@@ -109,22 +99,6 @@ jobs:
           done
           echo "Failed to push reproduced result after retries" >&2
           exit 1
-
-      - name: Trigger Radeon Arena Pages rebuild
-        if: success()
-        env:
-          ARENA_PAGES_PAT: ${{ secrets.ARENA_PAGES_PAT }}
-        run: |
-          if [ -z "${ARENA_PAGES_PAT:-}" ]; then
-            echo "ARENA_PAGES_PAT is not configured; skip cross-repo Pages rebuild."
-            exit 0
-          fi
-          curl -fsS -X POST \
-            -H "Authorization: Bearer $ARENA_PAGES_PAT" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/radeon-arena/radeon-arena/actions/workflows/pages.yml/dispatches \
-            -d '{"ref":"main"}'
 
       - name: Upload result JSON
         if: always()
