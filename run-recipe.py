@@ -74,7 +74,13 @@ def _resolve_container(recipe: dict, device: str, tag: str | None = None) -> str
     an unknown engine (e.g. a third-party image), so external refs are honored.
     """
     raw = str(recipe.get("container") or "").strip()
-    tag = str(tag or recipe.get("image_tag") or "latest").strip()
+    # Recipe image_tag pins were measured on the recipe's original device
+    # (currently Strix Halo). Do not apply a Halo image pin to W7900/R9700:
+    # those images have different device prefixes and may not exist yet. For a
+    # non-Halo reproduction, use an explicit --tag if the caller wants a pin;
+    # otherwise build/pull that device's :latest and record its provenance.
+    recipe_tag = recipe.get("image_tag") if device == "halo" else None
+    tag = str(tag or recipe_tag or "latest").strip()
     engine = _engine_of(recipe, raw)
     if engine:
         return f"{ORG}/{device}-{ENGINE_IMAGE[engine]}:{tag}"
