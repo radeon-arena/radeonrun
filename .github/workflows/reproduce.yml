@@ -35,7 +35,7 @@ permissions:
 
 jobs:
   reproduce:
-    runs-on: [self-hosted, gfx1151]
+    runs-on: ${{ fromJSON(inputs.device == 'r9700' && '["self-hosted","gfx1201"]' || inputs.device == 'w7900' && '["self-hosted","gfx1100"]' || '["self-hosted","gfx1151"]') }}
     steps:
       - uses: actions/checkout@v4
 
