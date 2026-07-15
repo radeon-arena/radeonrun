@@ -13,10 +13,14 @@ Examples:
 """
 
 import argparse
+import functools
 import json
 import os
 import re
+import shlex
+import shutil
 import socket
+import subprocess
 import sys
 from pathlib import Path
 
@@ -53,6 +57,31 @@ _ENGINE_ALIASES = {
     "vllm-main": "vllm-main",
     "llamacpp": "llamacpp",
 }
+
+
+@functools.lru_cache(maxsize=1)
+def _docker_cmd() -> tuple[str, ...]:
+    """Return a working Docker command for the current runner user."""
+    explicit = os.environ.get("RADEONRUN_DOCKER", "").strip()
+    candidates = [shlex.split(explicit)] if explicit else [["docker"], ["sudo", "-n", "docker"]]
+    for candidate in candidates:
+        if not candidate or shutil.which(candidate[0]) is None:
+            continue
+        try:
+            probe = subprocess.run(
+                [*candidate, "info"], stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL, timeout=30, check=False,
+            )
+        except (OSError, subprocess.SubprocessError):
+            continue
+        if probe.returncode == 0:
+            return tuple(candidate)
+    hint = f" from RADEONRUN_DOCKER={explicit!r}" if explicit else ""
+    raise RuntimeError(f"no usable Docker command{hint}; tried docker and sudo -n docker")
+
+
+def _docker(*args: str) -> list[str]:
+    return [*_docker_cmd(), *args]
 
 
 def _engine_of(recipe, container):
@@ -102,12 +131,11 @@ def _image_provenance(container: str) -> dict:
     reproducible build instead of a moving `:latest` tag. Best-effort: any
     piece that cannot be resolved is simply omitted.
     """
-    import subprocess
     prov = {"image": container, "image_requested": container}
     prov["image_tag"] = image_tag(container) or "latest"
     try:
         r = subprocess.run(
-            ["docker", "image", "inspect", container],
+            _docker("image", "inspect", container),
             capture_output=True, text=True, timeout=30)
         if r.returncode == 0 and r.stdout.strip():
             inspected = json.loads(r.stdout)[0]
@@ -125,7 +153,7 @@ def _image_provenance(container: str) -> dict:
     for path in ("/app/commit.txt", "/commit.txt"):
         try:
             r = subprocess.run(
-                ["docker", "run", "--rm", "--pull=never", "--entrypoint", "cat", container, path],
+                _docker("run", "--rm", "--pull=never", "--entrypoint", "cat", container, path),
                 capture_output=True, text=True, timeout=60)
             if r.returncode == 0 and r.stdout.strip():
                 prov["image_commit"] = r.stdout.strip().splitlines()[0].strip()
@@ -284,7 +312,6 @@ def ensure_image(container: str, recipe: dict, device: str,
     different binary mislabeled with that commit and silently corrupt the
     leaderboard pin, so `--build` is ignored for pinned tags.
     """
-    import subprocess
     null = subprocess.DEVNULL
     build_config = image_build_config(recipe, device)
     if build_config is None:
@@ -293,11 +320,11 @@ def ensure_image(container: str, recipe: dict, device: str,
         pull = True
     if pull_policy == "always":
         pull = True
-    present = subprocess.call(["docker", "image", "inspect", container],
+    present = subprocess.call(_docker("image", "inspect", container),
                               stdout=null, stderr=null) == 0
     if pull_policy == "always" and pull:
         print(f"[image] refreshing {container}")
-        if subprocess.call(["docker", "pull", container]) == 0:
+        if subprocess.call(_docker("pull", container)) == 0:
             return 0
         if present:
             print(f"[image] refresh failed; keeping local image: {container}", file=sys.stderr)
@@ -317,7 +344,7 @@ def ensure_image(container: str, recipe: dict, device: str,
         pull, build = True, False
     if pull:
         print(f"[image] pulling {container}")
-        if subprocess.call(["docker", "pull", container]) == 0:
+        if subprocess.call(_docker("pull", container)) == 0:
             return 0
         print("[image] pull failed; building from dockerfiles/ instead")
     if not build:
@@ -686,7 +713,7 @@ def main() -> int:
     prefix = _env_prefix(recipe)
     if prefix:
         inner = f"env {prefix} {inner}"
-    if _engine_of(recipe, container) == "llamacpp":
+    if _engine_of(recipe, container) == "llamacpp" and "LD_LIBRARY_PATH" not in (recipe.get("env") or {}):
         inner = f"env LD_LIBRARY_PATH=/app {inner}"
     # Own the container name so teardown removes the exact container we launched
     # (and distinct recipes don't collide on a shared default name).
@@ -875,7 +902,7 @@ def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
         # the client above leaves the detached server container running (holding
         # the name + port), which would poison the NEXT recipe's benchmark. Remove
         # the exact container we launched (run-recipe owns the name via CONTAINER).
-        subprocess.run(["docker", "rm", "-f", container_name],
+        subprocess.run(_docker("rm", "-f", container_name),
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
 
 

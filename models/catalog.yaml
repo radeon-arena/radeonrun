@@ -34,6 +34,7 @@ models:
   qwen3-4b-bf16-llamacpp: {path: /models/Qwen3-4B/Qwen3-4B-BF16.gguf, source: unsloth/Qwen3-4B-GGUF, quantization: BF16}
   qwen3-4b-q4-k-m-llamacpp: {path: /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf, source: unsloth/Qwen3-4B-GGUF, quantization: Q4_K_M}
   qwen3-4b-q8-0-llamacpp: {path: /models/Qwen3-4B/Qwen3-4B-Q8_0.gguf, source: unsloth/Qwen3-4B-GGUF, quantization: Q8_0}
+  qwen3-4b-bf16-vllm-r9700: {name: Qwen3-4B, path: /models/Qwen3-4B-BF16, source: Qwen/Qwen3-4B, served_name: qwen3-4b, quantization: BF16, benchmark_ctx: 32768}
   qwen3-8b-bf16-llamacpp: {path: /models/Qwen3-8B/Qwen3-8B-BF16.gguf, source: unsloth/Qwen3-8B-GGUF, quantization: BF16}
   qwen3-8b-q4-k-m-llamacpp: {path: /models/Qwen3-8B/Qwen3-8B-Q4_K_M.gguf, source: unsloth/Qwen3-8B-GGUF, quantization: Q4_K_M}
   qwen3-8b-q8-0-llamacpp: {path: /models/Qwen3-8B/Qwen3-8B-Q8_0.gguf, source: unsloth/Qwen3-8B-GGUF, quantization: Q8_0}

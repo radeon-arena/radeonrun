@@ -9,7 +9,7 @@ framework; the target GPU is selected by a device profile in [`devices/`](device
 |---|---|---|
 | `halo` — Strix Halo (Radeon 8060S iGPU, RDNA 3.5) | `gfx1151` | ✅ verified |
 | `w7900` — Radeon PRO W7900 (RDNA3) | `gfx1100` | ⚠️ placeholder, unverified |
-| `r9700` — Radeon AI PRO R9700 (RDNA4) | `gfx1201` | ⚠️ base image TBD |
+| `r9700` — Radeon AI PRO R9700 (RDNA4) | `gfx1201` | ✅ runner + pinned vLLM/llama.cpp launches |
 
 RadeonRun-maintained images default to
 **`ghcr.io/radeon-arena/<device>-<framework>:<commit>`**, but runs are
@@ -116,7 +116,7 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**41 pre-configured run matrices** combine reusable specs from
+**44 pre-configured run matrices** combine reusable specs from
 [`models/`](models/), [`launches/`](launches/), [`devices/`](devices/) and
 [`benchmarking/`](benchmarking/). Legacy [`recipes/`](recipes/) remain as a
 compatibility view for existing links and consumers. Read
@@ -142,6 +142,8 @@ Open [`docs/recipes.html`](docs/recipes.html) locally for offline review. Exampl
 - `qwen3-32b-q8-0-llamacpp`, `qwen3.6-35b-a3b-ud-q4-k-m-llamacpp`,
   `mimo-v2.5-ud-q2-k-xl-llamacpp` (llama.cpp HIP)
 - `diffusiongemma-26b-a4b-bf16` / `-awq-int4` (vLLM **upstream-main** image; needs `--main` build)
+- `qwen3-4b-q4-k-m-llamacpp-r9700`, `qwen3-4b-bf16-vllm-r9700`,
+  `qwen3.6-27b-bf16-vllm-r9700-tp2` (digest-pinned gfx1201 launches)
 
 List them all: `./run-recipe.py --list`.
 

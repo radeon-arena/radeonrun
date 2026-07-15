@@ -136,6 +136,35 @@ runner, not how many a result used. Actual tensor parallelism, visible-device
 selection and multi-GPU flags belong to the Launch axis and are captured by the
 rendered command/environment.
 
+### R9700 / gfx1201
+
+R9700 runs use dedicated matrices and digest-pinned InferStation runtime images;
+do not take a Halo matrix and only override `--device r9700`. Current launch
+specs are:
+
+| Launch | GPUs | Runtime |
+|---|---:|---|
+| `r9700-llamacpp-hip` | 1 | llama.cpp HIP |
+| `r9700-vllm-tp1` | 1 | vLLM |
+| `r9700-vllm-tp2` | 2 | vLLM TP2 |
+| `r9700-vllm-tp4` | 4 | vLLM TP4 |
+
+Every R9700 launch declares `topology.node_count`, `gpu_count` and
+`tensor_parallel_size`. TP>1 also requires:
+
+```yaml
+env:
+  NCCL_PROTO: Simple
+  NCCL_P2P_DISABLE: "1"
+```
+
+The workflow rejects R9700 jobs whose matrix targets another device, or whose
+effective image is not pinned with `@sha256:`. Models are retained under
+`/home/lkang/radeonrun-models-r9700` so large checkpoints and Triton caches are
+not downloaded/compiled again for every run. The runner user may lack direct
+Docker socket access; scripts automatically fall back to `sudo -n docker`, or
+accept an explicit `RADEONRUN_DOCKER` command.
+
 ## Validation
 
 Run all schema, compatibility, result and bundle checks with:

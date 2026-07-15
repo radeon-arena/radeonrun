@@ -24,3 +24,8 @@ jobs:
         run: python scripts/validate-configs.py
       - name: Test standalone matrix resolution
         run: python scripts/test-configs.py
+      - name: Test Docker command selection
+        run: python scripts/test-docker-command.py
+      - name: Test GPU idle parser
+        run: |
+          python -c 'from scripts.check_gpu_idle import gpu_use_values; assert gpu_use_values("GPU[0] : GPU use (%): 7\nGPU[1] : GPU use (%): 0") == [7, 0]'

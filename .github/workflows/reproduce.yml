@@ -75,16 +75,53 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Log in to ghcr (for RadeonRun defaults; external registries use runner credentials)
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+        run: |
+          docker_cmd=(docker)
+          docker info >/dev/null 2>&1 || docker_cmd=(sudo -n docker)
+          echo "${{ secrets.GITHUB_TOKEN }}" | "${docker_cmd[@]}" login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Reproduce — setup (build+push image, download model) → serve → bench → teardown
-        env:
-          MODELS_DIR: ${{ runner.temp }}/models    # per-job scratch; --cleanup also wipes it
         run: |
-          if [ "${{ inputs.device }}" = "halo" ]; then
+          device="${{ inputs.device }}"
+          cleanup=()
+          case "$device" in
+            halo)
+              MODELS_DIR="${RUNNER_TEMP}/models"
+              cleanup=(--cleanup)
+              ;;
+            w7900)
+              MODELS_DIR="/home/lkang/radeonrun-models-w7900d2"
+              ;;
+            r9700)
+              MODELS_DIR="/home/lkang/radeonrun-models-r9700"
+              export RADEONRUN_DOCKER="sudo -n docker"
+              ;;
+          esac
+          export MODELS_DIR
+            python3 - "${{ inputs.recipe }}" "$device" "${{ inputs.image }}" <<'PY'
+            import sys
+            from radeonrun_config import load_run_config, resolve_image
+
+            recipe_id, requested_device, image_override = sys.argv[1:]
+            config = load_run_config(recipe_id)
+            matrix_device = str((config.get("_device") or {}).get("id") or "halo")
+            if requested_device == "r9700" and matrix_device != "r9700":
+              raise SystemExit(
+                f"R9700 requires a dedicated device:r9700 matrix; {recipe_id} targets {matrix_device}"
+              )
+            image = resolve_image(config, requested_device, image_override=image_override or None)
+            if requested_device == "r9700" and "@sha256:" not in image:
+              raise SystemExit(f"R9700 image must be digest-pinned, got {image}")
+            print(f"preflight: matrix={recipe_id} device={requested_device} image={image}")
+            PY
+          if [ "$device" = "halo" ]; then
             sync
             sudo -n sh -c 'echo 3 > /proc/sys/vm/drop_caches' || true
             free -h
+          elif [ "$device" = "r9700" ]; then
+            python3 scripts/check_gpu_idle.py --expected-gpus 8 --max-use 10
+          elif [ "$device" = "w7900" ]; then
+            python3 scripts/check_gpu_idle.py --expected-gpus 2 --max-use 10
           fi
           mkdir -p "$MODELS_DIR" results
           args=(
@@ -94,7 +131,8 @@ jobs:
             --out results/
             --registry "${{ inputs.registry }}"
             --pull-policy "${{ inputs.pull_policy }}"
-            --build --push --cleanup
+            --build --push
+            "${cleanup[@]}"
           )
           if [ -n "${{ inputs.image }}" ]; then
             args+=(--image "${{ inputs.image }}")

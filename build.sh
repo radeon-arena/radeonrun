@@ -30,6 +30,18 @@ IMAGE_TAG=""
 PUSH=0
 REGISTRY="${RADEONRUN_IMAGE_REGISTRY:-ghcr.io/radeon-arena}"
 
+docker_cmd=()
+if [[ -n "${RADEONRUN_DOCKER:-}" ]]; then
+  read -r -a docker_cmd <<<"${RADEONRUN_DOCKER}"
+elif docker info >/dev/null 2>&1; then
+  docker_cmd=(docker)
+elif sudo -n docker info >/dev/null 2>&1; then
+  docker_cmd=(sudo -n docker)
+else
+  echo "No usable Docker command; tried docker and sudo -n docker" >&2
+  exit 1
+fi
+
 usage() { sed -n '3,25p' "$0"; exit "${1:-0}"; }
 
 while [[ $# -gt 0 ]]; do
@@ -106,12 +118,12 @@ echo "  dockerfile: ${DOCKERFILE}"
 # --network=host: the build's apt-get needs DNS; on hosts using systemd-resolved
 # (127.0.0.53 stub) the default bridge build network can't resolve, so share the
 # host network namespace for the build.
-( cd "$SCRIPT_DIR" && docker build --network=host -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "$LATEST_TAG" "${BUILD_ARGS[@]}" . )
+( cd "$SCRIPT_DIR" && "${docker_cmd[@]}" build --network=host -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "$LATEST_TAG" "${BUILD_ARGS[@]}" . )
 
 echo "Done: ${IMAGE_TAG}"
 if [[ "$PUSH" == "1" ]]; then
   echo "Pushing ${IMAGE_TAG} and ${LATEST_TAG} ..."
-  if docker push "$IMAGE_TAG" && docker push "$LATEST_TAG"; then
+  if "${docker_cmd[@]}" push "$IMAGE_TAG" && "${docker_cmd[@]}" push "$LATEST_TAG"; then
     echo "Pushed: ${IMAGE_TAG} (+ :latest)"
   else
     echo "WARNING: push failed -- image is built and usable locally, but not synced to ghcr." >&2

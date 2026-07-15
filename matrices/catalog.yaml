@@ -41,3 +41,27 @@ matrices:
   qwen3.6-35b-a3b-quark-w8a8-int8-vllm: {model: qwen3.6-35b-a3b-quark-w8a8-int8-vllm, launch: {ref: vllm-quark, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
   qwen3.6-35b-a3b-ud-q4-k-m-llamacpp: {model: qwen3.6-35b-a3b-ud-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
   step-3.5-flash-q4-k-s-llamacpp: {model: step-3.5-flash-q4-k-s-llamacpp, launch: {ref: llamacpp-hip-no-mmap, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+
+  qwen3-4b-q4-k-m-llamacpp-r9700:
+    name: Qwen3-4B
+    description: llama.cpp HIP serving Qwen3-4B Q4_K_M on one Radeon AI PRO R9700
+    model: qwen3-4b-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3-4b-bf16-vllm-r9700:
+    name: Qwen3-4B
+    description: vLLM serving Qwen3-4B BF16 on one Radeon AI PRO R9700
+    model: qwen3-4b-bf16-vllm-r9700
+    launch: r9700-vllm-tp1
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-27b-bf16-vllm-r9700-tp2:
+    name: Qwen3.6-27B
+    description: vLLM TP2 serving Qwen3.6-27B BF16 on two Radeon AI PRO R9700 GPUs
+    model: qwen3.6-27b-bf16-vllm
+    launch: r9700-vllm-tp2
+    device: r9700
+    benchmark: halo-arena-v1
