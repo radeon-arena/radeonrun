@@ -165,3 +165,80 @@ launches:
       --generation-config vllm
       --hf-overrides '{"diffusion_sampler":"entropy_bound","diffusion_entropy_bound":0.1}'
       --diffusion-config '{"canvas_length":256}'
+
+  r9700-llamacpp-hip:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5
+    topology: {node_count: 1, gpu_count: 1, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0"
+      ROCR_VISIBLE_DEVICES: "0"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+
+  r9700-vllm-tp1:
+    runtime: vllm
+    backend: ROCm/HIP · TRITON_ATTN
+    container: vllm
+    image:
+      ref: ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1
+    topology: {node_count: 1, gpu_count: 1, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 8192}
+    env:
+      HIP_VISIBLE_DEVICES: "0"
+      ROCR_VISIBLE_DEVICES: "0"
+      TRITON_CACHE_DIR: /models/.triton-cache
+    mods: []
+    command: >-
+      vllm serve {model.path} --served-model-name {model.served_name}
+      --host {host} --port {port} --trust-remote-code --dtype bfloat16
+      --max-model-len {ctx} --max-num-seqs {nseq} --gpu-memory-utilization 0.85
+      --attention-backend TRITON_ATTN
+
+  r9700-vllm-tp2:
+    runtime: vllm
+    backend: ROCm/HIP · TRITON_ATTN
+    container: vllm
+    image:
+      ref: ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1
+    topology: {node_count: 1, gpu_count: 2, tensor_parallel_size: 2}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 2304}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1"
+      ROCR_VISIBLE_DEVICES: "0,1"
+      NCCL_PROTO: Simple
+      NCCL_P2P_DISABLE: "1"
+      TRITON_CACHE_DIR: /models/.triton-cache
+    mods: []
+    command: >-
+      vllm serve {model.path} --served-model-name {model.served_name}
+      --host {host} --port {port} --trust-remote-code --dtype bfloat16
+      --max-model-len {ctx} --max-num-seqs {nseq} --gpu-memory-utilization 0.85
+      --attention-backend TRITON_ATTN --tensor-parallel-size 2
+
+  r9700-vllm-tp4:
+    runtime: vllm
+    backend: ROCm/HIP · TRITON_ATTN
+    container: vllm
+    image:
+      ref: ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1
+    topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 4}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 2304}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1,2,3"
+      ROCR_VISIBLE_DEVICES: "0,1,2,3"
+      NCCL_PROTO: Simple
+      NCCL_P2P_DISABLE: "1"
+      TRITON_CACHE_DIR: /models/.triton-cache
+    mods: []
+    command: >-
+      vllm serve {model.path} --served-model-name {model.served_name}
+      --host {host} --port {port} --trust-remote-code --dtype bfloat16
+      --max-model-len {ctx} --max-num-seqs {nseq} --gpu-memory-utilization 0.85
+      --attention-backend TRITON_ATTN --tensor-parallel-size 4

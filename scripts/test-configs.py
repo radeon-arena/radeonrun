@@ -43,6 +43,7 @@ def main() -> int:
             dump(config.LAUNCHES_DIR / "launch-a.yaml", {
                 "id": "launch-a", "runtime": "vllm", "container": "vllm",
                 "image": {"ref": "quay.io/acme/vllm@sha256:deadbeef"},
+                "topology": {"node_count": 1, "gpu_count": 1, "tensor_parallel_size": 1},
                 "defaults": {"host": "0.0.0.0", "port": 8000, "ctx": 4096, "nseq": 2},
                 "command": "vllm serve {model.path} --served-model-name {model.served_name} --host {host} --port {port} --max-model-len {ctx} --max-num-seqs {nseq}",
             })

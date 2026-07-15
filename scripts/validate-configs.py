@@ -54,11 +54,44 @@ def validate_configs(errors: list[str]) -> None:
                 if not isinstance(config.get(axis), dict):
                     error(f"{name}: matrix missing resolved {axis}", errors)
         try:
-            default_image = resolve_image(config, str((config.get("_device") or {}).get("id") or "halo"))
+            device_id = str((config.get("_device") or {}).get("id") or "halo")
+            default_image = resolve_image(config, device_id)
             if not default_image:
                 error(f"{name}: no resolved image", errors)
         except ConfigError as exc:
             error(f"{name}: image resolution failed: {exc}", errors)
+            default_image = ""
+            device_id = ""
+
+        launch = config.get("_launch") or {}
+        topology = launch.get("topology") or {}
+        gpu_count = int(topology.get("gpu_count") or 1)
+        tp = int(topology.get("tensor_parallel_size") or 1)
+        node_count = int(topology.get("node_count") or 1)
+        env = config.get("env") or {}
+        if min(gpu_count, tp, node_count) < 1:
+            error(f"{name}: topology counts must be positive", errors)
+        if gpu_count != tp:
+            error(f"{name}: topology gpu_count={gpu_count} must equal tensor_parallel_size={tp}", errors)
+        if node_count != 1:
+            error(f"{name}: only single-node launches are currently supported", errors)
+        if tp > 1:
+            if env.get("NCCL_PROTO") != "Simple":
+                error(f"{name}: TP>1 requires NCCL_PROTO=Simple", errors)
+            if str(env.get("NCCL_P2P_DISABLE")) != "1":
+                error(f"{name}: TP>1 requires NCCL_P2P_DISABLE=1", errors)
+            if f"--tensor-parallel-size {tp}" not in normalized_command(config):
+                error(f"{name}: topology TP{tp} does not match launch command", errors)
+        visible = str(env.get("HIP_VISIBLE_DEVICES") or "")
+        if visible:
+            visible_count = len([v for v in visible.split(",") if v.strip()])
+            if visible_count != gpu_count:
+                error(f"{name}: HIP_VISIBLE_DEVICES exposes {visible_count} GPUs, topology declares {gpu_count}", errors)
+        if device_id == "r9700":
+            if "@sha256:" not in default_image:
+                error(f"{name}: R9700 image must be pinned by digest", errors)
+            if env.get("HIP_VISIBLE_DEVICES") != env.get("ROCR_VISIBLE_DEVICES"):
+                error(f"{name}: R9700 HIP/ROCR visible device sets must match", errors)
 
     # Explicit OCI refs are provider-owned and must never be rewritten.
     sample = load_run_config(names[0])
@@ -126,6 +159,9 @@ def validate_bundle(errors: list[str]) -> None:
             launch = record.get("launch") or {}
             if not launch.get("image"):
                 error(f"{record.get('file')}: launch.image missing", errors)
+            topology = launch.get("topology") or {}
+            if topology and int(topology.get("gpu_count") or 1) != int(topology.get("tensor_parallel_size") or 1):
+                error(f"{record.get('file')}: launch topology GPU/TP mismatch", errors)
 
 
 def main() -> int:

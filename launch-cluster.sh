@@ -17,6 +17,8 @@ set -euo pipefail
 #   MODELS_DIR           host models dir -> /models (default: /models)
 #   HF_HOME              host HF cache              (default: ~/.cache/huggingface)
 #   HIP_VISIBLE_DEVICES  GPU index to expose        (optional)
+#   ROCR_VISIBLE_DEVICES GPU index to expose        (optional)
+#   RADEONRUN_DOCKER     docker command override    (optional, e.g. "sudo -n docker")
 
 IMAGE="${IMAGE:-ghcr.io/radeon-arena/halo-vllm:latest}"
 CONTAINER="${CONTAINER:-radeon_vllm}"
@@ -25,9 +27,26 @@ HF_CACHE_DIR="${HF_HOME:-$HOME/.cache/huggingface}"
 PORT_MAP=""
 SOLO=0
 
-# AMD ROCm GPU passthrough — verified on gfx1151 hardware.
-AMD_DEVICES=(--device /dev/kfd --device /dev/dri --group-add video
+docker_cmd=()
+if [[ -n "${RADEONRUN_DOCKER:-}" ]]; then
+  read -r -a docker_cmd <<<"${RADEONRUN_DOCKER}"
+elif docker info >/dev/null 2>&1; then
+  docker_cmd=(docker)
+elif sudo -n docker info >/dev/null 2>&1; then
+  docker_cmd=(sudo -n docker)
+else
+  echo "No usable Docker command; tried docker and sudo -n docker" >&2
+  exit 1
+fi
+
+# AMD ROCm GPU passthrough. Numeric GIDs work even when minimal images do not
+# define video/render group names.
+AMD_DEVICES=(--device /dev/kfd --device /dev/dri
              --security-opt seccomp=unconfined --ipc host)
+for group in video render; do
+  gid="$(getent group "$group" | cut -d: -f3 || true)"
+  [[ -n "$gid" ]] && AMD_DEVICES+=(--group-add "$gid")
+done
 
 args=()
 while [[ $# -gt 0 ]]; do
@@ -57,12 +76,13 @@ DOCKER_TTY=""; [ -t 1 ] && DOCKER_TTY="-it"
 # removes a container when it EXITS, so a previous run's detached server can
 # still be alive holding this name + the port; without this the new run would
 # fail to start and the benchmark would hit the STALE model.
-docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
-run=(docker run --rm $DOCKER_TTY --name "$CONTAINER" "${AMD_DEVICES[@]}"
+"${docker_cmd[@]}" rm -f "$CONTAINER" >/dev/null 2>&1 || true
+run=("${docker_cmd[@]}" run --rm $DOCKER_TTY --name "$CONTAINER" "${AMD_DEVICES[@]}"
      -v "$MODELS_DIR:/models" -v "$HF_CACHE_DIR:/root/.cache/huggingface")
 
 [[ -n "$PORT_MAP" ]] && run+=(-p "$PORT_MAP")
 [[ -n "${HIP_VISIBLE_DEVICES:-}" ]] && run+=(-e "HIP_VISIBLE_DEVICES=${HIP_VISIBLE_DEVICES}")
+[[ -n "${ROCR_VISIBLE_DEVICES:-}" ]] && run+=(-e "ROCR_VISIBLE_DEVICES=${ROCR_VISIBLE_DEVICES}")
 
 # Clear the image entrypoint so init can run before the server starts. Quote each
 # argument before handing it to `bash -lc`; recipe commands include JSON strings
