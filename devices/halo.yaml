@@ -1,0 +1,12 @@
+spec_version: "1"
+id: halo
+result_key: strix
+image_device: halo
+label: Strix Halo
+gpu: Radeon 8060S (Strix Halo)
+arch: gfx1151
+runner_labels: [self-hosted, gfx1151]
+topology:
+  kind: single-gpu
+  default_gpu_count: 1
+  runner_capacity: 1

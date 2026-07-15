@@ -1,7 +1,9 @@
 # Recipes
 
-Recipes are a **one-click** way to deploy a model with pre-configured settings.
-Each recipe is a YAML file specifying:
+The canonical configuration is composable; see
+[`../docs/CONFIGURATION.md`](../docs/CONFIGURATION.md). This directory remains a
+legacy compatibility view for existing links and integrations. Each flat recipe
+combines:
 
 - the model (local `/models/...` path or HF id)
 - container image and build arguments

@@ -18,11 +18,17 @@ Radeon GPUs. Use a local Radeon host or a self-hosted GitHub Actions runner.
 
 ## The files that define a run
 
-For each benchmarked model, the recipe and result are paired by name:
+For each benchmarked model, composable specs and the result are paired by the
+matrix name:
 
 ```text
-recipes/<recipe>.yaml           # model source, image family, serve command, flags
-results/strix/<recipe>.json     # reference result produced on gfx1151
+matrices/catalog.yaml           # test cases referencing the axes below
+models/catalog.yaml             # model artifact/source/quantization
+launches/catalog.yaml           # runtime/image/serve command
+devices/<device>.yaml           # hardware identity/topology
+benchmarking/<profile>.yaml     # workload matrix
+results/strix/<matrix>.json     # reference result produced on gfx1151
+recipes/<matrix>.yaml           # legacy compatibility view
 ```
 
 The common benchmark profile is:
@@ -31,8 +37,8 @@ The common benchmark profile is:
 benchmarking/halo-arena-v1.yaml # 512 input / 128 output, conc 1 / 4 / 16 / 32
 ```
 
-Concrete container images are resolved from the recipe's logical `container`
-field:
+When no explicit OCI image is declared, logical runtimes use these RadeonRun
+defaults:
 
 | recipe `container` | image |
 |---|---|
@@ -40,8 +46,9 @@ field:
 | `vllm` | `ghcr.io/radeon-arena/halo-vllm:<tag>` |
 | `vllm-main` | `ghcr.io/radeon-arena/halo-vllm-main:<tag>` |
 
-By default `run-recipe.py` uses `:latest`. Pass `--tag <commit>` to pin a
-byte-reproducible image tag when a recipe/result records one.
+These defaults are not required. Pass `--image` or declare `launch.image.ref`
+to run from any OCI registry. `--registry` changes only the logical-runtime
+fallback. See [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md).
 
 ## Local reproduction
 

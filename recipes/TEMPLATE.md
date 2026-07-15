@@ -1,4 +1,9 @@
-# Recipe template
+# Legacy recipe template
+
+> New configurations should add or reuse entries under `models/`, `launches/`,
+> `devices/`, and `matrices/`. See
+> [`../docs/CONFIGURATION.md`](../docs/CONFIGURATION.md). This template remains
+> for integrations that still provide a single flat recipe.
 
 Copy the YAML block below into `recipes/<recipe-id>.yaml`, then replace every
 `<...>` placeholder. Keep this file as Markdown: files matching `recipes/*.yaml`
@@ -6,7 +11,7 @@ are treated as real runnable recipes by `run-recipe.py` and the recipe browser.
 
 ## What belongs in a recipe
 
-A recipe is the **serve configuration**: how to start one model on one runtime.
+A legacy recipe combines model and launch configuration in one file.
 Benchmark workload configuration lives outside the recipe, in
 `benchmarking/halo-arena-v1.yaml` / `benchmarking/halo-arena-v2.yaml`, with
 per-model limits in `benchmarking/model-contexts.yaml`.

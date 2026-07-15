@@ -1,0 +1,59 @@
+catalog_version: "1"
+models:
+  diffusiongemma-26b-a4b-awq-int4: {path: /models/diffusiongemma-26B-A4B-it-AWQ-INT4, source: cyankiwi/diffusiongemma-26B-A4B-it-AWQ-INT4, served_name: diffawq, quantization: AWQ-INT4}
+  diffusiongemma-26b-a4b-bf16: {path: /models/diffusiongemma-26B-A4B-it, source: google/diffusiongemma-26B-A4B-it, served_name: diffgemma, quantization: BF16}
+  gemma-4-26b-a4b-it-awq-4bit-vllm: {path: /models/gemma-4-26B-A4B-it-AWQ-4bit, source: cyankiwi/gemma-4-26B-A4B-it-AWQ-4bit, served_name: g26bawq, quantization: AWQ-4bit}
+  gemma-4-26b-a4b-it-bf16-llamacpp: {path: /models/gemma-4-26B-A4B-it/BF16/gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf, source: unsloth/gemma-4-26B-A4B-it-GGUF, quantization: BF16}
+  gemma-4-26b-a4b-it-bf16-vllm: {path: /models/gemma-4-26B-A4B-it, source: google/gemma-4-26b-a4b-it, served_name: g26b, quantization: BF16}
+  gemma-4-26b-a4b-it-q8-0-llamacpp: {path: /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-Q8_0.gguf, source: unsloth/gemma-4-26B-A4B-it-GGUF, quantization: Q8_0}
+  gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp: {path: /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf, source: unsloth/gemma-4-26B-A4B-it-GGUF, quantization: UD-Q4_K_M}
+  gemma-4-31b-it-quark-w8a8-int8-vllm: {path: /models/Gemma-4-31B-it-Quark-W8A8-INT8, source: nameistoken/Gemma-4-31B-it-Quark-W8A8-INT8, served_name: g31q, quantization: Quark-W8A8-INT8}
+  llama-3.1-8b-instruct-bf16-llamacpp: {path: /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf, source: unsloth/Llama-3.1-8B-Instruct-GGUF, quantization: BF16}
+  llama-3.1-8b-instruct-q4-k-m-llamacpp: {path: /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf, source: unsloth/Llama-3.1-8B-Instruct-GGUF, quantization: Q4_K_M}
+  mimo-v2.5-ud-q2-k-xl-llamacpp: {path: /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf, source: unsloth/MiMo-V2.5-GGUF, quantization: UD-Q2_K_XL}
+  qwen3-14b-bf16-llamacpp: {path: /models/Qwen3-14B/Qwen3-14B-BF16.gguf, source: unsloth/Qwen3-14B-GGUF, quantization: BF16}
+  qwen3-14b-q4-k-m-llamacpp: {path: /models/Qwen3-14B/Qwen3-14B-Q4_K_M.gguf, source: unsloth/Qwen3-14B-GGUF, quantization: Q4_K_M}
+  qwen3-14b-q8-0-llamacpp: {path: /models/Qwen3-14B/Qwen3-14B-Q8_0.gguf, source: unsloth/Qwen3-14B-GGUF, quantization: Q8_0}
+  qwen3-30b-a3b-bf16-llamacpp: {path: /models/Qwen3-30B-A3B/BF16/Qwen3-30B-A3B-BF16-00001-of-00002.gguf, source: unsloth/Qwen3-30B-A3B-GGUF, quantization: BF16}
+  qwen3-30b-a3b-bf16-vllm: {path: /models/Qwen3-30B-A3B-bf16, source: Qwen/Qwen3-30B-A3B, served_name: q30b, quantization: BF16, benchmark_ctx: 40960}
+  qwen3-30b-a3b-bf16-yarn-vllm:
+    path: /models/Qwen3-30B-A3B-bf16
+    source: Qwen/Qwen3-30B-A3B
+    served_name: q30b-yarn
+    quantization: BF16+YaRN
+    patches:
+      - type: set_config
+        values:
+          max_position_embeddings: 131072
+          rope_scaling: {rope_type: yarn, factor: 4.0, original_max_position_embeddings: 32768}
+  qwen3-30b-a3b-q4-k-m-llamacpp: {path: /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q4_K_M.gguf, source: unsloth/Qwen3-30B-A3B-GGUF, quantization: Q4_K_M}
+  qwen3-30b-a3b-q8-0-llamacpp: {path: /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q8_0.gguf, source: unsloth/Qwen3-30B-A3B-GGUF, quantization: Q8_0}
+  qwen3-32b-bf16-llamacpp: {path: /models/Qwen3-32B/BF16/Qwen3-32B-BF16-00001-of-00002.gguf, source: unsloth/Qwen3-32B-GGUF, quantization: BF16}
+  qwen3-32b-q4-k-m-llamacpp: {path: /models/Qwen3-32B/Qwen3-32B-Q4_K_M.gguf, source: unsloth/Qwen3-32B-GGUF, quantization: Q4_K_M}
+  qwen3-32b-q8-0-llamacpp: {path: /models/Qwen3-32B/Qwen3-32B-Q8_0.gguf, source: unsloth/Qwen3-32B-GGUF, quantization: Q8_0}
+  qwen3-4b-bf16-llamacpp: {path: /models/Qwen3-4B/Qwen3-4B-BF16.gguf, source: unsloth/Qwen3-4B-GGUF, quantization: BF16}
+  qwen3-4b-q4-k-m-llamacpp: {path: /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf, source: unsloth/Qwen3-4B-GGUF, quantization: Q4_K_M}
+  qwen3-4b-q8-0-llamacpp: {path: /models/Qwen3-4B/Qwen3-4B-Q8_0.gguf, source: unsloth/Qwen3-4B-GGUF, quantization: Q8_0}
+  qwen3-8b-bf16-llamacpp: {path: /models/Qwen3-8B/Qwen3-8B-BF16.gguf, source: unsloth/Qwen3-8B-GGUF, quantization: BF16}
+  qwen3-8b-q4-k-m-llamacpp: {path: /models/Qwen3-8B/Qwen3-8B-Q4_K_M.gguf, source: unsloth/Qwen3-8B-GGUF, quantization: Q4_K_M}
+  qwen3-8b-q8-0-llamacpp: {path: /models/Qwen3-8B/Qwen3-8B-Q8_0.gguf, source: unsloth/Qwen3-8B-GGUF, quantization: Q8_0}
+  qwen3.6-27b-bf16-llamacpp: {path: /models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf, source: unsloth/Qwen3.6-27B-GGUF, quantization: BF16}
+  qwen3.6-27b-bf16-vllm: {path: /models/Qwen3.6-27B, source: Qwen/Qwen3.6-27B, served_name: q27b, quantization: BF16}
+  qwen3.6-27b-q4-k-m-llamacpp: {path: /models/Qwen3.6-27B/Qwen3.6-27B-Q4_K_M.gguf, source: unsloth/Qwen3.6-27B-GGUF, quantization: Q4_K_M}
+  qwen3.6-27b-q8-0-llamacpp: {path: /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf, source: unsloth/Qwen3.6-27B-GGUF, quantization: Q8_0}
+  qwen3.6-27b-quark-w8a8-int8-vllm: {path: /models/Qwen3.6-27B-Quark-W8A8-INT8, source: nameistoken/Qwen3.6-27B-Quark-W8A8-INT8, served_name: q27q, quantization: Quark-W8A8-INT8}
+  qwen3.6-35b-a3b-awq-4bit-vllm: {path: /models/Qwen3.6-35B-A3B-AWQ-4bit, source: cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit, served_name: q35awq, quantization: AWQ-4bit}
+  qwen3.6-35b-a3b-bf16-llamacpp: {path: /models/Qwen3.6-35B-A3B/BF16/Qwen3.6-35B-A3B-BF16-00001-of-00002.gguf, source: unsloth/Qwen3.6-35B-A3B-GGUF, quantization: BF16}
+  qwen3.6-35b-a3b-bf16-vllm: {path: /models/Qwen3.6-35B-A3B, source: Qwen/Qwen3.6-35B-A3B, served_name: qwen36-35b, quantization: BF16}
+  qwen3.6-35b-a3b-int4-mixed-autoround-vllm:
+    path: /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound
+    source: Intel/Qwen3.6-35B-A3B-int4-mixed-AutoRound
+    served_name: qwen36-int4-mixed
+    quantization: INT4-mixed-AutoRound
+    patches:
+      - type: set_quant_config
+        values: {quant_method: gptq, desc_act: false}
+  qwen3.6-35b-a3b-q8-0-llamacpp: {path: /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-Q8_0.gguf, source: unsloth/Qwen3.6-35B-A3B-GGUF, quantization: Q8_0}
+  qwen3.6-35b-a3b-quark-w8a8-int8-vllm: {path: /models/Qwen3.6-35B-A3B-Quark-W8A8-INT8, source: nameistoken/Qwen3.6-35B-A3B-Quark-W8A8-INT8, served_name: q35q, quantization: Quark-W8A8-INT8}
+  qwen3.6-35b-a3b-ud-q4-k-m-llamacpp: {path: /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf, source: unsloth/Qwen3.6-35B-A3B-GGUF, quantization: UD-Q4_K_M}
+  step-3.5-flash-q4-k-s-llamacpp: {path: /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf, source: stepfun-ai/Step-3.5-Flash-GGUF-Q4_K_S, quantization: Q4_K_S}

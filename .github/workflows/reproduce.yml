@@ -28,6 +28,22 @@ on:
         default: halo-arena-v1.yaml
         type: choice
         options: [halo-arena-v1.yaml, halo-arena-v2.yaml]
+      image:
+        description: "Optional full OCI image ref (Docker Hub, GHCR, Quay, private registry, etc.)"
+        required: false
+        default: ""
+        type: string
+      registry:
+        description: "Default registry for RadeonRun-built images when image is empty"
+        required: false
+        default: "ghcr.io/radeon-arena"
+        type: string
+      pull_policy:
+        description: "Container image pull policy"
+        required: true
+        default: missing
+        type: choice
+        options: [missing, always, never]
 
 permissions:
   contents: write       # commit the reproduced result + bundle back to the branch
@@ -58,7 +74,7 @@ jobs:
           python3 -m pip install --user --break-system-packages --upgrade pyyaml 'huggingface_hub[cli]' hf_xet
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - name: Log in to ghcr (built-in GITHUB_TOKEN — no PAT)
+      - name: Log in to ghcr (for RadeonRun defaults; external registries use runner credentials)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Reproduce — setup (build+push image, download model) → serve → bench → teardown
@@ -71,11 +87,19 @@ jobs:
             free -h
           fi
           mkdir -p "$MODELS_DIR" results
-          python3 run-recipe.py "${{ inputs.recipe }}" \
-            --device "${{ inputs.device }}" \
-            --benchmark "benchmarking/${{ inputs.profile }}" \
-            --out results/ \
+          args=(
+            "${{ inputs.recipe }}"
+            --device "${{ inputs.device }}"
+            --benchmark "benchmarking/${{ inputs.profile }}"
+            --out results/
+            --registry "${{ inputs.registry }}"
+            --pull-policy "${{ inputs.pull_policy }}"
             --build --push --cleanup
+          )
+          if [ -n "${{ inputs.image }}" ]; then
+            args+=(--image "${{ inputs.image }}")
+          fi
+          python3 run-recipe.py "${args[@]}"
 
       - name: Commit reproduced result and bundle
         run: |

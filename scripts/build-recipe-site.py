@@ -14,9 +14,11 @@ import re
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT))
+
+from radeonrun_config import image_tag, list_run_configs, load_run_config, resolve_image  # noqa: E402
 
 
 def _engine_of(recipe: dict[str, Any]) -> str:
@@ -90,24 +92,28 @@ def _load_results(root: Path) -> dict[str, dict[str, Any]]:
     return by_recipe
 
 
-def _recipe_to_card(path: Path, result: dict[str, Any] | None) -> dict[str, Any]:
-    recipe = yaml.safe_load(path.read_text()) or {}
+def _recipe_to_card(recipe_id: str, result: dict[str, Any] | None) -> dict[str, Any]:
+    recipe = load_run_config(recipe_id)
     metadata = recipe.get("metadata") or {}
     measured = metadata.get("measured") or {}
     command = str(recipe.get("command") or "").strip()
-    name = str(recipe.get("name") or path.stem)
+    name = str(recipe.get("name") or recipe_id)
     model = str(recipe.get("model") or "")
     source = str(recipe.get("source") or "")
     defaults = recipe.get("defaults") or {}
     env = recipe.get("env") or {}
+    image = resolve_image(recipe, str((recipe.get("_device") or {}).get("id") or "halo"))
     return {
-        "file": str(path.relative_to(ROOT)),
+        "file": (recipe.get("_spec_files") or {}).get("matrix") or (recipe.get("_spec_files") or {}).get("legacy_recipe"),
+        "spec_files": recipe.get("_spec_files") or {},
+        "config_source": recipe.get("_config_source") or "legacy",
         "name": name,
         "title": str(recipe.get("description") or metadata.get("description") or name),
         "family": _family(name, model, source),
         "runtime": _engine_of(recipe),
         "container": str(recipe.get("container") or ""),
-        "image_tag": str(recipe.get("image_tag") or ""),
+        "image": image,
+        "image_tag": image_tag(image) or "",
         "quantization": str(metadata.get("quantization") or ""),
         "model": model,
         "source": source,
@@ -123,7 +129,10 @@ def _recipe_to_card(path: Path, result: dict[str, Any] | None) -> dict[str, Any]
 
 def _build_data(root: Path) -> dict[str, Any]:
     results = _load_results(root)
-    recipes = [_recipe_to_card(path, results.get((yaml.safe_load(path.read_text()) or {}).get("name") or path.stem)) for path in sorted((root / "recipes").glob("*.yaml"))]
+    recipes = []
+    for recipe_id in list_run_configs():
+        config = load_run_config(recipe_id)
+        recipes.append(_recipe_to_card(recipe_id, results.get(config.get("name") or recipe_id)))
     facets = {
         "families": sorted({r["family"] for r in recipes}),
         "runtimes": sorted({r["runtime"] for r in recipes}),
@@ -210,7 +219,7 @@ def _html(data: dict[str, Any]) -> str:
     optionize('family', data.facets.families); optionize('runtime', data.facets.runtimes); optionize('quant', data.facets.quantizations);
     el('q').addEventListener('input', e => {{ state.q=e.target.value.toLowerCase(); render(); }});
     function matches(r) {{
-      const hay = [r.name,r.title,r.model,r.source,r.command,r.quantization,r.runtime,r.container,r.image_tag].join(' ').toLowerCase();
+      const hay = [r.name,r.title,r.model,r.source,r.command,r.quantization,r.runtime,r.container,r.image,r.image_tag].join(' ').toLowerCase();
       return (!state.q || hay.includes(state.q)) && (!state.family || r.family===state.family) && (!state.runtime || r.runtime===state.runtime) && (!state.quant || r.quantization===state.quant);
     }}
     function perf(r) {{
@@ -232,7 +241,7 @@ def _html(data: dict[str, Any]) -> str:
           <div class=\"perf\">${{perf(r)}}</div>
         </div>
         <details><summary>Recipe details</summary><div class=\"detail\">
-          <dl><dt>Model</dt><dd>${{text(r.model)}}</dd><dt>Source</dt><dd>${{text(r.source)}}</dd><dt>Served name</dt><dd>${{text(r.served_model_name)}}</dd><dt>Container</dt><dd>${{text(r.container)}}</dd><dt>File</dt><dd>${{r.file}}</dd></dl>
+          <dl><dt>Model</dt><dd>${{text(r.model)}}</dd><dt>Source</dt><dd>${{text(r.source)}}</dd><dt>Served name</dt><dd>${{text(r.served_model_name)}}</dd><dt>Image</dt><dd>${{text(r.image)}}</dd><dt>Config</dt><dd>${{r.file}}</dd></dl>
           ${{defaults ? `<pre>${{defaults}}</pre>` : ''}}
           ${{env ? `<pre>${{env}}</pre>` : ''}}
           <button data-copy=\"${{r.name}}\">Copy command</button><pre id=\"cmd-${{r.name}}\">${{r.command.replace(/[&<>]/g, s => ({{'&':'&amp;','<':'&lt;','>':'&gt;'}}[s]))}}</pre>
