@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-15T02:40:19.622591+00:00",
+  "generated_at": "2026-07-15T08:01:35.572592+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "5690ebbe60234b7680a6911c843276f5191d7020",
-  "short_commit": "5690ebb",
+  "commit": "3aadf12c6ff1772a261bd2de813e47680e197cdd",
+  "short_commit": "3aadf12",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -49,6 +49,8 @@
       "step-3.5-flash-q4-k-s-llamacpp.json"
     ],
     "w7900": [],
-    "r9700": []
+    "r9700": [
+      "qwen3-4b-q4-k-m-llamacpp-r9700.json"
+    ]
   }
 }
