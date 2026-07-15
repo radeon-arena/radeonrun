@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-15T02:40:19.622591+00:00",
+  "generated_at": "2026-07-15T08:01:35.572592+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "5690ebbe60234b7680a6911c843276f5191d7020",
-  "short_commit": "5690ebb",
+  "commit": "3aadf12c6ff1772a261bd2de813e47680e197cdd",
+  "short_commit": "3aadf12",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -49,7 +49,9 @@
       "step-3.5-flash-q4-k-s-llamacpp.json"
     ],
     "w7900": [],
-    "r9700": []
+    "r9700": [
+      "qwen3-4b-q4-k-m-llamacpp-r9700.json"
+    ]
   },
   "records": {
     "strix": [
@@ -11817,6 +11819,374 @@
       }
     ],
     "w7900": [],
-    "r9700": []
+    "r9700": [
+      {
+        "file": "results/r9700/qwen3-4b-q4-k-m-llamacpp-r9700.json",
+        "config_source": "matrix",
+        "spec_files": {
+          "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-q4-k-m-llamacpp-r9700",
+          "model": "models/catalog.yaml#models.qwen3-4b-q4-k-m-llamacpp",
+          "launch": "launches/catalog.yaml#launches.r9700-llamacpp-hip",
+          "device": "devices/r9700.yaml",
+          "benchmark": "benchmarking/halo-arena-v1.yaml",
+          "legacy_recipe": null
+        },
+        "matrix_file": "matrices/catalog.yaml#matrices.qwen3-4b-q4-k-m-llamacpp-r9700",
+        "model_file": "models/catalog.yaml#models.qwen3-4b-q4-k-m-llamacpp",
+        "launch_file": "launches/catalog.yaml#launches.r9700-llamacpp-hip",
+        "device_file": "devices/r9700.yaml",
+        "benchmark_file": "benchmarking/halo-arena-v1.yaml",
+        "recipe_file": null,
+        "recipe": {
+          "recipe_version": "3",
+          "name": "Qwen3-4B",
+          "description": "llama.cpp HIP serving Qwen3-4B Q4_K_M on one Radeon AI PRO R9700",
+          "metadata": {
+            "quantization": "Q4_K_M"
+          },
+          "model": "/models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf",
+          "source": "unsloth/Qwen3-4B-GGUF",
+          "model_revision": null,
+          "served_model_name": null,
+          "model_patches": [],
+          "runtime": "llamacpp",
+          "container": "llamacpp",
+          "image": {
+            "ref": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5"
+          },
+          "image_tag": null,
+          "benchmark_ctx": null,
+          "mods": [],
+          "defaults": {
+            "port": 8000,
+            "host": "0.0.0.0",
+            "nseq": 32,
+            "ctx": 32768
+          },
+          "env": {
+            "HIP_VISIBLE_DEVICES": "0",
+            "ROCR_VISIBLE_DEVICES": "0",
+            "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
+          },
+          "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}"
+        },
+        "data": {
+          "profile": "halo-arena-v1",
+          "framework": "llama-benchy",
+          "measurements": [
+            {
+              "decode_toks_per_s": 123.81,
+              "decode_toks_per_s_per_req": 125.25,
+              "prefill_toks_per_s": 63486.65,
+              "ttft_ms": 16.05,
+              "tpot_ms": 7.98,
+              "requests_ok": 1,
+              "requests_total": 1,
+              "depth": 0,
+              "concurrency": 1,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 290.26,
+              "decode_toks_per_s_per_req": 79.69,
+              "prefill_toks_per_s": 3354.41,
+              "ttft_ms": 165.18,
+              "tpot_ms": 12.55,
+              "requests_ok": 4,
+              "requests_total": 4,
+              "depth": 0,
+              "concurrency": 4,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 614.29,
+              "decode_toks_per_s_per_req": 50.45,
+              "prefill_toks_per_s": 654.55,
+              "ttft_ms": 802.05,
+              "tpot_ms": 19.82,
+              "requests_ok": 16,
+              "requests_total": 16,
+              "depth": 0,
+              "concurrency": 16,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 565.1,
+              "decode_toks_per_s_per_req": 20.29,
+              "prefill_toks_per_s": 558.37,
+              "ttft_ms": 966.28,
+              "tpot_ms": 49.29,
+              "requests_ok": 32,
+              "requests_total": 32,
+              "depth": 0,
+              "concurrency": 32,
+              "pp": 512,
+              "tg": 128
+            }
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 40960,
+          "meta": {
+            "recipe": "Qwen3-4B",
+            "model": "/models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf",
+            "runtime": "llamacpp",
+            "container": "llamacpp",
+            "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+            "config_source": "matrix",
+            "spec_files": {
+              "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-q4-k-m-llamacpp-r9700",
+              "model": "models/catalog.yaml#models.qwen3-4b-q4-k-m-llamacpp",
+              "launch": "launches/catalog.yaml#launches.r9700-llamacpp-hip",
+              "device": "devices/r9700.yaml",
+              "benchmark": "benchmarking/halo-arena-v1.yaml",
+              "legacy_recipe": null
+            },
+            "device": {
+              "spec_version": "1",
+              "id": "r9700",
+              "result_key": "r9700",
+              "image_device": "r9700",
+              "label": "Radeon AI PRO R9700",
+              "gpu": "Radeon AI PRO R9700",
+              "arch": "gfx1201",
+              "arch_aliases": [
+                "gfx1200"
+              ],
+              "runner_labels": [
+                "self-hosted",
+                "gfx1201"
+              ],
+              "topology": {
+                "kind": "single-node",
+                "default_gpu_count": 1,
+                "runner_capacity": 8
+              }
+            },
+            "model_spec": {
+              "path": "/models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf",
+              "source": "unsloth/Qwen3-4B-GGUF",
+              "quantization": "Q4_K_M",
+              "id": "qwen3-4b-q4-k-m-llamacpp",
+              "name": "Qwen3-4B",
+              "description": "llama.cpp HIP serving Qwen3-4B Q4_K_M on one Radeon AI PRO R9700"
+            },
+            "launch_spec": {
+              "runtime": "llamacpp",
+              "backend": "ROCm/HIP",
+              "container": "llamacpp",
+              "image": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+              "topology": {
+                "node_count": 1,
+                "gpu_count": 1,
+                "tensor_parallel_size": 1
+              },
+              "defaults": {
+                "port": 8000,
+                "host": "0.0.0.0",
+                "nseq": 32,
+                "ctx": 32768
+              },
+              "env": {
+                "HIP_VISIBLE_DEVICES": "0",
+                "ROCR_VISIBLE_DEVICES": "0",
+                "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
+              },
+              "mods": [],
+              "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+              "id": "r9700-llamacpp-hip",
+              "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+              "config_source": "matrix",
+              "spec_files": {
+                "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-q4-k-m-llamacpp-r9700",
+                "model": "models/catalog.yaml#models.qwen3-4b-q4-k-m-llamacpp",
+                "launch": "launches/catalog.yaml#launches.r9700-llamacpp-hip",
+                "device": "devices/r9700.yaml",
+                "benchmark": "benchmarking/halo-arena-v1.yaml",
+                "legacy_recipe": null
+              },
+              "image_requested": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+              "image_id": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+              "image_resolved": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+              "image_digest": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+              "image_commit": "09cedfd6996d2ff90b4e617f56230212005c0166"
+            },
+            "benchmark_spec": {
+              "framework": "llama-benchy",
+              "metadata": {
+                "name": "halo-arena-v1",
+                "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+                "version": "1"
+              },
+              "args": {
+                "depth": [
+                  0
+                ],
+                "pp": [
+                  512
+                ],
+                "tg": [
+                  128
+                ],
+                "concurrency": [
+                  1,
+                  4,
+                  16,
+                  32
+                ],
+                "prefix_caching": true,
+                "warmup": 1,
+                "runs": 3
+              },
+              "id": "halo-arena-v1",
+              "file": "benchmarking/halo-arena-v1.yaml"
+            },
+            "image": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+            "image_requested": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+            "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+            "image_id": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+            "image_resolved": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+            "image_digest": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+            "image_commit": "09cedfd6996d2ff90b4e617f56230212005c0166"
+          },
+          "generated_at": "2026-07-15T07:57:35Z"
+        },
+        "device": {
+          "spec_version": "1",
+          "id": "r9700",
+          "result_key": "r9700",
+          "image_device": "r9700",
+          "label": "Radeon AI PRO R9700",
+          "gpu": "Radeon AI PRO R9700",
+          "arch": "gfx1201",
+          "arch_aliases": [
+            "gfx1200"
+          ],
+          "runner_labels": [
+            "self-hosted",
+            "gfx1201"
+          ],
+          "topology": {
+            "kind": "single-node",
+            "default_gpu_count": 1,
+            "runner_capacity": 8
+          }
+        },
+        "model": {
+          "path": "/models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf",
+          "source": "unsloth/Qwen3-4B-GGUF",
+          "quantization": "Q4_K_M",
+          "id": "qwen3-4b-q4-k-m-llamacpp",
+          "name": "Qwen3-4B",
+          "description": "llama.cpp HIP serving Qwen3-4B Q4_K_M on one Radeon AI PRO R9700"
+        },
+        "launch": {
+          "runtime": "llamacpp",
+          "backend": "ROCm/HIP",
+          "container": "llamacpp",
+          "image": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+          "topology": {
+            "node_count": 1,
+            "gpu_count": 1,
+            "tensor_parallel_size": 1
+          },
+          "defaults": {
+            "port": 8000,
+            "host": "0.0.0.0",
+            "nseq": 32,
+            "ctx": 32768
+          },
+          "env": {
+            "HIP_VISIBLE_DEVICES": "0",
+            "ROCR_VISIBLE_DEVICES": "0",
+            "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
+          },
+          "mods": [],
+          "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+          "id": "r9700-llamacpp-hip",
+          "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+          "config_source": "matrix",
+          "spec_files": {
+            "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-q4-k-m-llamacpp-r9700",
+            "model": "models/catalog.yaml#models.qwen3-4b-q4-k-m-llamacpp",
+            "launch": "launches/catalog.yaml#launches.r9700-llamacpp-hip",
+            "device": "devices/r9700.yaml",
+            "benchmark": "benchmarking/halo-arena-v1.yaml",
+            "legacy_recipe": null
+          },
+          "image_requested": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+          "image_id": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+          "image_resolved": "ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+          "image_digest": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
+          "image_commit": "09cedfd6996d2ff90b4e617f56230212005c0166"
+        },
+        "benchmark": {
+          "framework": "llama-benchy",
+          "metadata": {
+            "name": "halo-arena-v1",
+            "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+            "version": "1"
+          },
+          "args": {
+            "depth": [
+              0
+            ],
+            "pp": [
+              512
+            ],
+            "tg": [
+              128
+            ],
+            "concurrency": [
+              1,
+              4,
+              16,
+              32
+            ],
+            "prefix_caching": true,
+            "warmup": 1,
+            "runs": 3
+          },
+          "id": "halo-arena-v1",
+          "file": "benchmarking/halo-arena-v1.yaml",
+          "profile": "halo-arena-v1",
+          "profile_file": "benchmarking/halo-arena-v1.yaml",
+          "schedule": null,
+          "measurement_count": 4,
+          "point_params": [
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 1
+            },
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 4
+            },
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 16
+            },
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 32
+            }
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 40960
+        }
+      }
+    ]
   }
 }
