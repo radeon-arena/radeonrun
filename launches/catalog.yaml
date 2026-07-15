@@ -1,0 +1,167 @@
+catalog_version: "1"
+launches:
+  llamacpp-hip:
+    runtime: llamacpp
+    container: llamacpp
+    image:
+      by_device:
+        halo: {tag: fe7c8b2414}
+      build: {framework: llamacpp}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+
+  llamacpp-hip-no-mmap:
+    runtime: llamacpp
+    container: llamacpp
+    image:
+      by_device:
+        halo: {tag: fe7c8b2414}
+      build: {framework: llamacpp}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+
+  llamacpp-hip-mimo:
+    runtime: llamacpp
+    container: llamacpp
+    image:
+      by_device:
+        halo: {tag: fe7c8b2414}
+      build: {framework: llamacpp}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa off --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+
+  vllm-bf16-triton:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --host {host} --port {port} --served-model-name {model.served_name}
+      --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN
+      --max-model-len {ctx} --gpu-memory-utilization 0.85
+
+  vllm-bf16-triton-no-gmu:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --host {host} --port {port} --max-num-seqs {nseq}
+      --dtype bfloat16 --attention-backend TRITON_ATTN --served-model-name {model.served_name}
+      --max-model-len {ctx}
+
+  vllm-bf16:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --host {host} --port {port} --served-model-name {model.served_name}
+      --max-num-seqs {nseq} --dtype bfloat16 --max-model-len {ctx} --gpu-memory-utilization 0.9
+
+  vllm-awq-triton:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --host {host} --port {port} --served-model-name {model.served_name}
+      --max-num-seqs {nseq} --dtype float16 --attention-backend TRITON_ATTN
+      --max-model-len {ctx} --gpu-memory-utilization 0.85
+
+  vllm-awq:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --host {host} --port {port} --served-model-name {model.served_name}
+      --max-num-seqs {nseq} --dtype float16 --max-model-len {ctx} --gpu-memory-utilization 0.85
+
+  vllm-quark:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --host {host} --port {port} --served-model-name {model.served_name}
+      --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85
+
+  vllm-autoround-gptq:
+    runtime: vllm
+    container: vllm
+    image:
+      by_device:
+        halo: {tag: f5fa386fe}
+      build: {framework: vllm}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env:
+      FLASH_ATTENTION_TRITON_AMD_ENABLE: "TRUE"
+      TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL: "1"
+      TORCH_BLAS_PREFER_HIPBLASLT: "1"
+      VLLM_DISABLE_COMPILE_CACHE: "1"
+      TORCHINDUCTOR_AUTOGRAD_CACHE: "0"
+      VLLM_MOE_HYBRID_W4A16: "1"
+      PYTORCH_ROCM_ARCH: gfx1151
+    mods: []
+    command: >-
+      vllm serve {model.path} --served-model-name {model.served_name} --host {host} --port {port}
+      --trust-remote-code --dtype float16 --max-model-len {ctx} --max-num-seqs {nseq}
+      --max-num-batched-tokens 8192 --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN
+      --mm-encoder-attn-backend TRITON_ATTN --quantization gptq
+
+  vllm-main-diffusion:
+    runtime: vllm-main
+    container: vllm-main
+    image:
+      by_device:
+        halo: {tag: 92221485a}
+      build: {framework: vllm-main}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 4}
+    env: {}
+    mods: []
+    command: >-
+      vllm serve {model.path} --served-model-name {model.served_name} --host {host} --port {port}
+      --max-model-len 896 --max-num-seqs {nseq} --gpu-memory-utilization 0.6
+      --generation-config vllm
+      --hf-overrides '{"diffusion_sampler":"entropy_bound","diffusion_entropy_bound":0.1}'
+      --diffusion-config '{"canvas_length":256}'

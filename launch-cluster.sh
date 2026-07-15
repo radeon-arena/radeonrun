@@ -3,9 +3,9 @@ set -euo pipefail
 #
 # launch-cluster.sh - Run the radeonrun container in solo mode.
 #
-# Solo mode is implemented and uses the GPU passthrough verified on real
-# gfx1151 hardware. Cluster (multi-node) mode is NOT implemented —
-# Strix Halo is a single-GPU APU and our experience here is single-node only.
+# Solo means one host and supports one or more locally visible Radeon GPUs.
+# Cluster (multi-node) mode is not implemented. GPU count / tensor parallelism
+# is controlled by the launch environment and serve command.
 #
 # Usage:
 #   ./launch-cluster.sh --solo exec vllm serve /models/<m> --host 0.0.0.0 --port 8000 ...

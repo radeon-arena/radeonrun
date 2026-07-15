@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-run-recipe.py - One-click recipe runner.
+run-recipe.py - One-click composable matrix runner.
 
-Loads a recipe YAML, fills the command template with its defaults (plus any CLI
-overrides), and runs it via launch-cluster.sh --solo (or prints it with
---print). The serve commands in the recipes are the ones used to produce the
-leaderboard numbers (independently measured on real gfx1151 hardware).
+Resolves Device + Model + Launch + Benchmark specs (or a legacy flat recipe),
+fills the command template with defaults plus CLI overrides, and runs it via
+launch-cluster.sh --solo (or prints it with --print).
 
 Examples:
   ./run-recipe.py --list
@@ -21,6 +20,18 @@ import socket
 import sys
 from pathlib import Path
 
+from radeonrun_config import (
+    ConfigError,
+    image_build_config,
+    image_is_explicit,
+    image_tag,
+    list_run_configs,
+    load_run_config,
+    render_command,
+    resolve_image,
+    resolved_axes,
+)
+
 RECIPES_DIR = Path(__file__).resolve().parent / "recipes"
 MODEL_CONTEXTS = Path(__file__).resolve().parent / "benchmarking" / "model-contexts.yaml"
 
@@ -29,12 +40,9 @@ MODEL_CONTEXTS = Path(__file__).resolve().parent / "benchmarking" / "model-conte
 #     ghcr.io/radeon-arena/<device>-<engine-image>:<tag>
 # so the device is in the name and the tag carries the build version (a commit
 # id for byte-reproducible pins, or the `latest` moving tag for convenience).
-ORG = "ghcr.io/radeon-arena"
 # Device id -> GPU arch. The device id is also the image-name prefix
 # (halo = Strix Halo / Radeon 8060S / gfx1151).
-DEVICE_GFX = {"halo": "gfx1151", "w7900": "gfx1100", "r9700": "gfx1200"}
-# Logical engine -> image-name component.
-ENGINE_IMAGE = {"vllm": "vllm", "vllm-main": "vllm-main", "llamacpp": "llamacpp"}
+DEVICE_GFX = {"halo": "gfx1151", "w7900": "gfx1100", "r9700": "gfx1201"}
 # Container names seen in recipes (logical or legacy) -> logical engine.
 _ENGINE_ALIASES = {
     "halo-vllm-opt": "vllm",
@@ -62,29 +70,26 @@ def _engine_of(recipe, container):
     return None
 
 
-def _resolve_container(recipe: dict, device: str, tag: str | None = None) -> str:
-    """Resolve a recipe's logical engine + device to a concrete GHCR image:
-    ghcr.io/radeon-arena/<device>-<engine-image>:<tag>.
+def _resolve_container(
+    recipe: dict,
+    device: str,
+    tag: str | None = None,
+    image: str | None = None,
+    registry: str | None = None,
+) -> str:
+    """Resolve a normalized launch to an OCI image reference.
 
-    Tag precedence: an explicit CLI `tag` (one-off override) > the recipe's
-    pinned `image_tag` > the `latest` moving tag. Radeon Arena is a performance
-    leaderboard, so every recorded number is tied to the specific build that
-    produced it: recipes pin `image_tag`, while `--tag` still wins for ad-hoc
-    verification runs. Falls back to the recipe's raw `container` when it names
-    an unknown engine (e.g. a third-party image), so external refs are honored.
+    Explicit image references are first-class and are never rewritten to
+    Radeon Arena packages.  The Radeon Arena registry is only the fallback for
+    logical runtimes that do not declare an image.
     """
-    raw = str(recipe.get("container") or "").strip()
-    # Recipe image_tag pins were measured on the recipe's original device
-    # (currently Strix Halo). Do not apply a Halo image pin to W7900/R9700:
-    # those images have different device prefixes and may not exist yet. For a
-    # non-Halo reproduction, use an explicit --tag if the caller wants a pin;
-    # otherwise build/pull that device's :latest and record its provenance.
-    recipe_tag = recipe.get("image_tag") if device == "halo" else None
-    tag = str(tag or recipe_tag or "latest").strip()
-    engine = _engine_of(recipe, raw)
-    if engine:
-        return f"{ORG}/{device}-{ENGINE_IMAGE[engine]}:{tag}"
-    return raw or f"{ORG}/{device}-vllm:{tag}"
+    return resolve_image(
+        recipe,
+        device,
+        tag_override=tag,
+        image_override=image,
+        registry=registry,
+    )
 
 
 def _image_provenance(container: str) -> dict:
@@ -98,15 +103,23 @@ def _image_provenance(container: str) -> dict:
     piece that cannot be resolved is simply omitted.
     """
     import subprocess
-    prov = {"image": container}
-    last = container.rsplit("/", 1)[-1]
-    prov["image_tag"] = last.rsplit(":", 1)[-1] if ":" in last else "latest"
+    prov = {"image": container, "image_requested": container}
+    prov["image_tag"] = image_tag(container) or "latest"
     try:
         r = subprocess.run(
-            ["docker", "image", "inspect", "--format", "{{.Id}}", container],
+            ["docker", "image", "inspect", container],
             capture_output=True, text=True, timeout=30)
         if r.returncode == 0 and r.stdout.strip():
-            prov["image_id"] = r.stdout.strip()
+            inspected = json.loads(r.stdout)[0]
+            if inspected.get("Id"):
+                prov["image_id"] = inspected["Id"]
+            digests = inspected.get("RepoDigests") or []
+            if digests:
+                requested_repo = container.split("@", 1)[0]
+                requested_repo = requested_repo.rsplit(":", 1)[0] if ":" in requested_repo.rsplit("/", 1)[-1] else requested_repo
+                resolved = next((d for d in digests if d.split("@", 1)[0] == requested_repo), digests[0])
+                prov["image_resolved"] = resolved
+                prov["image_digest"] = resolved.split("@", 1)[1] if "@" in resolved else resolved
     except Exception:  # noqa: BLE001
         pass
     for path in ("/app/commit.txt", "/commit.txt"):
@@ -255,7 +268,8 @@ def _hf_cli():
 
 
 def ensure_image(container: str, recipe: dict, device: str,
-                 build: bool = True, pull: bool = True, push: bool = False) -> int:
+                 build: bool = True, pull: bool = True, push: bool = False,
+                 pull_policy: str = "missing") -> int:
     """Ensure the serve image exists locally; pull or build it if missing.
 
     Resolution order: local image -> `docker pull` (when `pull`) -> build from
@@ -272,10 +286,29 @@ def ensure_image(container: str, recipe: dict, device: str,
     """
     import subprocess
     null = subprocess.DEVNULL
-    if subprocess.call(["docker", "image", "inspect", container],
-                       stdout=null, stderr=null) == 0:
+    build_config = image_build_config(recipe, device)
+    if build_config is None:
+        build = False
+        # Explicit third-party images have no local Dockerfile contract.
+        pull = True
+    if pull_policy == "always":
+        pull = True
+    present = subprocess.call(["docker", "image", "inspect", container],
+                              stdout=null, stderr=null) == 0
+    if pull_policy == "always" and pull:
+        print(f"[image] refreshing {container}")
+        if subprocess.call(["docker", "pull", container]) == 0:
+            return 0
+        if present:
+            print(f"[image] refresh failed; keeping local image: {container}", file=sys.stderr)
+            return 0
+    if present:
         print(f"[image] present: {container}")
         return 0
+    if pull_policy == "never":
+        print(f"[image] missing locally and pull_policy=never: {container}", file=sys.stderr)
+        return 1
+
     last = container.rsplit("/", 1)[-1]
     if ":" in last and last.rsplit(":", 1)[-1] != "latest":
         # Commit-pinned: the only faithful source is the registry build.
@@ -288,9 +321,10 @@ def ensure_image(container: str, recipe: dict, device: str,
             return 0
         print("[image] pull failed; building from dockerfiles/ instead")
     if not build:
-        print(f"[image] missing and build disabled: {container}", file=sys.stderr)
+        origin = "external image has no build recipe" if image_is_explicit(recipe, device) else "build disabled"
+        print(f"[image] missing: {container} ({origin})", file=sys.stderr)
         return 1
-    engine = _engine_of(recipe, container) or "vllm"
+    engine = str((build_config or {}).get("framework") or _engine_of(recipe, container) or "vllm")
     build_sh = RECIPES_DIR.parent / "build.sh"
     cmd = [str(build_sh), "-f", engine, "-d", device, "-t", container]
     if push:
@@ -375,10 +409,7 @@ def teardown_model(recipe: dict) -> int:
 
 
 def list_recipes() -> None:
-    if not RECIPES_DIR.is_dir():
-        print("No recipes/ directory found.")
-        return
-    found = sorted(p.stem for p in RECIPES_DIR.glob("*.yaml"))
+    found = list_run_configs()
     if not found:
         print("No recipes found.")
         return
@@ -389,15 +420,7 @@ def list_recipes() -> None:
 
 def _render_command(recipe: dict, overrides: dict) -> str:
     """Fill the recipe's command template with defaults + CLI overrides."""
-    import yaml  # noqa: F401  (already importable; used by callers)
-    params = dict(recipe.get("defaults") or {})
-    for k, v in overrides.items():
-        if v is not None:
-            params[k] = v
-    cmd = (recipe.get("command") or "").strip()
-    for key, val in params.items():
-        cmd = cmd.replace("{" + key + "}", str(val))
-    return cmd
+    return render_command(recipe, overrides)
 
 
 def _find_free_port(preferred: int = 8000) -> int:
@@ -566,10 +589,8 @@ def _apply_model_patches(recipe: dict) -> None:
 
 
 def main() -> int:
-    import yaml
-
     parser = argparse.ArgumentParser(
-        description="One-click recipe runner for Strix Halo (gfx1151).",
+        description="One-click composable benchmark runner for AMD Radeon GPUs.",
     )
     parser.add_argument("recipe", nargs="?", help="Recipe name (without .yaml)")
     parser.add_argument("--list", action="store_true", help="List available recipes")
@@ -585,11 +606,18 @@ def main() -> int:
     parser.add_argument("--out", help="Output JSON path for --benchmark results")
     parser.add_argument("--base-url", default="http://localhost:8000",
                         help="Endpoint to benchmark (default: http://localhost:8000)")
-    parser.add_argument("--device", default="halo", choices=sorted(DEVICE_GFX),
-                        help="Target GPU device profile (default: halo / gfx1151)")
+    parser.add_argument("--device", default=None, choices=sorted(DEVICE_GFX),
+                        help="Target GPU device profile (default: matrix device, else halo)")
     parser.add_argument("--tag", default=None,
-                        help="Image tag override for a one-off run (default: the recipe's "
-                             "image_tag, else 'latest'). Pass a commit id to pin a build.")
+                        help="Override the selected image tag for a one-off run")
+    parser.add_argument("--image", default=None,
+                        help="Explicit OCI image reference. Used verbatim and never rewritten "
+                             "to the Radeon Arena registry.")
+    parser.add_argument("--registry", default=None,
+                        help="Default registry for logical runtimes without an explicit image "
+                             "(default: $RADEONRUN_IMAGE_REGISTRY or ghcr.io/radeon-arena)")
+    parser.add_argument("--pull-policy", choices=("always", "missing", "never"), default="missing",
+                        help="Container image pull policy (default: missing)")
     parser.add_argument("--setup-only", action="store_true",
                         help="Only stage the model from its HF source, then exit")
     parser.add_argument("--no-setup", action="store_true",
@@ -612,19 +640,29 @@ def main() -> int:
         list_recipes()
         return 0
 
-    path = RECIPES_DIR / f"{args.recipe}.yaml"
-    if not path.is_file():
-        print(f"Recipe not found: {path}")
+    try:
+        recipe = load_run_config(
+            args.recipe,
+            device_override=args.device,
+            benchmark_override=args.benchmark,
+        )
+    except ConfigError as exc:
+        print(f"Configuration error: {exc}", file=sys.stderr)
         return 2
-
-    recipe = yaml.safe_load(path.read_text())
-    recipe["_recipe_name"] = args.recipe
+    args.device = str(args.device or (recipe.get("_device") or {}).get("id") or "halo")
+    if args.image:
+        # Make the CLI override part of the effective launch spec so image
+        # preparation knows it is external and never falls back to our
+        # Dockerfiles when a pull fails.
+        recipe["image"] = {"ref": args.image}
+        if isinstance(recipe.get("_launch"), dict):
+            recipe["_launch"]["image"] = {"ref": args.image}
     default_port = int(args.port or (recipe.get("defaults") or {}).get("port", 8000))
     run_port = _find_free_port(default_port) if args.benchmark else default_port
     if args.benchmark and run_port != default_port:
         print(f"[benchmark] port {default_port} is busy; using {run_port}")
     profile_ctx = _profile_required_ctx(args.benchmark) if args.benchmark else None
-    container = _resolve_container(recipe, args.device, args.tag)
+    container = _resolve_container(recipe, args.device, args.tag, args.image, args.registry)
     benchmark_ctx = _recipe_benchmark_ctx(recipe) if args.benchmark else None
     if benchmark_ctx is not None:
         profile_ctx = min(profile_ctx, benchmark_ctx) if profile_ctx else benchmark_ctx
@@ -661,7 +699,8 @@ def main() -> int:
 
     # --setup-only: stage everything (image + model) and stop.
     if args.setup_only:
-        rc = ensure_image(container, recipe, args.device, build=img_build, pull=img_pull, push=args.push)
+        rc = ensure_image(container, recipe, args.device, build=img_build, pull=img_pull,
+                  push=args.push, pull_policy=args.pull_policy)
         if rc != 0:
             return rc
         return setup_model(recipe, force=args.force_setup)
@@ -676,7 +715,8 @@ def main() -> int:
     # dockerfiles/) and stage the model from its `source` before serving, so a
     # recipe reproduces from nothing but this repo + a HuggingFace pull.
     if not args.no_setup:
-        rc = ensure_image(container, recipe, args.device, build=img_build, pull=img_pull, push=args.push)
+        rc = ensure_image(container, recipe, args.device, build=img_build, pull=img_pull,
+                  push=args.push, pull_policy=args.pull_policy)
         if rc != 0:
             print("[setup] image prepare failed; aborting", file=sys.stderr)
             return rc
@@ -688,7 +728,8 @@ def main() -> int:
 
     # Benchmark mode: serve in the background, run the profile, then report.
     if args.benchmark:
-        rc = _benchmark(recipe, full, args, container, container_name, port=run_port, max_context=benchmark_ctx)
+        rc = _benchmark(recipe, full, args, container, container_name, port=run_port,
+                max_context=benchmark_ctx, rendered_command=inner)
         if args.cleanup:
             teardown_model(recipe)
         return rc
@@ -707,6 +748,9 @@ def main() -> int:
 
 def _served_model_name(recipe: dict) -> str:
     """Best-effort served model name for the benchmark client."""
+    declared = str(recipe.get("served_model_name") or "").strip()
+    if declared:
+        return declared
     cmd = recipe.get("command") or ""
     import re
     m = re.search(r"--served-model-name(?:=|\s+)(\S+)", cmd) or re.search(r"--alias(?:=|\s+)(\S+)", cmd)
@@ -740,7 +784,8 @@ def _free_page_cache(device: str = "halo") -> None:
 
 def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
                container_name: str = "radeon_vllm", port: int | None = None,
-               max_context: int | None = None) -> int:
+               max_context: int | None = None,
+               rendered_command: str | None = None) -> int:
     """Serve the recipe in the background, run the profile, tear down."""
     import subprocess
     import time
@@ -777,15 +822,25 @@ def _benchmark(recipe: dict, serve_cmd: str, args, container: str,
         # <recipe>.json in here"; bench.py expects a concrete file path.
         if out.endswith(os.sep) or os.path.isdir(out):
             out = os.path.join(out, f"{args.recipe}.json")
+        axes = resolved_axes(recipe, container)
+        provenance = _image_provenance(container)
+        axes["launch"].update(provenance)
+        axes["launch"]["command"] = rendered_command or recipe.get("command")
         meta_obj = {
             "recipe": recipe.get("name", args.recipe),
             "model": recipe.get("model"),
             "runtime": recipe.get("runtime") or _engine_of(recipe, container) or "vllm",
             "container": recipe.get("container"),
-            "command": " ".join((recipe.get("command") or "").split()),
+            "command": " ".join((rendered_command or recipe.get("command") or "").split()),
+            "config_source": recipe.get("_config_source", "legacy"),
+            "spec_files": recipe.get("_spec_files") or {},
+            "device": axes["device"],
+            "model_spec": axes["model"],
+            "launch_spec": axes["launch"],
+            "benchmark_spec": axes["benchmark"],
         }
         # Pin the leaderboard number to the exact image build that produced it.
-        meta_obj.update(_image_provenance(container))
+        meta_obj.update(provenance)
         meta = json.dumps(meta_obj)
         bench_cmd = [
             sys.executable, str(here / "bench.py"),

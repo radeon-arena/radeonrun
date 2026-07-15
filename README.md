@@ -9,12 +9,13 @@ framework; the target GPU is selected by a device profile in [`devices/`](device
 |---|---|---|
 | `halo` — Strix Halo (Radeon 8060S iGPU, RDNA 3.5) | `gfx1151` | ✅ verified |
 | `w7900` — Radeon PRO W7900 (RDNA3) | `gfx1100` | ⚠️ placeholder, unverified |
-| `r9700` — Radeon AI PRO R9700 (RDNA4) | `gfx1200` | ⚠️ placeholder, base TBD |
+| `r9700` — Radeon AI PRO R9700 (RDNA4) | `gfx1201` | ⚠️ base image TBD |
 
-Images are named **`ghcr.io/radeon-arena/<device>-<framework>:<commit>`** — the
-device is in the name and the tag is the upstream build commit (so a result can
-pin a byte-reproducible image, e.g. `halo-llamacpp:fe7c8b2414`); `:latest` is
-also published for convenience.
+RadeonRun-maintained images default to
+**`ghcr.io/radeon-arena/<device>-<framework>:<commit>`**, but runs are
+registry-neutral: launch specs and `--image` may use Docker Hub, GHCR, Quay,
+Harbor, another private registry, or a local image. Results capture the
+requested ref plus immutable registry digest/local image ID when available.
 
 The Dockerfiles, recipes, launch/build scripts, and the gfx1151 notes here are
 **the exact build steps and serve commands that produce the leaderboard numbers**
@@ -115,10 +116,12 @@ APU and our experience is single-node only.
 
 ## 3. Recipes
 
-**41 pre-configured serve commands** live in [`recipes/`](recipes/), each
-independently measured on real gfx1151 hardware (the `results/strix/` JSON is the
-source of truth). Use [recipes/TEMPLATE.md](recipes/TEMPLATE.md) when adding a
-new recipe. See [recipes/README.md](recipes/README.md). The public recipe
+**41 pre-configured run matrices** combine reusable specs from
+[`models/`](models/), [`launches/`](launches/), [`devices/`](devices/) and
+[`benchmarking/`](benchmarking/). Legacy [`recipes/`](recipes/) remain as a
+compatibility view for existing links and consumers. Read
+[`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) before adding a model, launch,
+device, or matrix. The public recipe
 browser lives on Radeon Arena:
 
 ```text
@@ -141,6 +144,16 @@ Open [`docs/recipes.html`](docs/recipes.html) locally for offline review. Exampl
 - `diffusiongemma-26b-a4b-bf16` / `-awq-int4` (vLLM **upstream-main** image; needs `--main` build)
 
 List them all: `./run-recipe.py --list`.
+
+Use any OCI image without moving it into Radeon Arena packages:
+
+```bash
+python3 run-recipe.py qwen3.6-35b-a3b-bf16-vllm \
+  --device w7900 \
+  --image docker.io/vendor/optimized-vllm:v2 \
+  --pull-policy always \
+  --benchmark benchmarking/halo-arena-v2.yaml
+```
 
 All 41 recipes have been independently re-run on real gfx1151 hardware — see
 [8. Reproduction](#8-reproduction).

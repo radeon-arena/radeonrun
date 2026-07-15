@@ -16,7 +16,7 @@ set -euo pipefail
 #   ./build.sh -f llamacpp -d halo --push                # build, then push to ghcr
 #
 # Frameworks: vllm | vllm-main | llamacpp
-# Devices:    halo (gfx1151) | w7900 (gfx1100) | r9700 (gfx1200)
+# Devices:    halo (gfx1151) | w7900 (gfx1100) | r9700 (gfx1201)
 #
 # Image name puts the device first; the tag carries the upstream build commit
 # (byte-reproducible), and `:latest` is also tagged for convenience:
@@ -28,7 +28,7 @@ FRAMEWORK="vllm"
 DEVICE="halo"
 IMAGE_TAG=""
 PUSH=0
-ORG="ghcr.io/radeon-arena"
+REGISTRY="${RADEONRUN_IMAGE_REGISTRY:-ghcr.io/radeon-arena}"
 
 usage() { sed -n '3,25p' "$0"; exit "${1:-0}"; }
 
@@ -37,6 +37,7 @@ while [[ $# -gt 0 ]]; do
     -f|--framework) FRAMEWORK="$2"; shift 2 ;;
     -d|--device)    DEVICE="$2"; shift 2 ;;
     -t|--tag)       IMAGE_TAG="$2"; shift 2 ;;
+    --registry)     REGISTRY="$2"; shift 2 ;;
     -p|--push)      PUSH=1; shift ;;
     -h|--help)      usage 0 ;;
     *) echo "Unknown arg: $1" >&2; usage 2 ;;
@@ -85,26 +86,38 @@ case "$FRAMEWORK" in
     echo "Unknown framework: $FRAMEWORK (want vllm | vllm-main | llamacpp)" >&2; exit 2 ;;
 esac
 
-REPO="${ORG}/${DEVICE}-${IMAGE}"
+REGISTRY="${REGISTRY%/}"
+REPO="${REGISTRY}/${DEVICE}-${IMAGE}"
 IMAGE_TAG="${IMAGE_TAG:-${REPO}:${COMMIT}}"
 
-echo "Building ${FRAMEWORK} for ${DEVICE} (${GFX})  ->  ${IMAGE_TAG}  (+ ${REPO}:latest)"
+# A custom --tag is a complete OCI reference. Its companion moving tag belongs
+# to the same repository; never create an unrelated ghcr.io/radeon-arena tag.
+IMAGE_NO_DIGEST="${IMAGE_TAG%@*}"
+LAST_COMPONENT="${IMAGE_NO_DIGEST##*/}"
+if [[ "$LAST_COMPONENT" == *:* ]]; then
+  TARGET_REPO="${IMAGE_NO_DIGEST%:*}"
+else
+  TARGET_REPO="$IMAGE_NO_DIGEST"
+fi
+LATEST_TAG="${TARGET_REPO}:latest"
+
+echo "Building ${FRAMEWORK} for ${DEVICE} (${GFX})  ->  ${IMAGE_TAG}  (+ ${LATEST_TAG})"
 echo "  dockerfile: ${DOCKERFILE}"
 # --network=host: the build's apt-get needs DNS; on hosts using systemd-resolved
 # (127.0.0.53 stub) the default bridge build network can't resolve, so share the
 # host network namespace for the build.
-( cd "$SCRIPT_DIR" && docker build --network=host -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "${REPO}:latest" "${BUILD_ARGS[@]}" . )
+( cd "$SCRIPT_DIR" && docker build --network=host -f "$DOCKERFILE" -t "$IMAGE_TAG" -t "$LATEST_TAG" "${BUILD_ARGS[@]}" . )
 
 echo "Done: ${IMAGE_TAG}"
 if [[ "$PUSH" == "1" ]]; then
-  echo "Pushing ${IMAGE_TAG} and ${REPO}:latest ..."
-  if docker push "$IMAGE_TAG" && docker push "${REPO}:latest"; then
+  echo "Pushing ${IMAGE_TAG} and ${LATEST_TAG} ..."
+  if docker push "$IMAGE_TAG" && docker push "$LATEST_TAG"; then
     echo "Pushed: ${IMAGE_TAG} (+ :latest)"
   else
     echo "WARNING: push failed -- image is built and usable locally, but not synced to ghcr." >&2
-    echo "         Check 'docker login ghcr.io' and that the token has packages:write." >&2
+    echo "         Check docker login/permissions for the target registry." >&2
   fi
 else
-  echo "Push with:  docker push ${IMAGE_TAG} && docker push ${REPO}:latest"
+  echo "Push with:  docker push ${IMAGE_TAG} && docker push ${LATEST_TAG}"
 fi
 

@@ -1,0 +1,13 @@
+spec_version: "1"
+id: r9700
+result_key: r9700
+image_device: r9700
+label: Radeon AI PRO R9700
+gpu: Radeon AI PRO R9700
+arch: gfx1201
+arch_aliases: [gfx1200]
+runner_labels: [self-hosted, gfx1201]
+topology:
+  kind: single-node
+  default_gpu_count: 1
+  runner_capacity: 8

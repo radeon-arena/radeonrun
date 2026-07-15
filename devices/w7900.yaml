@@ -1,0 +1,12 @@
+spec_version: "1"
+id: w7900
+result_key: w7900
+image_device: w7900
+label: Radeon PRO W7900
+gpu: Radeon PRO W7900
+arch: gfx1100
+runner_labels: [self-hosted, gfx1100]
+topology:
+  kind: single-node
+  default_gpu_count: 1
+  runner_capacity: 2

@@ -1,0 +1,43 @@
+catalog_version: "1"
+matrices:
+  diffusiongemma-26b-a4b-awq-int4: {model: diffusiongemma-26b-a4b-awq-int4, launch: vllm-main-diffusion, device: halo, benchmark: halo-arena-v1}
+  diffusiongemma-26b-a4b-bf16: {model: diffusiongemma-26b-a4b-bf16, launch: vllm-main-diffusion, device: halo, benchmark: halo-arena-v1}
+  gemma-4-26b-a4b-it-awq-4bit-vllm: {model: gemma-4-26b-a4b-it-awq-4bit-vllm, launch: {ref: vllm-awq, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  gemma-4-26b-a4b-it-bf16-llamacpp: {model: gemma-4-26b-a4b-it-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  gemma-4-26b-a4b-it-bf16-vllm: {model: gemma-4-26b-a4b-it-bf16-vllm, launch: {ref: vllm-bf16-triton, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  gemma-4-26b-a4b-it-q8-0-llamacpp: {model: gemma-4-26b-a4b-it-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp: {model: gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  gemma-4-31b-it-quark-w8a8-int8-vllm: {model: gemma-4-31b-it-quark-w8a8-int8-vllm, launch: {ref: vllm-quark, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  llama-3.1-8b-instruct-bf16-llamacpp: {model: llama-3.1-8b-instruct-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  llama-3.1-8b-instruct-q4-k-m-llamacpp: {model: llama-3.1-8b-instruct-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  mimo-v2.5-ud-q2-k-xl-llamacpp: {model: mimo-v2.5-ud-q2-k-xl-llamacpp, launch: {ref: llamacpp-hip-mimo, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-14b-bf16-llamacpp: {model: qwen3-14b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-14b-q4-k-m-llamacpp: {model: qwen3-14b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-14b-q8-0-llamacpp: {model: qwen3-14b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-30b-a3b-bf16-llamacpp: {model: qwen3-30b-a3b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-30b-a3b-bf16-vllm: {model: qwen3-30b-a3b-bf16-vllm, launch: {ref: vllm-bf16-triton, defaults: {ctx: 40960}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-30b-a3b-bf16-yarn-vllm: {model: qwen3-30b-a3b-bf16-yarn-vllm, launch: {ref: vllm-bf16-triton, defaults: {ctx: 131072}}, device: halo, benchmark: halo-arena-v2}
+  qwen3-30b-a3b-q4-k-m-llamacpp: {model: qwen3-30b-a3b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-30b-a3b-q8-0-llamacpp: {model: qwen3-30b-a3b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-32b-bf16-llamacpp: {model: qwen3-32b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-32b-q4-k-m-llamacpp: {model: qwen3-32b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-32b-q8-0-llamacpp: {model: qwen3-32b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-4b-bf16-llamacpp: {model: qwen3-4b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-4b-q4-k-m-llamacpp: {model: qwen3-4b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-4b-q8-0-llamacpp: {model: qwen3-4b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-8b-bf16-llamacpp: {model: qwen3-8b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-8b-q4-k-m-llamacpp: {model: qwen3-8b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3-8b-q8-0-llamacpp: {model: qwen3-8b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-27b-bf16-llamacpp: {model: qwen3.6-27b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-27b-bf16-vllm: {model: qwen3.6-27b-bf16-vllm, launch: {ref: vllm-bf16, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-27b-q4-k-m-llamacpp: {model: qwen3.6-27b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-27b-q8-0-llamacpp: {model: qwen3.6-27b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-27b-quark-w8a8-int8-vllm: {model: qwen3.6-27b-quark-w8a8-int8-vllm, launch: {ref: vllm-quark, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-awq-4bit-vllm: {model: qwen3.6-35b-a3b-awq-4bit-vllm, launch: {ref: vllm-awq-triton, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-bf16-llamacpp: {model: qwen3.6-35b-a3b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-bf16-vllm: {model: qwen3.6-35b-a3b-bf16-vllm, launch: {ref: vllm-bf16-triton-no-gmu, defaults: {ctx: 131072}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-int4-mixed-autoround-vllm: {model: qwen3.6-35b-a3b-int4-mixed-autoround-vllm, launch: {ref: vllm-autoround-gptq, defaults: {ctx: 8192}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-q8-0-llamacpp: {model: qwen3.6-35b-a3b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-quark-w8a8-int8-vllm: {model: qwen3.6-35b-a3b-quark-w8a8-int8-vllm, launch: {ref: vllm-quark, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.6-35b-a3b-ud-q4-k-m-llamacpp: {model: qwen3.6-35b-a3b-ud-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  step-3.5-flash-q4-k-s-llamacpp: {model: step-3.5-flash-q4-k-s-llamacpp, launch: {ref: llamacpp-hip-no-mmap, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
