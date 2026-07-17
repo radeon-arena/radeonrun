@@ -1,0 +1,185 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "measurements": [
+    {
+      "decode_toks_per_s": 20.65,
+      "decode_toks_per_s_per_req": 21.42,
+      "prefill_toks_per_s": 2856.65,
+      "ttft_ms": 225.91,
+      "tpot_ms": 46.68,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 72.43,
+      "decode_toks_per_s_per_req": 20.15,
+      "prefill_toks_per_s": 1205.03,
+      "ttft_ms": 679.55,
+      "tpot_ms": 49.69,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 119.51,
+      "decode_toks_per_s_per_req": 16.81,
+      "prefill_toks_per_s": 412.0,
+      "ttft_ms": 4509.59,
+      "tpot_ms": 59.81,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 121.52,
+      "decode_toks_per_s_per_req": 16.36,
+      "prefill_toks_per_s": 199.47,
+      "ttft_ms": 11435.11,
+      "tpot_ms": 61.54,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 262144,
+  "meta": {
+    "recipe": "Qwen3.6-27B",
+    "model": "/models/Qwen3.6-27B",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 NCCL_PROTO=Simple NCCL_P2P_DISABLE=1 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3.6-27B --served-model-name q27b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 2304 --max-num-seqs 32 --gpu-memory-utilization 0.90 --attention-backend TRITON_ATTN --tensor-parallel-size 2",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-bf16-vllm-r9700-tp2",
+      "model": "models/catalog.yaml#models.qwen3.6-27b-bf16-vllm",
+      "launch": "launches/catalog.yaml#launches.r9700-vllm-tp2",
+      "device": "devices/r9700.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "r9700",
+      "result_key": "r9700",
+      "image_device": "r9700",
+      "label": "Radeon AI PRO R9700",
+      "gpu": "Radeon AI PRO R9700",
+      "arch": "gfx1201",
+      "arch_aliases": [
+        "gfx1200"
+      ],
+      "runner_labels": [
+        "self-hosted",
+        "gfx1201"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 8
+      }
+    },
+    "model_spec": {
+      "path": "/models/Qwen3.6-27B",
+      "source": "Qwen/Qwen3.6-27B",
+      "served_name": "q27b",
+      "quantization": "BF16",
+      "id": "qwen3.6-27b-bf16-vllm",
+      "name": "Qwen3.6-27B",
+      "description": "vLLM TP2 serving Qwen3.6-27B BF16 on two Radeon AI PRO R9700 GPUs"
+    },
+    "launch_spec": {
+      "runtime": "vllm",
+      "backend": "ROCm/HIP \u00b7 TRITON_ATTN",
+      "container": "vllm",
+      "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 2,
+        "tensor_parallel_size": 2
+      },
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 2304
+      },
+      "env": {
+        "HIP_VISIBLE_DEVICES": "0,1",
+        "ROCR_VISIBLE_DEVICES": "0,1",
+        "NCCL_PROTO": "Simple",
+        "NCCL_P2P_DISABLE": "1",
+        "TRITON_CACHE_DIR": "/models/.triton-cache"
+      },
+      "mods": [],
+      "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 NCCL_PROTO=Simple NCCL_P2P_DISABLE=1 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3.6-27B --served-model-name q27b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 2304 --max-num-seqs 32 --gpu-memory-utilization 0.90 --attention-backend TRITON_ATTN --tensor-parallel-size 2",
+      "id": "r9700-vllm-tp2",
+      "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-bf16-vllm-r9700-tp2",
+        "model": "models/catalog.yaml#models.qwen3.6-27b-bf16-vllm",
+        "launch": "launches/catalog.yaml#launches.r9700-vllm-tp2",
+        "device": "devices/r9700.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+  },
+  "generated_at": "2026-07-17T08:25:31Z"
+}

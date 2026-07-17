@@ -1,0 +1,184 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "measurements": [
+    {
+      "decode_toks_per_s": 68.8,
+      "decode_toks_per_s_per_req": 70.92,
+      "prefill_toks_per_s": 47367.76,
+      "ttft_ms": 24.91,
+      "tpot_ms": 14.1,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 261.95,
+      "decode_toks_per_s_per_req": 68.2,
+      "prefill_toks_per_s": 25601.38,
+      "ttft_ms": 38.66,
+      "tpot_ms": 14.66,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 849.69,
+      "decode_toks_per_s_per_req": 58.71,
+      "prefill_toks_per_s": 11714.45,
+      "ttft_ms": 61.03,
+      "tpot_ms": 17.03,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 1638.69,
+      "decode_toks_per_s_per_req": 57.45,
+      "prefill_toks_per_s": 7339.54,
+      "ttft_ms": 90.99,
+      "tpot_ms": 17.41,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 32768,
+  "meta": {
+    "recipe": "Qwen3-4B",
+    "model": "/models/Qwen3-4B-BF16",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3-4B-BF16 --served-model-name qwen3-4b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 8192 --max-num-seqs 32 --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-bf16-vllm-r9700",
+      "model": "models/catalog.yaml#models.qwen3-4b-bf16-vllm-r9700",
+      "launch": "launches/catalog.yaml#launches.r9700-vllm-tp1",
+      "device": "devices/r9700.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "r9700",
+      "result_key": "r9700",
+      "image_device": "r9700",
+      "label": "Radeon AI PRO R9700",
+      "gpu": "Radeon AI PRO R9700",
+      "arch": "gfx1201",
+      "arch_aliases": [
+        "gfx1200"
+      ],
+      "runner_labels": [
+        "self-hosted",
+        "gfx1201"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 8
+      }
+    },
+    "model_spec": {
+      "name": "Qwen3-4B",
+      "path": "/models/Qwen3-4B-BF16",
+      "source": "Qwen/Qwen3-4B",
+      "served_name": "qwen3-4b",
+      "quantization": "BF16",
+      "benchmark_ctx": 32768,
+      "id": "qwen3-4b-bf16-vllm-r9700",
+      "description": "vLLM serving Qwen3-4B BF16 on one Radeon AI PRO R9700"
+    },
+    "launch_spec": {
+      "runtime": "vllm",
+      "backend": "ROCm/HIP \u00b7 TRITON_ATTN",
+      "container": "vllm",
+      "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 1,
+        "tensor_parallel_size": 1
+      },
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 8192
+      },
+      "env": {
+        "HIP_VISIBLE_DEVICES": "0",
+        "ROCR_VISIBLE_DEVICES": "0",
+        "TRITON_CACHE_DIR": "/models/.triton-cache"
+      },
+      "mods": [],
+      "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3-4B-BF16 --served-model-name qwen3-4b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 8192 --max-num-seqs 32 --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN",
+      "id": "r9700-vllm-tp1",
+      "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-bf16-vllm-r9700",
+        "model": "models/catalog.yaml#models.qwen3-4b-bf16-vllm-r9700",
+        "launch": "launches/catalog.yaml#launches.r9700-vllm-tp1",
+        "device": "devices/r9700.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+      "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+    "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+  },
+  "generated_at": "2026-07-17T08:04:44Z"
+}
