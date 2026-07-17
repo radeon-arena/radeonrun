@@ -219,7 +219,7 @@ launches:
     command: >-
       vllm serve {model.path} --served-model-name {model.served_name}
       --host {host} --port {port} --trust-remote-code --dtype bfloat16
-      --max-model-len {ctx} --max-num-seqs {nseq} --gpu-memory-utilization 0.85
+      --max-model-len {ctx} --max-num-seqs {nseq} --gpu-memory-utilization 0.90
       --attention-backend TRITON_ATTN --tensor-parallel-size 2
 
   r9700-vllm-tp4:
