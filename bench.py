@@ -25,6 +25,7 @@ Normally invoked via `run-recipe.py <recipe> --benchmark <profile>`.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import statistics
 import sys
@@ -36,6 +37,12 @@ from typing import Any
 
 
 _PROMPT_CACHE: dict[tuple[str, str, int, str], str] = {}
+BENCHMARK_METHODOLOGY = {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize",
+}
 
 
 def _make_prompt(approx_tokens: int, salt: str = "") -> str:
@@ -48,8 +55,11 @@ def _make_prompt(approx_tokens: int, salt: str = "") -> str:
     """
     sentence = "The quick brown fox jumps over the lazy dog. "
     reps = max(1, approx_tokens // 9 + 1)
-    text = (sentence * reps).strip()
-    return f"{text} {salt}".strip() if salt else text
+    marker = ""
+    if salt:
+        nonce = hashlib.sha256(salt.encode()).hexdigest()[:16]
+        marker = f"Benchmark request {nonce}. "
+    return f"{marker}{sentence * reps}".strip()
 
 
 def _token_count(base_url: str, model: str, prompt: str) -> int | None:
@@ -81,9 +91,9 @@ def _make_prompt_bounded(base_url: str, model: str, approx_tokens: int, salt: st
         _PROMPT_CACHE[key] = prompt
         return prompt
 
-    # Trim by characters against the server tokenizer. Leave a small cushion
-    # because vLLM validates against tokenized request length, not our estimate.
-    target = max(1, approx_tokens - 16)
+    # Trim by characters against the server tokenizer. The benchmark's context
+    # check already reserves room for decode, so use the requested prompt size.
+    target = max(1, approx_tokens)
     lo, hi = 1, len(prompt)
     best = prompt
     while lo <= hi:
@@ -134,13 +144,14 @@ def _make_measured_prompt(base_url: str, model: str, depth: int, pp: int, tg: in
 
 
 def _post_stream_text(base_url: str, model: str, prompt: str, max_tokens: int):
-    """Issue one streaming completion; return (ttft_s, decode_s, out_tokens).
+    """Issue one streaming completion; return timing and exact token counts.
 
     ttft_s    : time to first streamed token.
     decode_s  : first->last token wall time (pure decode window; excludes TTFT
                 and the trailing [DONE]/socket-close latency).
     out_tokens: the server's reported completion_tokens when available, else the
                 streamed-chunk count.
+    prompt_tokens: the server's reported prompt_tokens when available.
     These definitions match reproduce/bench_stream.py so results are comparable.
     """
     body = json.dumps({
@@ -184,9 +195,10 @@ def _post_stream_text(base_url: str, model: str, prompt: str, max_tokens: int):
             if chunk.get("usage"):
                 usage = chunk["usage"]
     out_tokens = (usage or {}).get("completion_tokens") or n_chunks
+    prompt_tokens = (usage or {}).get("prompt_tokens")
     if t_first is None:
-        return None, 0.0, 0
-    return t_first - t0, t_last - t_first, out_tokens
+        return None, 0.0, 0, prompt_tokens
+    return t_first - t0, t_last - t_first, out_tokens, prompt_tokens
 
 
 def _post_stream(base_url: str, model: str, depth: int, pp: int, tg: int, max_context: int | None = None, salt: str = ""):
@@ -204,7 +216,7 @@ def _prime_prefix(base_url: str, model: str, depth: int, max_context: int | None
 
 def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, concurrency: int, prefix_caching: bool, run_id: int, max_context: int | None = None):
     """Run `concurrency` streaming requests in parallel; aggregate metrics."""
-    results: list[tuple[float, float, int]] = []
+    results: list[tuple[float, float, int, int | None]] = []
     lock = threading.Lock()
 
     if prefix_caching and depth > 0:
@@ -213,14 +225,31 @@ def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, con
         except Exception as exc:  # noqa: BLE001
             print(f"    prefix prime failed: {exc}", file=sys.stderr)
 
+    prompts: list[tuple[str, int | None]] = []
+    for worker_id in range(concurrency):
+        prompt = _make_measured_prompt(
+            base_url,
+            model,
+            depth,
+            pp,
+            tg,
+            max_context,
+            salt=f"d{depth} pp{pp} tg{tg} c{concurrency} run{run_id} worker{worker_id}",
+        )
+        prompts.append((prompt, _token_count(base_url, model, prompt)))
+
     def worker(worker_id: int):
         try:
-            r = _post_stream(base_url, model, depth, pp, tg, max_context, salt=f"run {run_id} worker {worker_id}")
+            prompt, preflight_tokens = prompts[worker_id]
+            ttft, decode_s, out_tokens, usage_prompt_tokens = _post_stream_text(
+                base_url, model, prompt, tg,
+            )
+            r = (ttft, decode_s, out_tokens, usage_prompt_tokens or preflight_tokens)
             with lock:
                 results.append(r)
         except Exception as exc:  # noqa: BLE001 — record failure, keep going
             with lock:
-                results.append((float("nan"), float("nan"), 0))
+                results.append((float("nan"), float("nan"), 0, None))
             print(f"    request failed: {exc}", file=sys.stderr)
 
     threads = [threading.Thread(target=worker, args=(i,)) for i in range(concurrency)]
@@ -236,13 +265,14 @@ def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, con
         return None
     ttfts = [r[0] for r in ok]
     total_out = sum(r[2] for r in ok)
+    prompt_tokens = [int(r[3]) for r in ok if r[3] is not None]
     # Aggregate decode throughput = all generated tokens / wall time (= reproduce
     # agg_decode_tps). Per-request decode and TPOT use only the first->last decode
     # window (exclude prefill/TTFT), matching reproduce/bench_stream.py. Aggregate
     # across the concurrent requests with the mean, as reproduce does.
     decode_toks_s = total_out / wall if wall > 0 else 0.0
     per_dec, tpots, prefills = [], [], []
-    for _ttft, decode_s, n in ok:
+    for _ttft, decode_s, n, _prompt_n in ok:
         if n > 1 and decode_s > 0:
             step_s = decode_s / (n - 1)
             per_dec.append((n - 1) / decode_s)
@@ -254,6 +284,9 @@ def _run_concurrent(base_url: str, model: str, depth: int, pp: int, tg: int, con
         "decode_toks_per_s": round(decode_toks_s, 2),
         "decode_toks_per_s_per_req": round(statistics.mean(per_dec), 2) if per_dec else None,
         "prefill_toks_per_s": round(statistics.mean(prefills), 2) if prefills else None,
+        "prompt_tokens": round(statistics.mean(prompt_tokens), 2) if prompt_tokens else None,
+        "prompt_tokens_min": min(prompt_tokens) if prompt_tokens else None,
+        "prompt_tokens_max": max(prompt_tokens) if prompt_tokens else None,
         "ttft_ms": round(statistics.mean(ttfts) * 1000.0, 2),
         "tpot_ms": round(statistics.mean(tpots), 2) if tpots else None,
         "requests_ok": len(ok),
@@ -295,11 +328,12 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any], max_context:
                     skipped_points += 1
                     continue
                 # Warm-up (discarded).
-                for _ in range(warmup):
+                for warmup_idx in range(warmup):
                     try:
                         if prefix_caching:
                             _prime_prefix(base_url, model, depth, max_context)
-                        _post_stream(base_url, model, depth, pp, tg, max_context, salt="warmup")
+                        salt = f"d{depth} pp{pp} tg{tg} c{conc} warmup{warmup_idx}"
+                        _post_stream(base_url, model, depth, pp, tg, max_context, salt=salt)
                     except Exception:  # noqa: BLE001
                         pass
                 # Timed runs; keep the median point.
@@ -324,6 +358,7 @@ def run_profile(base_url: str, model: str, profile: dict[str, Any], max_context:
     return {
         "profile": (profile.get("metadata") or {}).get("name", "unknown"),
         "framework": profile.get("framework", "halo-arena"),
+        "methodology": BENCHMARK_METHODOLOGY,
         "measurements": measurements,
         "failed_points": failed_points,
         "skipped_points": skipped_points,
