@@ -61,6 +61,7 @@ def benchmark_params(data: dict) -> dict:
     profile = data.get("profile")
     path = profile_path(profile)
     profile_doc = read_yaml(path) if path else None
+    recorded = (data.get("meta") or {}).get("benchmark_spec") or {}
     measurements = data.get("measurements") or []
     point_params = []
     seen = set()
@@ -80,7 +81,7 @@ def benchmark_params(data: dict) -> dict:
             "tg": key[2],
             "concurrency": key[3],
         })
-    return {
+    params = {
         "profile": profile,
         "profile_file": f"benchmarking/{path.name}" if path else None,
         "framework": data.get("framework") or (profile_doc or {}).get("framework"),
@@ -93,6 +94,12 @@ def benchmark_params(data: dict) -> dict:
         "skipped_points": data.get("skipped_points"),
         "max_context": data.get("max_context"),
     }
+    for key in ("framework", "metadata", "args", "schedule"):
+        if recorded.get(key) is not None:
+            params[key] = recorded[key]
+    if recorded.get("file"):
+        params["profile_file"] = recorded["file"]
+    return params
 
 
 def structured_record(device: str, name: str, config: dict, data: dict) -> dict:

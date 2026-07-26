@@ -37,6 +37,15 @@ The common benchmark profile is:
 benchmarking/halo-arena-v1.yaml # 512 input / 128 output, conc 1 / 4 / 16 / 32
 ```
 
+The harness asks the serving endpoint to tokenize each prompt, bounds it to the
+profile's requested input length, and places a deterministic per-request nonce
+at the beginning. Timed requests therefore have distinct prefixes even when the
+server enables automatic prefix caching. Result points include
+`prompt_tokens`, `prompt_tokens_min`, and `prompt_tokens_max` from the server's
+usage response, with a pre-timing `/tokenize` fallback for compatible servers,
+so the measured input length is auditable rather than inferred from the profile
+label.
+
 When no explicit OCI image is declared, logical runtimes use these RadeonRun
 defaults:
 
@@ -119,8 +128,8 @@ scheduler and batching differences. C=32 aggregate throughput is reported, but i
 can vary with runtime version, cache state, and batching behavior.
 
 A result is considered reproduced when the C=1 anchor is close and the command,
-model, and benchmark profile match. High-concurrency differences should be
-reported rather than hidden.
+model, benchmark profile, actual `prompt_tokens`, request count, and image digest
+match. High-concurrency differences should be reported rather than hidden.
 
 ## Known caveats
 
