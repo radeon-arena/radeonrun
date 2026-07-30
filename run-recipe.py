@@ -554,6 +554,24 @@ def _serve_ctx_for_recipe(recipe: dict, container: str, nseq: int | None = None,
     return max(default_ctx or 0, per_request * max(1, slots))
 
 
+def _apply_visible_devices(recipe: dict, spec: str) -> None:
+    """Pin one run to explicit GPU indices, leaving the committed launch spec intact."""
+    devices = [item.strip() for item in spec.split(",") if item.strip()]
+    if not devices:
+        raise ValueError("no GPU indices given")
+    topology = (recipe.get("_launch") or {}).get("topology") or {}
+    expected = int(topology.get("gpu_count") or 1)
+    if len(devices) != expected:
+        raise ValueError(f"lists {len(devices)} GPU(s) but the launch topology declares {expected}")
+    value = ",".join(devices)
+    for scope in (recipe, recipe.get("_launch") or {}):
+        env = scope.get("env")
+        if isinstance(env, dict):
+            env["HIP_VISIBLE_DEVICES"] = value
+            env["ROCR_VISIBLE_DEVICES"] = value
+    print(f"[gpu] pinned to devices {value}")
+
+
 def _env_prefix(recipe: dict) -> str:
     """Shell prefix that exports recipe env vars before the serve command."""
     import shlex
@@ -635,6 +653,10 @@ def main() -> int:
                         help="Endpoint to benchmark (default: http://localhost:8000)")
     parser.add_argument("--device", default=None, choices=sorted(DEVICE_GFX),
                         help="Target GPU device profile (default: matrix device, else halo)")
+    parser.add_argument("--visible-devices", default=None,
+                        help="Comma-separated GPU indices to expose for this run, e.g. '2,3'. "
+                             "Overrides the launch HIP/ROCR visible device set so a busy GPU "
+                             "can be avoided without editing the launch spec.")
     parser.add_argument("--tag", default=None,
                         help="Override the selected image tag for a one-off run")
     parser.add_argument("--image", default=None,
@@ -677,6 +699,12 @@ def main() -> int:
         print(f"Configuration error: {exc}", file=sys.stderr)
         return 2
     args.device = str(args.device or (recipe.get("_device") or {}).get("id") or "halo")
+    if args.visible_devices:
+        try:
+            _apply_visible_devices(recipe, args.visible_devices)
+        except ValueError as exc:
+            print(f"--visible-devices: {exc}", file=sys.stderr)
+            return 2
     if args.image:
         # Make the CLI override part of the effective launch spec so image
         # preparation knows it is external and never falls back to our

@@ -69,9 +69,14 @@ def validate_configs(errors: list[str]) -> None:
         tp = int(topology.get("tensor_parallel_size") or 1)
         node_count = int(topology.get("node_count") or 1)
         env = config.get("env") or {}
+        runtime = str(launch.get("runtime") or config.get("runtime") or "")
         if min(gpu_count, tp, node_count) < 1:
             error(f"{name}: topology counts must be positive", errors)
-        if gpu_count != tp:
+        if runtime == "llamacpp":
+            # llama.cpp spreads layers over the visible GPUs instead of sharding tensors.
+            if tp != 1:
+                error(f"{name}: llama.cpp launches must declare tensor_parallel_size=1", errors)
+        elif gpu_count != tp:
             error(f"{name}: topology gpu_count={gpu_count} must equal tensor_parallel_size={tp}", errors)
         if node_count != 1:
             error(f"{name}: only single-node launches are currently supported", errors)
@@ -160,7 +165,11 @@ def validate_bundle(errors: list[str]) -> None:
             if not launch.get("image"):
                 error(f"{record.get('file')}: launch.image missing", errors)
             topology = launch.get("topology") or {}
-            if topology and int(topology.get("gpu_count") or 1) != int(topology.get("tensor_parallel_size") or 1):
+            if (
+                topology
+                and str(launch.get("runtime") or "") != "llamacpp"
+                and int(topology.get("gpu_count") or 1) != int(topology.get("tensor_parallel_size") or 1)
+            ):
                 error(f"{record.get('file')}: launch topology GPU/TP mismatch", errors)
 
 
