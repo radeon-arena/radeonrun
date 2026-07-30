@@ -564,11 +564,16 @@ def _apply_visible_devices(recipe: dict, spec: str) -> None:
     if len(devices) != expected:
         raise ValueError(f"lists {len(devices)} GPU(s) but the launch topology declares {expected}")
     value = ",".join(devices)
+    # ROCR_VISIBLE_DEVICES filters physical agents and HIP_VISIBLE_DEVICES filters
+    # again on top of that result, so HIP has to index into the already-filtered
+    # set. Writing the physical list to both silently drops GPUs whenever the pin
+    # is not a prefix of 0,1,2,... (e.g. "0,1,3" leaves only two devices visible).
+    identity = ",".join(str(index) for index in range(len(devices)))
     for scope in (recipe, recipe.get("_launch") or {}):
         env = scope.get("env")
         if isinstance(env, dict):
-            env["HIP_VISIBLE_DEVICES"] = value
             env["ROCR_VISIBLE_DEVICES"] = value
+            env["HIP_VISIBLE_DEVICES"] = identity
     print(f"[gpu] pinned to devices {value}")
 
 

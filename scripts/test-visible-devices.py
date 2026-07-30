@@ -34,17 +34,20 @@ def rejects(spec: str, gpu_count: int) -> str:
 
 
 def main() -> int:
-    # A vLLM TP2 run pinned away from a busy GPU rewrites both env scopes.
+    # A vLLM TP2 run pinned away from a busy GPU rewrites both env scopes. ROCR
+    # selects the physical agents; HIP indexes into that filtered set.
     tp2 = recipe(2, 2)
     runner._apply_visible_devices(tp2, "2,3")
     for scope in (tp2, tp2["_launch"]):
-        assert scope["env"]["HIP_VISIBLE_DEVICES"] == "2,3", scope
         assert scope["env"]["ROCR_VISIBLE_DEVICES"] == "2,3", scope
+        assert scope["env"]["HIP_VISIBLE_DEVICES"] == "0,1", scope
 
     # llama.cpp splits layers instead of sharding, so gpu_count may exceed tp.
+    # A non-contiguous pin must still leave every device visible to HIP.
     multi = recipe(3, 1)
     runner._apply_visible_devices(multi, " 0 , 2 , 3 ")
-    assert multi["env"]["HIP_VISIBLE_DEVICES"] == "0,2,3", multi
+    assert multi["env"]["ROCR_VISIBLE_DEVICES"] == "0,2,3", multi
+    assert multi["env"]["HIP_VISIBLE_DEVICES"] == "0,1,2", multi
 
     # The device count must match what the launch topology declares.
     assert "declares 1" in rejects("0,2", 1)
