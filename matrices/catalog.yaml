@@ -66,6 +66,24 @@ matrices:
     device: r9700
     benchmark: halo-arena-v1
 
+  # TP2 puts 25.68 GiB of weights on each 29.86 GiB card, which only clears the
+  # cache-block check when nothing else is resident. Four GPUs give it room.
+  qwen3.6-27b-bf16-vllm-r9700-tp4:
+    name: Qwen3.6-27B
+    description: vLLM TP4 serving Qwen3.6-27B BF16 on four Radeon AI PRO R9700 GPUs
+    model: qwen3.6-27b-bf16-vllm
+    launch: r9700-vllm-tp4
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-35b-a3b-bf16-vllm-r9700-tp4:
+    name: Qwen3.6-35B-A3B
+    description: vLLM TP4 serving Qwen3.6-35B-A3B BF16 on four Radeon AI PRO R9700 GPUs
+    model: qwen3.6-35b-a3b-bf16-vllm
+    launch: r9700-vllm-tp4
+    device: r9700
+    benchmark: halo-arena-v1
+
   qwen3.6-27b-q4-k-m-llamacpp-r9700:
     name: Qwen3.6-27B
     description: llama.cpp HIP serving Qwen3.6-27B Q4_K_M on one Radeon AI PRO R9700
@@ -106,11 +124,11 @@ matrices:
     device: r9700
     benchmark: halo-arena-v1
 
-  qwen3.6-35b-a3b-bf16-llamacpp-r9700-3gpu:
+  qwen3.6-35b-a3b-bf16-llamacpp-r9700-4gpu:
     name: Qwen3.6-35B-A3B
-    description: llama.cpp HIP serving Qwen3.6-35B-A3B BF16 across three Radeon AI PRO R9700 GPUs
+    description: llama.cpp HIP serving Qwen3.6-35B-A3B BF16 across four Radeon AI PRO R9700 GPUs
     model: qwen3.6-35b-a3b-bf16-llamacpp
-    launch: r9700-llamacpp-hip-3gpu
+    launch: r9700-llamacpp-hip-4gpu
     device: r9700
     benchmark: halo-arena-v1
 

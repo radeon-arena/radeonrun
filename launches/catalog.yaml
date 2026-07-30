@@ -261,17 +261,17 @@ launches:
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
 
-  r9700-llamacpp-hip-3gpu:
+  r9700-llamacpp-hip-4gpu:
     runtime: llamacpp
     backend: ROCm/HIP
     container: llamacpp
     image:
       ref: ghcr.io/inferstation/llama-rocm-r9700@sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5
-    topology: {node_count: 1, gpu_count: 3, tensor_parallel_size: 1}
+    topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
     env:
-      HIP_VISIBLE_DEVICES: "0,1,2"
-      ROCR_VISIBLE_DEVICES: "0,1,2"
+      HIP_VISIBLE_DEVICES: "0,1,2,3"
+      ROCR_VISIBLE_DEVICES: "0,1,2,3"
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
     mods: []
     command: >-
