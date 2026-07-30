@@ -74,11 +74,11 @@ matrices:
     device: r9700
     benchmark: halo-arena-v1
 
-  qwen3.6-27b-q8-0-llamacpp-r9700:
+  qwen3.6-27b-q8-0-llamacpp-r9700-2gpu:
     name: Qwen3.6-27B
-    description: llama.cpp HIP serving Qwen3.6-27B Q8_0 on one Radeon AI PRO R9700
+    description: llama.cpp HIP serving Qwen3.6-27B Q8_0 across two Radeon AI PRO R9700 GPUs
     model: qwen3.6-27b-q8-0-llamacpp
-    launch: {ref: r9700-llamacpp-hip, defaults: {ctx: 20480}}
+    launch: r9700-llamacpp-hip-2gpu
     device: r9700
     benchmark: halo-arena-v1
 
