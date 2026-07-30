@@ -277,6 +277,8 @@ launches:
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
 
+  # AWQ weights take 22.87 GiB of the 29.86 GiB a single R9700 exposes, so the
+  # stock 0.85 utilisation leaves vLLM with -0.31 GiB for cache blocks.
   r9700-vllm-awq-tp1:
     runtime: vllm
     backend: "ROCm/HIP \xB7 TRITON_ATTN"
@@ -284,7 +286,7 @@ launches:
     image:
       ref: ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1
     topology: {node_count: 1, gpu_count: 1, tensor_parallel_size: 1}
-    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 8192}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 4096}
     env:
       HIP_VISIBLE_DEVICES: "0"
       ROCR_VISIBLE_DEVICES: "0"
@@ -293,7 +295,7 @@ launches:
     command: >-
       vllm serve {model.path} --served-model-name {model.served_name} --host {host}
       --port {port} --trust-remote-code --dtype float16 --max-model-len {ctx}
-      --max-num-seqs {nseq} --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN
+      --max-num-seqs {nseq} --gpu-memory-utilization 0.95 --attention-backend TRITON_ATTN
 
   r9700-vllm-autoround-gptq-tp1:
     runtime: vllm
