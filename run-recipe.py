@@ -200,6 +200,18 @@ def _gguf_fetch_shape(host_path: Path) -> tuple[str, Path]:
     return (_gguf_shard_glob(repo_path) or repo_path, model_dir)
 
 
+def _download_interrupted(model_dir: Path) -> bool:
+    """True when hf left `.incomplete` blobs behind, i.e. the download was cut short.
+
+    `hf download --local-dir` stages partial blobs under
+    `.cache/huggingface/download/**/*.incomplete` and removes them once each file
+    lands. Shards download in parallel, so an interrupted fetch can easily leave a
+    valid-looking directory whose index has not arrived yet.
+    """
+    cache = model_dir / ".cache" / "huggingface" / "download"
+    return cache.is_dir() and any(cache.rglob("*.incomplete"))
+
+
 def _directory_model_complete(host_path: Path) -> bool:
     """True when a staged HF directory has enough files to serve.
 
@@ -208,6 +220,8 @@ def _directory_model_complete(host_path: Path) -> bool:
     tokenizer or checkpoint-shard errors, so validate the minimal HF layout here.
     """
     if not host_path.is_dir():
+        return False
+    if _download_interrupted(host_path):
         return False
     if not (host_path / "config.json").is_file():
         return False
@@ -258,6 +272,8 @@ def _model_present(model: str) -> bool:
         return False
     host_path = _host_model_path(model)
     if model.endswith(".gguf"):
+        if _download_interrupted(host_path.parent):
+            return False
         if host_path.exists():
             return True
         glob = _gguf_shard_glob(host_path.name)
