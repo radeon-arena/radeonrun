@@ -65,3 +65,51 @@ matrices:
     launch: r9700-vllm-tp2
     device: r9700
     benchmark: halo-arena-v1
+
+  qwen3.6-27b-q4-k-m-llamacpp-r9700:
+    name: Qwen3.6-27B
+    description: llama.cpp HIP serving Qwen3.6-27B Q4_K_M on one Radeon AI PRO R9700
+    model: qwen3.6-27b-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-27b-q8-0-llamacpp-r9700:
+    name: Qwen3.6-27B
+    description: llama.cpp HIP serving Qwen3.6-27B Q8_0 on one Radeon AI PRO R9700
+    model: qwen3.6-27b-q8-0-llamacpp
+    launch: {ref: r9700-llamacpp-hip, defaults: {ctx: 20480}}
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-27b-bf16-llamacpp-r9700-2gpu:
+    name: Qwen3.6-27B
+    description: llama.cpp HIP serving Qwen3.6-27B BF16 across two Radeon AI PRO R9700 GPUs
+    model: qwen3.6-27b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2gpu
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-35b-a3b-ud-q4-k-m-llamacpp-r9700:
+    name: Qwen3.6-35B-A3B
+    description: llama.cpp HIP serving Qwen3.6-35B-A3B UD-Q4_K_M on one Radeon AI PRO R9700
+    model: qwen3.6-35b-a3b-ud-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-35b-a3b-q8-0-llamacpp-r9700-2gpu:
+    name: Qwen3.6-35B-A3B
+    description: llama.cpp HIP serving Qwen3.6-35B-A3B Q8_0 across two Radeon AI PRO R9700 GPUs
+    model: qwen3.6-35b-a3b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2gpu
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.6-35b-a3b-bf16-llamacpp-r9700-3gpu:
+    name: Qwen3.6-35B-A3B
+    description: llama.cpp HIP serving Qwen3.6-35B-A3B BF16 across three Radeon AI PRO R9700 GPUs
+    model: qwen3.6-35b-a3b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-3gpu
+    device: r9700
+    benchmark: halo-arena-v1
