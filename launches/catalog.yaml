@@ -181,6 +181,7 @@ launches:
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
 
   r9700-vllm-tp1:
     runtime: vllm
@@ -260,6 +261,7 @@ launches:
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
 
   r9700-llamacpp-hip-4gpu:
     runtime: llamacpp
@@ -276,6 +278,7 @@ launches:
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
 
   # AWQ weights take 22.87 GiB of the 29.86 GiB a single R9700 exposes, so the
   # stock 0.85 utilisation leaves vLLM with -0.31 GiB for cache blocks.

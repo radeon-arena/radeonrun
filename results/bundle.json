@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-31T04:46:19.859913+00:00",
+  "generated_at": "2026-07-31T04:47:29.438871+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "a42969639a5cf119019818d58d7c4509d09b69eb",
-  "short_commit": "a429696",
+  "commit": "752b04f291cada10ca6e5e741a9225aead9a20df",
+  "short_commit": "752b04f",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -12244,7 +12244,7 @@
             "ROCR_VISIBLE_DEVICES": "0",
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
-          "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}"
+          "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq} --cache-ram 0"
         },
         "data": {
           "profile": "halo-arena-v1",
@@ -12611,7 +12611,7 @@
             "ROCR_VISIBLE_DEVICES": "0,1",
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
-          "command": "llama-server -m /models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}"
+          "command": "llama-server -m /models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq} --cache-ram 0"
         },
         "data": {
           "profile": "halo-arena-v1",
@@ -13758,7 +13758,7 @@
             "ROCR_VISIBLE_DEVICES": "0",
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
-          "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}"
+          "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq} --cache-ram 0"
         },
         "data": {
           "profile": "halo-arena-v1",
@@ -14143,7 +14143,7 @@
             "ROCR_VISIBLE_DEVICES": "0,1",
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
-          "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}"
+          "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq} --cache-ram 0"
         },
         "data": {
           "profile": "halo-arena-v1",
@@ -14918,7 +14918,7 @@
             "ROCR_VISIBLE_DEVICES": "0",
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
-          "command": "llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}"
+          "command": "llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq} --cache-ram 0"
         },
         "data": {
           "profile": "halo-arena-v1",
