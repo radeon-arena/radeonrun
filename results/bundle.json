@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-31T03:04:03.694566+00:00",
+  "generated_at": "2026-07-31T03:20:55.557790+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "55d8215331a8c8b7609bb00876f2b473c4218ac6",
-  "short_commit": "55d8215",
+  "commit": "1dfa8552bee6d54d6d3d0555967b8dabc0d85647",
+  "short_commit": "1dfa855",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -53,7 +53,8 @@
       "qwen3-4b-bf16-vllm-r9700.json",
       "qwen3-4b-q4-k-m-llamacpp-r9700.json",
       "qwen3.6-27b-bf16-vllm-r9700-tp2.json",
-      "qwen3.6-27b-bf16-vllm-r9700-tp4.json"
+      "qwen3.6-27b-bf16-vllm-r9700-tp4.json",
+      "qwen3.6-35b-a3b-bf16-vllm-r9700-tp4.json"
     ]
   },
   "records": {
@@ -13246,6 +13247,396 @@
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-bf16-vllm-r9700-tp4",
             "model": "models/catalog.yaml#models.qwen3.6-27b-bf16-vllm",
+            "launch": "launches/catalog.yaml#launches.r9700-vllm-tp4",
+            "device": "devices/r9700.yaml",
+            "benchmark": "benchmarking/halo-arena-v1.yaml",
+            "legacy_recipe": null
+          },
+          "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+          "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+          "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+          "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+        },
+        "benchmark": {
+          "framework": "llama-benchy",
+          "metadata": {
+            "name": "halo-arena-v1",
+            "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+            "version": "1"
+          },
+          "args": {
+            "depth": [
+              0
+            ],
+            "pp": [
+              512
+            ],
+            "tg": [
+              128
+            ],
+            "concurrency": [
+              1,
+              4,
+              16,
+              32
+            ],
+            "prefix_caching": true,
+            "warmup": 1,
+            "runs": 3
+          },
+          "id": "halo-arena-v1",
+          "file": "benchmarking/halo-arena-v1.yaml",
+          "profile": "halo-arena-v1",
+          "profile_file": "benchmarking/halo-arena-v1.yaml",
+          "schedule": null,
+          "measurement_count": 4,
+          "point_params": [
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 1
+            },
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 4
+            },
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 16
+            },
+            {
+              "depth": 0,
+              "pp": 512,
+              "tg": 128,
+              "concurrency": 32
+            }
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 262144
+        }
+      },
+      {
+        "file": "results/r9700/qwen3.6-35b-a3b-bf16-vllm-r9700-tp4.json",
+        "config_source": "matrix",
+        "spec_files": {
+          "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-vllm-r9700-tp4",
+          "model": "models/catalog.yaml#models.qwen3.6-35b-a3b-bf16-vllm",
+          "launch": "launches/catalog.yaml#launches.r9700-vllm-tp4",
+          "device": "devices/r9700.yaml",
+          "benchmark": "benchmarking/halo-arena-v1.yaml",
+          "legacy_recipe": null
+        },
+        "matrix_file": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-vllm-r9700-tp4",
+        "model_file": "models/catalog.yaml#models.qwen3.6-35b-a3b-bf16-vllm",
+        "launch_file": "launches/catalog.yaml#launches.r9700-vllm-tp4",
+        "device_file": "devices/r9700.yaml",
+        "benchmark_file": "benchmarking/halo-arena-v1.yaml",
+        "recipe_file": null,
+        "recipe": {
+          "recipe_version": "3",
+          "name": "Qwen3.6-35B-A3B",
+          "description": "vLLM TP4 serving Qwen3.6-35B-A3B BF16 on four Radeon AI PRO R9700 GPUs",
+          "metadata": {
+            "quantization": "BF16"
+          },
+          "model": "/models/Qwen3.6-35B-A3B",
+          "source": "Qwen/Qwen3.6-35B-A3B",
+          "model_revision": null,
+          "served_model_name": "qwen36-35b",
+          "model_patches": [],
+          "runtime": "vllm",
+          "container": "vllm",
+          "image": {
+            "ref": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+          },
+          "image_tag": null,
+          "benchmark_ctx": null,
+          "mods": [],
+          "defaults": {
+            "port": 8000,
+            "host": "0.0.0.0",
+            "nseq": 32,
+            "ctx": 2304
+          },
+          "env": {
+            "HIP_VISIBLE_DEVICES": "0,1,2,3",
+            "ROCR_VISIBLE_DEVICES": "0,1,2,3",
+            "NCCL_PROTO": "Simple",
+            "NCCL_P2P_DISABLE": "1",
+            "TRITON_CACHE_DIR": "/models/.triton-cache"
+          },
+          "command": "vllm serve /models/Qwen3.6-35B-A3B --served-model-name qwen36-35b --host {host} --port {port} --trust-remote-code --dtype bfloat16 --max-model-len {ctx} --max-num-seqs {nseq} --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN --tensor-parallel-size 4"
+        },
+        "data": {
+          "profile": "halo-arena-v1",
+          "framework": "llama-benchy",
+          "methodology": {
+            "version": 2,
+            "prompt_policy": "server-tokenized-distinct-prefix",
+            "timing_window": "completion-requests-only",
+            "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+          },
+          "measurements": [
+            {
+              "decode_toks_per_s": 96.85,
+              "decode_toks_per_s_per_req": 103.47,
+              "prefill_toks_per_s": 6101.23,
+              "prompt_tokens": 512,
+              "prompt_tokens_min": 512,
+              "prompt_tokens_max": 512,
+              "ttft_ms": 93.58,
+              "tpot_ms": 9.66,
+              "requests_ok": 1,
+              "requests_total": 1,
+              "depth": 0,
+              "concurrency": 1,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 289.86,
+              "decode_toks_per_s_per_req": 82.6,
+              "prefill_toks_per_s": 3177.46,
+              "prompt_tokens": 512,
+              "prompt_tokens_min": 512,
+              "prompt_tokens_max": 512,
+              "ttft_ms": 215.8,
+              "tpot_ms": 12.13,
+              "requests_ok": 4,
+              "requests_total": 4,
+              "depth": 0,
+              "concurrency": 4,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 134.34,
+              "decode_toks_per_s_per_req": 29.48,
+              "prefill_toks_per_s": 1057.75,
+              "prompt_tokens": 512,
+              "prompt_tokens_min": 512,
+              "prompt_tokens_max": 512,
+              "ttft_ms": 6526.37,
+              "tpot_ms": 68.42,
+              "requests_ok": 16,
+              "requests_total": 16,
+              "depth": 0,
+              "concurrency": 16,
+              "pp": 512,
+              "tg": 128
+            },
+            {
+              "decode_toks_per_s": 201.06,
+              "decode_toks_per_s_per_req": 36.78,
+              "prefill_toks_per_s": 30.33,
+              "prompt_tokens": 512,
+              "prompt_tokens_min": 512,
+              "prompt_tokens_max": 512,
+              "ttft_ms": 16391.46,
+              "tpot_ms": 30.82,
+              "requests_ok": 32,
+              "requests_total": 32,
+              "depth": 0,
+              "concurrency": 32,
+              "pp": 512,
+              "tg": 128
+            }
+          ],
+          "failed_points": 0,
+          "skipped_points": 0,
+          "max_context": 262144,
+          "meta": {
+            "recipe": "Qwen3.6-35B-A3B",
+            "model": "/models/Qwen3.6-35B-A3B",
+            "runtime": "vllm",
+            "container": "vllm",
+            "command": "env HIP_VISIBLE_DEVICES=0,1,2,3 ROCR_VISIBLE_DEVICES=0,1,2,3 NCCL_PROTO=Simple NCCL_P2P_DISABLE=1 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3.6-35B-A3B --served-model-name qwen36-35b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 2304 --max-num-seqs 32 --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN --tensor-parallel-size 4",
+            "config_source": "matrix",
+            "spec_files": {
+              "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-vllm-r9700-tp4",
+              "model": "models/catalog.yaml#models.qwen3.6-35b-a3b-bf16-vllm",
+              "launch": "launches/catalog.yaml#launches.r9700-vllm-tp4",
+              "device": "devices/r9700.yaml",
+              "benchmark": "benchmarking/halo-arena-v1.yaml",
+              "legacy_recipe": null
+            },
+            "device": {
+              "spec_version": "1",
+              "id": "r9700",
+              "result_key": "r9700",
+              "image_device": "r9700",
+              "label": "Radeon AI PRO R9700",
+              "gpu": "Radeon AI PRO R9700",
+              "arch": "gfx1201",
+              "arch_aliases": [
+                "gfx1200"
+              ],
+              "runner_labels": [
+                "self-hosted",
+                "gfx1201"
+              ],
+              "topology": {
+                "kind": "single-node",
+                "default_gpu_count": 1,
+                "runner_capacity": 8
+              }
+            },
+            "model_spec": {
+              "path": "/models/Qwen3.6-35B-A3B",
+              "source": "Qwen/Qwen3.6-35B-A3B",
+              "served_name": "qwen36-35b",
+              "quantization": "BF16",
+              "id": "qwen3.6-35b-a3b-bf16-vllm",
+              "name": "Qwen3.6-35B-A3B",
+              "description": "vLLM TP4 serving Qwen3.6-35B-A3B BF16 on four Radeon AI PRO R9700 GPUs"
+            },
+            "launch_spec": {
+              "runtime": "vllm",
+              "backend": "ROCm/HIP · TRITON_ATTN",
+              "container": "vllm",
+              "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+              "topology": {
+                "node_count": 1,
+                "gpu_count": 4,
+                "tensor_parallel_size": 4
+              },
+              "defaults": {
+                "port": 8000,
+                "host": "0.0.0.0",
+                "nseq": 32,
+                "ctx": 2304
+              },
+              "env": {
+                "HIP_VISIBLE_DEVICES": "0,1,2,3",
+                "ROCR_VISIBLE_DEVICES": "0,1,2,3",
+                "NCCL_PROTO": "Simple",
+                "NCCL_P2P_DISABLE": "1",
+                "TRITON_CACHE_DIR": "/models/.triton-cache"
+              },
+              "mods": [],
+              "command": "env HIP_VISIBLE_DEVICES=0,1,2,3 ROCR_VISIBLE_DEVICES=0,1,2,3 NCCL_PROTO=Simple NCCL_P2P_DISABLE=1 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3.6-35B-A3B --served-model-name qwen36-35b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 2304 --max-num-seqs 32 --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN --tensor-parallel-size 4",
+              "id": "r9700-vllm-tp4",
+              "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+              "config_source": "matrix",
+              "spec_files": {
+                "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-vllm-r9700-tp4",
+                "model": "models/catalog.yaml#models.qwen3.6-35b-a3b-bf16-vllm",
+                "launch": "launches/catalog.yaml#launches.r9700-vllm-tp4",
+                "device": "devices/r9700.yaml",
+                "benchmark": "benchmarking/halo-arena-v1.yaml",
+                "legacy_recipe": null
+              },
+              "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+              "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+              "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+              "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+            },
+            "benchmark_spec": {
+              "framework": "llama-benchy",
+              "metadata": {
+                "name": "halo-arena-v1",
+                "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+                "version": "1"
+              },
+              "args": {
+                "depth": [
+                  0
+                ],
+                "pp": [
+                  512
+                ],
+                "tg": [
+                  128
+                ],
+                "concurrency": [
+                  1,
+                  4,
+                  16,
+                  32
+                ],
+                "prefix_caching": true,
+                "warmup": 1,
+                "runs": 3
+              },
+              "id": "halo-arena-v1",
+              "file": "benchmarking/halo-arena-v1.yaml"
+            },
+            "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+            "image_requested": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+            "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+            "image_id": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+            "image_resolved": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+            "image_digest": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1"
+          },
+          "generated_at": "2026-07-31T03:20:52Z"
+        },
+        "device": {
+          "spec_version": "1",
+          "id": "r9700",
+          "result_key": "r9700",
+          "image_device": "r9700",
+          "label": "Radeon AI PRO R9700",
+          "gpu": "Radeon AI PRO R9700",
+          "arch": "gfx1201",
+          "arch_aliases": [
+            "gfx1200"
+          ],
+          "runner_labels": [
+            "self-hosted",
+            "gfx1201"
+          ],
+          "topology": {
+            "kind": "single-node",
+            "default_gpu_count": 1,
+            "runner_capacity": 8
+          }
+        },
+        "model": {
+          "path": "/models/Qwen3.6-35B-A3B",
+          "source": "Qwen/Qwen3.6-35B-A3B",
+          "served_name": "qwen36-35b",
+          "quantization": "BF16",
+          "id": "qwen3.6-35b-a3b-bf16-vllm",
+          "name": "Qwen3.6-35B-A3B",
+          "description": "vLLM TP4 serving Qwen3.6-35B-A3B BF16 on four Radeon AI PRO R9700 GPUs"
+        },
+        "launch": {
+          "runtime": "vllm",
+          "backend": "ROCm/HIP · TRITON_ATTN",
+          "container": "vllm",
+          "image": "ghcr.io/inferstation/vllm-rocm-r9700-main@sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+          "topology": {
+            "node_count": 1,
+            "gpu_count": 4,
+            "tensor_parallel_size": 4
+          },
+          "defaults": {
+            "port": 8000,
+            "host": "0.0.0.0",
+            "nseq": 32,
+            "ctx": 2304
+          },
+          "env": {
+            "HIP_VISIBLE_DEVICES": "0,1,2,3",
+            "ROCR_VISIBLE_DEVICES": "0,1,2,3",
+            "NCCL_PROTO": "Simple",
+            "NCCL_P2P_DISABLE": "1",
+            "TRITON_CACHE_DIR": "/models/.triton-cache"
+          },
+          "mods": [],
+          "command": "env HIP_VISIBLE_DEVICES=0,1,2,3 ROCR_VISIBLE_DEVICES=0,1,2,3 NCCL_PROTO=Simple NCCL_P2P_DISABLE=1 TRITON_CACHE_DIR=/models/.triton-cache vllm serve /models/Qwen3.6-35B-A3B --served-model-name qwen36-35b --host 0.0.0.0 --port 8000 --trust-remote-code --dtype bfloat16 --max-model-len 2304 --max-num-seqs 32 --gpu-memory-utilization 0.85 --attention-backend TRITON_ATTN --tensor-parallel-size 4",
+          "id": "r9700-vllm-tp4",
+          "image_tag": "sha256:2d3a6275b1000cc9dce4c105dae899edd95d77875ede0c4d5d9b9c53a29faaf1",
+          "config_source": "matrix",
+          "spec_files": {
+            "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-vllm-r9700-tp4",
+            "model": "models/catalog.yaml#models.qwen3.6-35b-a3b-bf16-vllm",
             "launch": "launches/catalog.yaml#launches.r9700-vllm-tp4",
             "device": "devices/r9700.yaml",
             "benchmark": "benchmarking/halo-arena-v1.yaml",
