@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-17T08:26:06.100419+00:00",
+  "generated_at": "2026-07-31T03:04:03.694566+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "362d963cce5b0912961b45d499d93b4131b97e7d",
-  "short_commit": "362d963",
+  "commit": "55d8215331a8c8b7609bb00876f2b473c4218ac6",
+  "short_commit": "55d8215",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -52,7 +52,8 @@
     "r9700": [
       "qwen3-4b-bf16-vllm-r9700.json",
       "qwen3-4b-q4-k-m-llamacpp-r9700.json",
-      "qwen3.6-27b-bf16-vllm-r9700-tp2.json"
+      "qwen3.6-27b-bf16-vllm-r9700-tp2.json",
+      "qwen3.6-27b-bf16-vllm-r9700-tp4.json"
     ]
   }
 }
