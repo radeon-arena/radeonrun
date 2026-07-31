@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-31T06:04:03.232214+00:00",
+  "generated_at": "2026-07-31T06:24:33.533511+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "65966c5ec6582a9d88d35d3f837ed70909520f86",
-  "short_commit": "65966c5",
+  "commit": "3ea97ea4859c973a2fbc5f9c4743e42b07077e12",
+  "short_commit": "3ea97ea",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -14160,14 +14160,14 @@
           },
           "measurements": [
             {
-              "decode_toks_per_s": 15.05,
-              "decode_toks_per_s_per_req": 19.17,
-              "prefill_toks_per_s": 280.36,
-              "prompt_tokens": 587,
-              "prompt_tokens_min": 587,
-              "prompt_tokens_max": 587,
-              "ttft_ms": 1878.38,
-              "tpot_ms": 52.17,
+              "decode_toks_per_s": 15.41,
+              "decode_toks_per_s_per_req": 19.3,
+              "prefill_toks_per_s": 305.67,
+              "prompt_tokens": 589,
+              "prompt_tokens_min": 589,
+              "prompt_tokens_max": 589,
+              "ttft_ms": 1726.8,
+              "tpot_ms": 51.81,
               "requests_ok": 1,
               "requests_total": 1,
               "depth": 0,
@@ -14176,14 +14176,14 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 36.06,
-              "decode_toks_per_s_per_req": 15.63,
-              "prefill_toks_per_s": 85.2,
-              "prompt_tokens": 588.75,
+              "decode_toks_per_s": 38.1,
+              "decode_toks_per_s_per_req": 15.29,
+              "prefill_toks_per_s": 101.37,
+              "prompt_tokens": 588.5,
               "prompt_tokens_min": 587,
               "prompt_tokens_max": 590,
-              "ttft_ms": 6073.11,
-              "tpot_ms": 63.98,
+              "ttft_ms": 5116.44,
+              "tpot_ms": 65.4,
               "requests_ok": 4,
               "requests_total": 4,
               "depth": 0,
@@ -14192,14 +14192,14 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 30.26,
-              "decode_toks_per_s_per_req": 7.25,
-              "prefill_toks_per_s": 10.61,
-              "prompt_tokens": 588.25,
-              "prompt_tokens_min": 587,
+              "decode_toks_per_s": 42.51,
+              "decode_toks_per_s_per_req": 5.93,
+              "prefill_toks_per_s": 22.44,
+              "prompt_tokens": 587.94,
+              "prompt_tokens_min": 584,
               "prompt_tokens_max": 590,
-              "ttft_ms": 48909.47,
-              "tpot_ms": 146.38,
+              "ttft_ms": 25238.58,
+              "tpot_ms": 179.31,
               "requests_ok": 16,
               "requests_total": 16,
               "depth": 0,
@@ -14208,14 +14208,14 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 30.45,
-              "decode_toks_per_s_per_req": 3.01,
-              "prefill_toks_per_s": 5.9,
-              "prompt_tokens": 587.53,
-              "prompt_tokens_min": 584,
+              "decode_toks_per_s": 39.77,
+              "decode_toks_per_s_per_req": 2.11,
+              "prefill_toks_per_s": 15.1,
+              "prompt_tokens": 588.09,
+              "prompt_tokens_min": 586,
               "prompt_tokens_max": 590,
-              "ttft_ms": 88837.67,
-              "tpot_ms": 356.04,
+              "ttft_ms": 39797.45,
+              "tpot_ms": 494.21,
               "requests_ok": 32,
               "requests_total": 32,
               "depth": 0,
@@ -14232,7 +14232,7 @@
             "model": "/models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf",
             "runtime": "llamacpp",
             "container": "llamacpp",
-            "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+            "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
             "config_source": "matrix",
             "spec_files": {
               "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-q8-0-llamacpp-r9700-2gpu",
@@ -14293,7 +14293,7 @@
                 "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
               },
               "mods": [],
-              "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+              "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
               "id": "r9700-llamacpp-hip-2gpu",
               "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
               "config_source": "matrix",
@@ -14349,7 +14349,7 @@
             "image_digest": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
             "image_commit": "09cedfd6996d2ff90b4e617f56230212005c0166"
           },
-          "generated_at": "2026-07-31T04:17:38Z"
+          "generated_at": "2026-07-31T06:24:30Z"
         },
         "device": {
           "spec_version": "1",
@@ -14402,7 +14402,7 @@
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
           "mods": [],
-          "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+          "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
           "id": "r9700-llamacpp-hip-2gpu",
           "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
           "config_source": "matrix",
