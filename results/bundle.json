@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-07-31T07:10:47.961691+00:00",
+  "generated_at": "2026-07-31T07:16:49.066316+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "e2592e81cd108dc8e5ebd3ace8c93f12b7094773",
-  "short_commit": "e2592e8",
+  "commit": "0a76a3af6afc3d42733b829697a1301a16787e0b",
+  "short_commit": "0a76a3a",
   "devices": {
     "strix": [
       "diffusiongemma-26b-a4b-awq-int4.json",
@@ -16489,14 +16489,14 @@
           },
           "measurements": [
             {
-              "decode_toks_per_s": 64.01,
-              "decode_toks_per_s_per_req": 78.56,
-              "prefill_toks_per_s": 1384.98,
+              "decode_toks_per_s": 66.07,
+              "decode_toks_per_s_per_req": 78.34,
+              "prefill_toks_per_s": 1690.66,
               "prompt_tokens": 588,
               "prompt_tokens_min": 588,
               "prompt_tokens_max": 588,
-              "ttft_ms": 382.41,
-              "tpot_ms": 12.73,
+              "ttft_ms": 315.6,
+              "tpot_ms": 12.77,
               "requests_ok": 1,
               "requests_total": 1,
               "depth": 0,
@@ -16505,14 +16505,14 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 136.76,
-              "decode_toks_per_s_per_req": 55.2,
-              "prefill_toks_per_s": 359.69,
-              "prompt_tokens": 588.75,
-              "prompt_tokens_min": 587,
-              "prompt_tokens_max": 590,
-              "ttft_ms": 1441.56,
-              "tpot_ms": 18.12,
+              "decode_toks_per_s": 142.29,
+              "decode_toks_per_s_per_req": 52.71,
+              "prefill_toks_per_s": 440.5,
+              "prompt_tokens": 586.5,
+              "prompt_tokens_min": 584,
+              "prompt_tokens_max": 588,
+              "ttft_ms": 1181.67,
+              "tpot_ms": 18.97,
               "requests_ok": 4,
               "requests_total": 4,
               "depth": 0,
@@ -16521,14 +16521,14 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 146.74,
-              "decode_toks_per_s_per_req": 15.18,
-              "prefill_toks_per_s": 99.8,
-              "prompt_tokens": 588.25,
-              "prompt_tokens_min": 587,
+              "decode_toks_per_s": 152.22,
+              "decode_toks_per_s_per_req": 14.4,
+              "prefill_toks_per_s": 125.24,
+              "prompt_tokens": 587.94,
+              "prompt_tokens_min": 584,
               "prompt_tokens_max": 590,
-              "ttft_ms": 5420.65,
-              "tpot_ms": 66.69,
+              "ttft_ms": 4471.32,
+              "tpot_ms": 70.16,
               "requests_ok": 16,
               "requests_total": 16,
               "depth": 0,
@@ -16537,14 +16537,14 @@
               "tg": 128
             },
             {
-              "decode_toks_per_s": 158.82,
-              "decode_toks_per_s_per_req": 8.42,
-              "prefill_toks_per_s": 54.72,
+              "decode_toks_per_s": 140.21,
+              "decode_toks_per_s_per_req": 6.04,
+              "prefill_toks_per_s": 83.86,
               "prompt_tokens": 587.53,
               "prompt_tokens_min": 584,
               "prompt_tokens_max": 590,
-              "ttft_ms": 10158.99,
-              "tpot_ms": 121.45,
+              "ttft_ms": 7607.43,
+              "tpot_ms": 168.59,
               "requests_ok": 32,
               "requests_total": 32,
               "depth": 0,
@@ -16561,7 +16561,7 @@
             "model": "/models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
             "runtime": "llamacpp",
             "container": "llamacpp",
-            "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+            "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
             "config_source": "matrix",
             "spec_files": {
               "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-ud-q4-k-m-llamacpp-r9700",
@@ -16622,7 +16622,7 @@
                 "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
               },
               "mods": [],
-              "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+              "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
               "id": "r9700-llamacpp-hip",
               "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
               "config_source": "matrix",
@@ -16678,7 +16678,7 @@
             "image_digest": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
             "image_commit": "09cedfd6996d2ff90b4e617f56230212005c0166"
           },
-          "generated_at": "2026-07-31T04:46:16Z"
+          "generated_at": "2026-07-31T07:16:46Z"
         },
         "device": {
           "spec_version": "1",
@@ -16731,7 +16731,7 @@
             "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
           },
           "mods": [],
-          "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+          "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
           "id": "r9700-llamacpp-hip",
           "image_tag": "sha256:5096deff2b8a02aa0b48b02e572bdbaf9bdc4e877da02252fca74a263a82f3b5",
           "config_source": "matrix",
