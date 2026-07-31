@@ -98,22 +98,22 @@ jobs:
               ;;
           esac
           export MODELS_DIR
-            python3 - "${{ inputs.recipe }}" "$device" "${{ inputs.image }}" <<'PY'
-            import sys
-            from radeonrun_config import load_run_config, resolve_image
+          python3 - "${{ inputs.recipe }}" "$device" "${{ inputs.image }}" <<'PY'
+          import sys
+          from radeonrun_config import load_run_config, resolve_image
 
-            recipe_id, requested_device, image_override = sys.argv[1:]
-            config = load_run_config(recipe_id)
-            matrix_device = str((config.get("_device") or {}).get("id") or "halo")
-            if requested_device == "r9700" and matrix_device != "r9700":
-              raise SystemExit(
-                f"R9700 requires a dedicated device:r9700 matrix; {recipe_id} targets {matrix_device}"
-              )
-            image = resolve_image(config, requested_device, image_override=image_override or None)
-            if requested_device == "r9700" and "@sha256:" not in image:
-              raise SystemExit(f"R9700 image must be digest-pinned, got {image}")
-            print(f"preflight: matrix={recipe_id} device={requested_device} image={image}")
-            PY
+          recipe_id, requested_device, image_override = sys.argv[1:]
+          config = load_run_config(recipe_id)
+          matrix_device = str((config.get("_device") or {}).get("id") or "halo")
+          if requested_device == "r9700" and matrix_device != "r9700":
+            raise SystemExit(
+              f"R9700 requires a dedicated device:r9700 matrix; {recipe_id} targets {matrix_device}"
+            )
+          image = resolve_image(config, requested_device, image_override=image_override or None)
+          if requested_device == "r9700" and "@sha256:" not in image:
+            raise SystemExit(f"R9700 image must be digest-pinned, got {image}")
+          print(f"preflight: matrix={recipe_id} device={requested_device} image={image}")
+          PY
           if [ "$device" = "halo" ]; then
             sync
             sudo -n sh -c 'echo 3 > /proc/sys/vm/drop_caches' || true
