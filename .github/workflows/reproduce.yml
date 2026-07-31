@@ -140,6 +140,8 @@ jobs:
           python3 run-recipe.py "${args[@]}"
 
       - name: Commit reproduced result and bundle
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           test -f "results/${{ inputs.recipe }}.json"
@@ -155,6 +157,13 @@ jobs:
           branch="${GITHUB_REF_NAME:-main}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # The tarball checkout leaves a bare https remote, so nothing has told
+          # git how to authenticate the push that `contents: write` allows. The
+          # runner is persistent, so drop the header again on the way out.
+          auth_key='http.https://github.com/.extraheader'
+          trap 'git config --local --unset-all "$auth_key" 2>/dev/null || true' EXIT
+          git config --local "$auth_key" \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
 
           for attempt in 1 2 3; do
             git fetch origin "$branch"
