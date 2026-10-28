@@ -160,7 +160,7 @@ env:
 
 The workflow rejects R9700 jobs whose matrix targets another device, or whose
 effective image is not pinned with `@sha256:`. Models are retained under
-`/home/lkang/radeonrun-models-r9700` so large checkpoints and Triton caches are
+`$HOME/radeonrun-models-r9700` on the runner so large checkpoints and Triton caches are
 not downloaded/compiled again for every run. The runner user may lack direct
 Docker socket access; scripts automatically fall back to `sudo -n docker`, or
 accept an explicit `RADEONRUN_DOCKER` command.

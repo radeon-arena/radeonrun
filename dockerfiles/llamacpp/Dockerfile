@@ -6,7 +6,7 @@
 #   docker build -f dockerfiles/llamacpp/Dockerfile -t ghcr.io/radeon-arena/halo-llamacpp:latest .
 #
 # IMPORTANT: ROCM_VERSION must match the host's ROCm/KFD driver. On the
-# InferStation halo nodes (InferStation gfx1151 fleet) that is 7.2.1. gfx1151 is NOT supported
+# Strix Halo benchmark runners that is 7.2.1. gfx1151 is NOT supported
 # by ROCm 7.0, so do not downgrade below 7.2.x.
 
 ARG UBUNTU_VERSION=24.04

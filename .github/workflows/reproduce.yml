@@ -90,10 +90,10 @@ jobs:
               cleanup=(--cleanup)
               ;;
             w7900)
-              MODELS_DIR="/home/lkang/radeonrun-models-w7900d2"
+              MODELS_DIR="$HOME/radeonrun-models-w7900d2"
               ;;
             r9700)
-              MODELS_DIR="/home/lkang/radeonrun-models-r9700"
+              MODELS_DIR="$HOME/radeonrun-models-r9700"
               export RADEONRUN_DOCKER="sudo -n docker"
               ;;
           esac

@@ -3,7 +3,7 @@
 # radeonrun — vLLM for AMD Radeon (default: Strix Halo / Radeon 8060S / gfx1151 / ROCm).
 #
 # This recreates, in a single multi-stage build, the approach validated on the
-# InferStation gfx1151 benchmark fleet (strix-halo / strix-halo):
+# gfx1151 (Strix Halo) benchmark runners:
 #
 #   stage 1 (builder):   git clone AMD's ROCm/vllm `gfx11` branch and build the
 #                        HIP extensions for gfx1151, on top of AMD's official
