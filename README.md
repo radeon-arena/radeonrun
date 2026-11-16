@@ -218,12 +218,6 @@ bundle coverage on pushes and pull requests.
 > through [`results/bundle.json`](results/bundle.json), not from a website
 > database.
 
-## MAINTAINER
-
-This repository is maintained by China ADP (AMD Developer Community) as the
-benchmark engine behind Radeon Arena, for running vLLM / llama.cpp on AMD
-Radeon GPUs via ROCm.
-
 ## CHANGELOG
 
 ### Unreleased
