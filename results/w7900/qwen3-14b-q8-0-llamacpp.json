@@ -1,0 +1,188 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 38.0,
+      "decode_toks_per_s_per_req": 43.87,
+      "prefill_toks_per_s": 1138.11,
+      "prompt_tokens": 589,
+      "prompt_tokens_min": 589,
+      "prompt_tokens_max": 589,
+      "ttft_ms": 472.67,
+      "tpot_ms": 22.8,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 97.73,
+      "decode_toks_per_s_per_req": 36.57,
+      "prefill_toks_per_s": 299.31,
+      "prompt_tokens": 588.75,
+      "prompt_tokens_min": 587,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 1743.58,
+      "tpot_ms": 27.36,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 141.52,
+      "decode_toks_per_s_per_req": 12.38,
+      "prefill_toks_per_s": 179.33,
+      "prompt_tokens": 587.88,
+      "prompt_tokens_min": 583,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 3869.5,
+      "tpot_ms": 82.59,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 161.17,
+      "decode_toks_per_s_per_req": 8.98,
+      "prefill_toks_per_s": 57.96,
+      "prompt_tokens": 587.53,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 10299.1,
+      "tpot_ms": 117.4,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 40960,
+  "meta": {
+    "recipe": "qwen3-14b-q8-0",
+    "model": "/models/Qwen3-14B/Qwen3-14B-Q8_0.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env LD_LIBRARY_PATH=/app env ROCR_VISIBLE_DEVICES=0 HIP_VISIBLE_DEVICES=0 llama-server -m /models/Qwen3-14B/Qwen3-14B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.qwen3-14b-q8-0-llamacpp",
+      "model": "models/catalog.yaml#models.qwen3-14b-q8-0-llamacpp",
+      "launch": "launches/catalog.yaml#launches.llamacpp-hip",
+      "device": "devices/w7900.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": "recipes/qwen3-14b-q8-0-llamacpp.yaml"
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "w7900",
+      "result_key": "w7900",
+      "image_device": "w7900",
+      "label": "Radeon PRO W7900",
+      "gpu": "Radeon PRO W7900",
+      "arch": "gfx1100",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1100"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 2
+      }
+    },
+    "model_spec": {
+      "path": "/models/Qwen3-14B/Qwen3-14B-Q8_0.gguf",
+      "source": "unsloth/Qwen3-14B-GGUF",
+      "quantization": "Q8_0",
+      "id": "qwen3-14b-q8-0-llamacpp",
+      "name": "qwen3-14b-q8-0",
+      "description": "llamacpp serving Qwen3-14B (Q8_0) on Strix Halo"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "container": "llamacpp",
+      "image": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "ROCR_VISIBLE_DEVICES": "0",
+        "HIP_VISIBLE_DEVICES": "0"
+      },
+      "mods": [],
+      "command": "env LD_LIBRARY_PATH=/app env ROCR_VISIBLE_DEVICES=0 HIP_VISIBLE_DEVICES=0 llama-server -m /models/Qwen3-14B/Qwen3-14B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+      "id": "llamacpp-hip",
+      "image_tag": "latest",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.qwen3-14b-q8-0-llamacpp",
+        "model": "models/catalog.yaml#models.qwen3-14b-q8-0-llamacpp",
+        "launch": "launches/catalog.yaml#launches.llamacpp-hip",
+        "device": "devices/w7900.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": "recipes/qwen3-14b-q8-0-llamacpp.yaml"
+      },
+      "image_requested": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+      "image_id": "local-build llama.cpp@fe7c8b2414 gfx1100 on rocm/pytorch:rocm7.2.4",
+      "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+    "image_requested": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+    "image_tag": "latest",
+    "image_id": "local-build llama.cpp@fe7c8b2414 gfx1100 on rocm/pytorch:rocm7.2.4",
+    "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+  },
+  "generated_at": "2026-11-18T17:54:08Z"
+}

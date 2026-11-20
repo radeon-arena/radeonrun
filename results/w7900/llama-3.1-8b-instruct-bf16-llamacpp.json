@@ -1,0 +1,188 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 42.09,
+      "decode_toks_per_s_per_req": 46.44,
+      "prefill_toks_per_s": 1801.97,
+      "prompt_tokens": 585,
+      "prompt_tokens_min": 585,
+      "prompt_tokens_max": 585,
+      "ttft_ms": 305.67,
+      "tpot_ms": 21.53,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 116.55,
+      "decode_toks_per_s_per_req": 38.45,
+      "prefill_toks_per_s": 492.44,
+      "prompt_tokens": 583.25,
+      "prompt_tokens_min": 582,
+      "prompt_tokens_max": 584,
+      "ttft_ms": 1070.76,
+      "tpot_ms": 26.02,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 161.07,
+      "decode_toks_per_s_per_req": 12.5,
+      "prefill_toks_per_s": 301.14,
+      "prompt_tokens": 584.06,
+      "prompt_tokens_min": 582,
+      "prompt_tokens_max": 587,
+      "ttft_ms": 2357.75,
+      "tpot_ms": 80.68,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 245.39,
+      "decode_toks_per_s_per_req": 13.44,
+      "prefill_toks_per_s": 87.98,
+      "prompt_tokens": 584.31,
+      "prompt_tokens_min": 582,
+      "prompt_tokens_max": 588,
+      "ttft_ms": 6644.15,
+      "tpot_ms": 77.69,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 131072,
+  "meta": {
+    "recipe": "llama-3-1-8b-instruct-bf16",
+    "model": "/models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env LD_LIBRARY_PATH=/app env ROCR_VISIBLE_DEVICES=0 HIP_VISIBLE_DEVICES=0 llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.llama-3.1-8b-instruct-bf16-llamacpp",
+      "model": "models/catalog.yaml#models.llama-3.1-8b-instruct-bf16-llamacpp",
+      "launch": "launches/catalog.yaml#launches.llamacpp-hip",
+      "device": "devices/w7900.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": "recipes/llama-3.1-8b-instruct-bf16-llamacpp.yaml"
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "w7900",
+      "result_key": "w7900",
+      "image_device": "w7900",
+      "label": "Radeon PRO W7900",
+      "gpu": "Radeon PRO W7900",
+      "arch": "gfx1100",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1100"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 2
+      }
+    },
+    "model_spec": {
+      "path": "/models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf",
+      "source": "unsloth/Llama-3.1-8B-Instruct-GGUF",
+      "quantization": "BF16",
+      "id": "llama-3.1-8b-instruct-bf16-llamacpp",
+      "name": "llama-3-1-8b-instruct-bf16",
+      "description": "llamacpp serving Llama-3.1-8B-Instruct (BF16) on Strix Halo"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "container": "llamacpp",
+      "image": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "ROCR_VISIBLE_DEVICES": "0",
+        "HIP_VISIBLE_DEVICES": "0"
+      },
+      "mods": [],
+      "command": "env LD_LIBRARY_PATH=/app env ROCR_VISIBLE_DEVICES=0 HIP_VISIBLE_DEVICES=0 llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+      "id": "llamacpp-hip",
+      "image_tag": "latest",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.llama-3.1-8b-instruct-bf16-llamacpp",
+        "model": "models/catalog.yaml#models.llama-3.1-8b-instruct-bf16-llamacpp",
+        "launch": "launches/catalog.yaml#launches.llamacpp-hip",
+        "device": "devices/w7900.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": "recipes/llama-3.1-8b-instruct-bf16-llamacpp.yaml"
+      },
+      "image_requested": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+      "image_id": "local-build llama.cpp@fe7c8b2414 gfx1100 on rocm/pytorch:rocm7.2.4",
+      "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+    "image_requested": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+    "image_tag": "latest",
+    "image_id": "local-build llama.cpp@fe7c8b2414 gfx1100 on rocm/pytorch:rocm7.2.4",
+    "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+  },
+  "generated_at": "2026-11-18T18:08:12Z"
+}

@@ -1,0 +1,842 @@
+{
+  "profile": "halo-arena-v2",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 107.14,
+      "decode_toks_per_s_per_req": 22.69,
+      "prefill_toks_per_s": 711.15,
+      "prompt_tokens": 10241,
+      "prompt_tokens_min": 10241,
+      "prompt_tokens_max": 10241,
+      "ttft_ms": 3589.56,
+      "tpot_ms": 46.38,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 8192,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 68.98,
+      "decode_toks_per_s_per_req": 79.27,
+      "prefill_toks_per_s": 8525.39,
+      "prompt_tokens": 2048,
+      "prompt_tokens_min": 2048,
+      "prompt_tokens_max": 2048,
+      "ttft_ms": 252.84,
+      "tpot_ms": 12.62,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 13.39,
+      "decode_toks_per_s_per_req": 31.94,
+      "prefill_toks_per_s": 368.99,
+      "prompt_tokens": 102049,
+      "prompt_tokens_min": 102049,
+      "prompt_tokens_max": 102049,
+      "ttft_ms": 5581.58,
+      "tpot_ms": 31.31,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 100000,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 205.06,
+      "decode_toks_per_s_per_req": 12.46,
+      "prefill_toks_per_s": 460.86,
+      "prompt_tokens": 6145,
+      "prompt_tokens_min": 6145,
+      "prompt_tokens_max": 6145,
+      "ttft_ms": 7865.44,
+      "tpot_ms": 91.41,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 4096,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 307.54,
+      "decode_toks_per_s_per_req": 15.84,
+      "prefill_toks_per_s": 1085.39,
+      "prompt_tokens": 2048,
+      "prompt_tokens_min": 2048,
+      "prompt_tokens_max": 2048,
+      "ttft_ms": 4328.14,
+      "tpot_ms": 67.05,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 25.65,
+      "decode_toks_per_s_per_req": 18.41,
+      "prefill_toks_per_s": 239.87,
+      "prompt_tokens": 67584,
+      "prompt_tokens_min": 67584,
+      "prompt_tokens_max": 67584,
+      "ttft_ms": 11343.51,
+      "tpot_ms": 67.44,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 65535,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 133.22,
+      "decode_toks_per_s_per_req": 15.74,
+      "prefill_toks_per_s": 490.65,
+      "prompt_tokens": 10241,
+      "prompt_tokens_min": 10241,
+      "prompt_tokens_max": 10241,
+      "ttft_ms": 6166.92,
+      "tpot_ms": 70.79,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 8192,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 175.96,
+      "decode_toks_per_s_per_req": 28.93,
+      "prefill_toks_per_s": 2540.01,
+      "prompt_tokens": 2048,
+      "prompt_tokens_min": 2048,
+      "prompt_tokens_max": 2048,
+      "ttft_ms": 1295.49,
+      "tpot_ms": 34.99,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 0,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 53.95,
+      "decode_toks_per_s_per_req": 8.09,
+      "prefill_toks_per_s": 209.22,
+      "prompt_tokens": 34817,
+      "prompt_tokens_min": 34817,
+      "prompt_tokens_max": 34817,
+      "ttft_ms": 17792.75,
+      "tpot_ms": 156.47,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 32768,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 29.52,
+      "decode_toks_per_s_per_req": 53.63,
+      "prefill_toks_per_s": 1051.02,
+      "prompt_tokens": 34817,
+      "prompt_tokens_min": 34817,
+      "prompt_tokens_max": 34817,
+      "ttft_ms": 1967.23,
+      "tpot_ms": 18.65,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 32768,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 239.03,
+      "decode_toks_per_s_per_req": 21.53,
+      "prefill_toks_per_s": 1660.24,
+      "prompt_tokens": 2048,
+      "prompt_tokens_min": 2048,
+      "prompt_tokens_max": 2048,
+      "ttft_ms": 2301.52,
+      "tpot_ms": 47.73,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 27.42,
+      "decode_toks_per_s_per_req": 9.52,
+      "prefill_toks_per_s": 146.19,
+      "prompt_tokens": 67584,
+      "prompt_tokens_min": 67584,
+      "prompt_tokens_max": 67584,
+      "ttft_ms": 19988.75,
+      "tpot_ms": 135.55,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 65535,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 66.68,
+      "decode_toks_per_s_per_req": 32.15,
+      "prefill_toks_per_s": 633.72,
+      "prompt_tokens": 18433,
+      "prompt_tokens_min": 18433,
+      "prompt_tokens_max": 18433,
+      "ttft_ms": 3531.85,
+      "tpot_ms": 32.43,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 16384,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 139.2,
+      "decode_toks_per_s_per_req": 44.11,
+      "prefill_toks_per_s": 3935.28,
+      "prompt_tokens": 2048,
+      "prompt_tokens_min": 2048,
+      "prompt_tokens_max": 2048,
+      "ttft_ms": 747.01,
+      "tpot_ms": 22.86,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 57.12,
+      "decode_toks_per_s_per_req": 4.55,
+      "prefill_toks_per_s": 131.18,
+      "prompt_tokens": 34817,
+      "prompt_tokens_min": 34817,
+      "prompt_tokens_max": 34817,
+      "ttft_ms": 33361.86,
+      "tpot_ms": 295.83,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 32768,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 149.96,
+      "decode_toks_per_s_per_req": 9.88,
+      "prefill_toks_per_s": 318.27,
+      "prompt_tokens": 10241,
+      "prompt_tokens_min": 10241,
+      "prompt_tokens_max": 10241,
+      "ttft_ms": 11469.29,
+      "tpot_ms": 120.61,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 8192,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 58.69,
+      "decode_toks_per_s_per_req": 74.29,
+      "prefill_toks_per_s": 4477.31,
+      "prompt_tokens": 6145,
+      "prompt_tokens_min": 6145,
+      "prompt_tokens_max": 6145,
+      "ttft_ms": 470.88,
+      "tpot_ms": 13.46,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 4096,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 17.91,
+      "decode_toks_per_s_per_req": 15.0,
+      "prefill_toks_per_s": 120.54,
+      "prompt_tokens": 102049,
+      "prompt_tokens_min": 102049,
+      "prompt_tokens_max": 102049,
+      "ttft_ms": 18374.78,
+      "tpot_ms": 80.02,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 100000,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 76.77,
+      "decode_toks_per_s_per_req": 18.9,
+      "prefill_toks_per_s": 430.97,
+      "prompt_tokens": 18433,
+      "prompt_tokens_min": 18433,
+      "prompt_tokens_max": 18433,
+      "ttft_ms": 5882.44,
+      "tpot_ms": 58.01,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 16384,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 108.88,
+      "decode_toks_per_s_per_req": 40.19,
+      "prefill_toks_per_s": 1529.76,
+      "prompt_tokens": 6145,
+      "prompt_tokens_min": 6145,
+      "prompt_tokens_max": 6145,
+      "ttft_ms": 1479.5,
+      "tpot_ms": 25.18,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 4096,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 29.9,
+      "decode_toks_per_s_per_req": 5.1,
+      "prefill_toks_per_s": 104.61,
+      "prompt_tokens": 67584,
+      "prompt_tokens_min": 67584,
+      "prompt_tokens_max": 67584,
+      "ttft_ms": 34037.48,
+      "tpot_ms": 268.12,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 65535,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 18.63,
+      "decode_toks_per_s_per_req": 40.15,
+      "prefill_toks_per_s": 556.48,
+      "prompt_tokens": 67584,
+      "prompt_tokens_min": 67584,
+      "prompt_tokens_max": 67584,
+      "ttft_ms": 3705.16,
+      "tpot_ms": 24.91,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 65535,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 51.36,
+      "decode_toks_per_s_per_req": 70.35,
+      "prefill_toks_per_s": 3047.22,
+      "prompt_tokens": 10241,
+      "prompt_tokens_min": 10241,
+      "prompt_tokens_max": 10241,
+      "ttft_ms": 686.3,
+      "tpot_ms": 14.22,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 8192,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 18.71,
+      "decode_toks_per_s_per_req": 7.0,
+      "prefill_toks_per_s": 80.53,
+      "prompt_tokens": 102049,
+      "prompt_tokens_min": 102049,
+      "prompt_tokens_max": 102049,
+      "ttft_ms": 30782.42,
+      "tpot_ms": 187.27,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 100000,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 89.44,
+      "decode_toks_per_s_per_req": 11.89,
+      "prefill_toks_per_s": 299.11,
+      "prompt_tokens": 18433,
+      "prompt_tokens_min": 18433,
+      "prompt_tokens_max": 18433,
+      "ttft_ms": 10085.36,
+      "tpot_ms": 98.95,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 16384,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 135.56,
+      "decode_toks_per_s_per_req": 25.94,
+      "prefill_toks_per_s": 1060.5,
+      "prompt_tokens": 6145,
+      "prompt_tokens_min": 6145,
+      "prompt_tokens_max": 6145,
+      "ttft_ms": 2429.58,
+      "tpot_ms": 39.75,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 4096,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 30.93,
+      "decode_toks_per_s_per_req": 2.66,
+      "prefill_toks_per_s": 67.61,
+      "prompt_tokens": 67584,
+      "prompt_tokens_min": 67584,
+      "prompt_tokens_max": 67584,
+      "ttft_ms": 63669.77,
+      "tpot_ms": 531.64,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 65535,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 43.52,
+      "decode_toks_per_s_per_req": 25.8,
+      "prefill_toks_per_s": 348.05,
+      "prompt_tokens": 34817,
+      "prompt_tokens_min": 34817,
+      "prompt_tokens_max": 34817,
+      "ttft_ms": 6396.37,
+      "tpot_ms": 42.0,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 32768,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 92.16,
+      "decode_toks_per_s_per_req": 38.61,
+      "prefill_toks_per_s": 1039.14,
+      "prompt_tokens": 10241,
+      "prompt_tokens_min": 10241,
+      "prompt_tokens_max": 10241,
+      "ttft_ms": 2162.67,
+      "tpot_ms": 26.51,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 8192,
+      "concurrency": 4,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 20.37,
+      "decode_toks_per_s_per_req": 3.61,
+      "prefill_toks_per_s": 72.5,
+      "prompt_tokens": 102049,
+      "prompt_tokens_min": 102049,
+      "prompt_tokens_max": 102049,
+      "ttft_ms": 50478.39,
+      "tpot_ms": 390.12,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 100000,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 48.17,
+      "decode_toks_per_s_per_req": 14.16,
+      "prefill_toks_per_s": 235.19,
+      "prompt_tokens": 34817,
+      "prompt_tokens_min": 34817,
+      "prompt_tokens_max": 34817,
+      "ttft_ms": 10665.67,
+      "tpot_ms": 82.58,
+      "requests_ok": 8,
+      "requests_total": 8,
+      "depth": 32768,
+      "concurrency": 8,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 174.85,
+      "decode_toks_per_s_per_req": 18.59,
+      "prefill_toks_per_s": 899.56,
+      "prompt_tokens": 6145,
+      "prompt_tokens_min": 6145,
+      "prompt_tokens_max": 6145,
+      "ttft_ms": 4165.82,
+      "tpot_ms": 57.8,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 4096,
+      "concurrency": 16,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 20.97,
+      "decode_toks_per_s_per_req": 1.85,
+      "prefill_toks_per_s": 47.12,
+      "prompt_tokens": 102049,
+      "prompt_tokens_min": 102049,
+      "prompt_tokens_max": 102049,
+      "ttft_ms": 94288.47,
+      "tpot_ms": 784.52,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 100000,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 97.46,
+      "decode_toks_per_s_per_req": 7.11,
+      "prefill_toks_per_s": 191.65,
+      "prompt_tokens": 18433,
+      "prompt_tokens_min": 18433,
+      "prompt_tokens_max": 18433,
+      "ttft_ms": 18787.11,
+      "tpot_ms": 178.14,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 16384,
+      "concurrency": 32,
+      "pp": 2048,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 41.37,
+      "decode_toks_per_s_per_req": 63.76,
+      "prefill_toks_per_s": 1886.14,
+      "prompt_tokens": 18433,
+      "prompt_tokens_min": 18433,
+      "prompt_tokens_max": 18433,
+      "ttft_ms": 1101.5,
+      "tpot_ms": 15.68,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 16384,
+      "concurrency": 1,
+      "pp": 2048,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": 131072,
+  "meta": {
+    "recipe": "qwen3-30b-a3b-bf16-yarn",
+    "model": "/models/Qwen3-30B-A3B-bf16",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b-yarn --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 131072 --gpu-memory-utilization 0.85",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-yarn-vllm",
+      "model": "models/catalog.yaml#models.qwen3-30b-a3b-bf16-yarn-vllm",
+      "launch": "launches/catalog.yaml#launches.vllm-bf16-triton",
+      "device": "devices/w7900.yaml",
+      "benchmark": "benchmarking/halo-arena-v2.yaml",
+      "legacy_recipe": "recipes/qwen3-30b-a3b-bf16-yarn-vllm.yaml"
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "w7900",
+      "result_key": "w7900",
+      "image_device": "w7900",
+      "label": "Radeon PRO W7900",
+      "gpu": "Radeon PRO W7900",
+      "arch": "gfx1100",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1100"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 2
+      }
+    },
+    "model_spec": {
+      "path": "/models/Qwen3-30B-A3B-bf16",
+      "source": "Qwen/Qwen3-30B-A3B",
+      "served_name": "q30b-yarn",
+      "quantization": "BF16+YaRN",
+      "patches": [
+        {
+          "type": "set_config",
+          "values": {
+            "max_position_embeddings": 131072,
+            "rope_scaling": {
+              "rope_type": "yarn",
+              "factor": 4.0,
+              "original_max_position_embeddings": 32768
+            }
+          }
+        }
+      ],
+      "id": "qwen3-30b-a3b-bf16-yarn-vllm",
+      "name": "qwen3-30b-a3b-bf16-yarn",
+      "description": "vllm serving Qwen3-30B-A3B (BF16 + YaRN long context) on Strix Halo"
+    },
+    "launch_spec": {
+      "runtime": "vllm",
+      "container": "vllm",
+      "image": "ghcr.io/radeon-arena/w7900-vllm:latest",
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 131072
+      },
+      "env": {},
+      "mods": [],
+      "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b-yarn --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 131072 --gpu-memory-utilization 0.85",
+      "id": "vllm-bf16-triton",
+      "image_tag": "latest",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-yarn-vllm",
+        "model": "models/catalog.yaml#models.qwen3-30b-a3b-bf16-yarn-vllm",
+        "launch": "launches/catalog.yaml#launches.vllm-bf16-triton",
+        "device": "devices/w7900.yaml",
+        "benchmark": "benchmarking/halo-arena-v2.yaml",
+        "legacy_recipe": "recipes/qwen3-30b-a3b-bf16-yarn-vllm.yaml"
+      },
+      "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
+      "image_id": "local-runtime"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v2",
+        "description": "halo-arena full long-context sweep (pp2048/tg128, depth 0..100k)",
+        "version": "2"
+      },
+      "args": {
+        "depth": [
+          0,
+          4096,
+          8192,
+          16384,
+          32768,
+          65535,
+          100000
+        ],
+        "pp": [
+          2048
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          8,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "schedule": [
+        {
+          "depth": 8192,
+          "concurrency": 8
+        },
+        {
+          "depth": 0,
+          "concurrency": 1
+        },
+        {
+          "depth": 100000,
+          "concurrency": 1
+        },
+        {
+          "depth": 4096,
+          "concurrency": 32
+        },
+        {
+          "depth": 0,
+          "concurrency": 32
+        },
+        {
+          "depth": 65535,
+          "concurrency": 4
+        },
+        {
+          "depth": 8192,
+          "concurrency": 16
+        },
+        {
+          "depth": 0,
+          "concurrency": 8
+        },
+        {
+          "depth": 32768,
+          "concurrency": 16
+        },
+        {
+          "depth": 32768,
+          "concurrency": 1
+        },
+        {
+          "depth": 0,
+          "concurrency": 16
+        },
+        {
+          "depth": 65535,
+          "concurrency": 8
+        },
+        {
+          "depth": 16384,
+          "concurrency": 4
+        },
+        {
+          "depth": 0,
+          "concurrency": 4
+        },
+        {
+          "depth": 32768,
+          "concurrency": 32
+        },
+        {
+          "depth": 8192,
+          "concurrency": 32
+        },
+        {
+          "depth": 4096,
+          "concurrency": 1
+        },
+        {
+          "depth": 100000,
+          "concurrency": 4
+        },
+        {
+          "depth": 16384,
+          "concurrency": 8
+        },
+        {
+          "depth": 4096,
+          "concurrency": 4
+        },
+        {
+          "depth": 65535,
+          "concurrency": 16
+        },
+        {
+          "depth": 65535,
+          "concurrency": 1
+        },
+        {
+          "depth": 8192,
+          "concurrency": 1
+        },
+        {
+          "depth": 100000,
+          "concurrency": 8
+        },
+        {
+          "depth": 16384,
+          "concurrency": 16
+        },
+        {
+          "depth": 4096,
+          "concurrency": 8
+        },
+        {
+          "depth": 65535,
+          "concurrency": 32
+        },
+        {
+          "depth": 32768,
+          "concurrency": 4
+        },
+        {
+          "depth": 8192,
+          "concurrency": 4
+        },
+        {
+          "depth": 100000,
+          "concurrency": 16
+        },
+        {
+          "depth": 32768,
+          "concurrency": 8
+        },
+        {
+          "depth": 4096,
+          "concurrency": 16
+        },
+        {
+          "depth": 100000,
+          "concurrency": 32
+        },
+        {
+          "depth": 16384,
+          "concurrency": 32
+        },
+        {
+          "depth": 16384,
+          "concurrency": 1
+        }
+      ],
+      "id": "halo-arena-v2",
+      "file": "benchmarking/halo-arena-v2.yaml"
+    },
+    "image": "ghcr.io/radeon-arena/w7900-vllm:latest",
+    "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
+    "image_tag": "latest",
+    "image_id": "local-runtime"
+  },
+  "generated_at": "2026-11-20T07:04:02Z"
+}
