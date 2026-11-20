@@ -81,7 +81,7 @@
     "model": "/models/Qwen3.6-27B",
     "runtime": "vllm",
     "container": "vllm",
-    "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port 8000 --served-model-name q27b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
+    "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port 8000 --served-model-name q27b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9 --tensor-parallel-size 2",
     "config_source": "matrix",
     "spec_files": {
       "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-bf16-vllm",
@@ -130,7 +130,7 @@
       },
       "env": {},
       "mods": [],
-      "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port 8000 --served-model-name q27b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
+      "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port 8000 --served-model-name q27b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9 --tensor-parallel-size 2",
       "id": "vllm-bf16",
       "image_tag": "latest",
       "config_source": "matrix",
@@ -143,7 +143,12 @@
         "legacy_recipe": "recipes/qwen3.6-27b-bf16-vllm.yaml"
       },
       "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
-      "image_id": "local-runtime"
+      "image_id": "local-runtime",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 2,
+        "tensor_parallel_size": 2
+      }
     },
     "benchmark_spec": {
       "framework": "llama-benchy",

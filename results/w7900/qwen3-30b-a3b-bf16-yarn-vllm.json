@@ -577,7 +577,7 @@
     "model": "/models/Qwen3-30B-A3B-bf16",
     "runtime": "vllm",
     "container": "vllm",
-    "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b-yarn --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 131072 --gpu-memory-utilization 0.85",
+    "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b-yarn --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 131072 --gpu-memory-utilization 0.85 --tensor-parallel-size 2",
     "config_source": "matrix",
     "spec_files": {
       "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-yarn-vllm",
@@ -639,7 +639,7 @@
       },
       "env": {},
       "mods": [],
-      "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b-yarn --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 131072 --gpu-memory-utilization 0.85",
+      "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b-yarn --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 131072 --gpu-memory-utilization 0.85 --tensor-parallel-size 2",
       "id": "vllm-bf16-triton",
       "image_tag": "latest",
       "config_source": "matrix",
@@ -652,7 +652,12 @@
         "legacy_recipe": "recipes/qwen3-30b-a3b-bf16-yarn-vllm.yaml"
       },
       "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
-      "image_id": "local-runtime"
+      "image_id": "local-runtime",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 2,
+        "tensor_parallel_size": 2
+      }
     },
     "benchmark_spec": {
       "framework": "llama-benchy",
