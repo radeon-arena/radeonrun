@@ -365,3 +365,112 @@ launches:
       --port {port} --trust-remote-code --quantization quark --max-model-len {ctx}
       --max-num-seqs {nseq} --gpu-memory-utilization 0.90 --attention-backend TRITON_ATTN
       --tensor-parallel-size 2
+
+  # llama.cpp 29b52d39 (2026-11-21) for the 2026-11 model batch; fe7c8b2414 predates
+  # the qwen4exp, glm5-next, deepseek4 and bailingmoe3 architectures.
+  llamacpp-hip-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env:
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+
+  llamacpp-hip-no-mmap-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env:
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+
+  llamacpp-hip-mimo-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
+    env:
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa off --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+
+  r9700-llamacpp-hip-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b
+    topology: {node_count: 1, gpu_count: 1, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0"
+      ROCR_VISIBLE_DEVICES: "0"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
+
+  r9700-llamacpp-hip-2gpu-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b
+    topology: {node_count: 1, gpu_count: 2, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1"
+      ROCR_VISIBLE_DEVICES: "0,1"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
+
+  r9700-llamacpp-hip-4gpu-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b
+    topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1,2,3"
+      ROCR_VISIBLE_DEVICES: "0,1,2,3"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
+
+  r9700-llamacpp-hip-mimo-4gpu-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b
+    topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1,2,3"
+      ROCR_VISIBLE_DEVICES: "0,1,2,3"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa off --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0

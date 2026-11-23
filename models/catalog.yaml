@@ -61,4 +61,25 @@ models:
   qwen3.8-27b-bf16-vllm: {path: /models/Qwen3.8-27B, source: Qwen/Qwen3.8-27B, served_name: q38b, quantization: BF16}
   qwen3.8-27b-q8-0-llamacpp: {path: /models/Qwen3.8-27B/Qwen3.8-27B-Q8_0.gguf, source: unsloth/Qwen3.8-27B-GGUF, quantization: Q8_0}
   qwen3.8-27b-ud-q4-k-m-llamacpp: {path: /models/Qwen3.8-27B/Qwen3.8-27B-UD-Q4_K_M.gguf, source: unsloth/Qwen3.8-27B-GGUF, quantization: UD-Q4_K_M}
+  qwen3.8-flash-next-ud-q3-k-xl-llamacpp: {path: /models/Qwen3.8-Flash-Next/UD-Q3_K_XL/Qwen3.8-Flash-Next-UD-Q3_K_XL-00001-of-00004.gguf, source: unsloth/Qwen3.8-Flash-Next-GGUF, quantization: UD-Q3_K_XL}
+  qwen3.8-flash-next-ud-q4-k-xl-llamacpp: {path: /models/Qwen3.8-Flash-Next/UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf, source: unsloth/Qwen3.8-Flash-Next-GGUF, quantization: UD-Q4_K_XL}
+  glm-5.3-flash-ud-iq2-xxs-llamacpp: {path: /models/GLM-5.3-Flash/UD-IQ2_XXS/GLM-5.3-Flash-UD-IQ2_XXS-00001-of-00004.gguf, source: unsloth/GLM-5.3-Flash-GGUF, quantization: UD-IQ2_XXS}
+  deepseek-v4-flash-0731-ud-q2-k-xl-llamacpp: {path: /models/DeepSeek-V4-Flash-0731/UD-Q2_K_XL/DeepSeek-V4-Flash-0731-UD-Q2_K_XL-00001-of-00003.gguf, source: unsloth/DeepSeek-V4-Flash-0731-GGUF, quantization: UD-Q2_K_XL}
+  mimo-v2.6-flash-rl-iq2-xs-m-llamacpp: {path: /models/MiMo-V2.6-Flash-RL/MiMo-V2.6-Flash-RL-IQ2_XS_M-v2.1-00001-of-00010.gguf, source: TrevorJS/MiMo-V2.6-Flash-RL-GGUF, quantization: IQ2_XS_M}
+  nemotron-3.5-super-vl-120b-a12b-ud-q4-k-xl-llamacpp: {path: /models/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B/UD-Q4_K_XL/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-UD-Q4_K_XL-00001-of-00003.gguf, source: unsloth/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF, quantization: UD-Q4_K_XL}
+  ling-3.0-flash-q4-k-m-llamacpp: {path: /models/Ling-3.0-flash/Ling-3.0-flash-Q4_K_M/Ling-3.0-flash-Q4_K_M-00001-of-00002.gguf, source: bartowski/Ling-3.0-flash-GGUF, quantization: Q4_K_M}
+  nemotron-3.5-bolt-74b-a9b-q8-0-llamacpp: {path: /models/NVIDIA-Nemotron-3.5-Bolt-74B-A9B/Q8_0/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-Q8_0-00001-of-00003.gguf, source: unsloth/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-GGUF, quantization: Q8_0}
+  nemotron-3.5-bolt-74b-a9b-ud-q4-k-xl-llamacpp: {path: /models/NVIDIA-Nemotron-3.5-Bolt-74B-A9B/UD-Q4_K_XL/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-UD-Q4_K_XL-00001-of-00003.gguf, source: unsloth/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-GGUF, quantization: UD-Q4_K_XL}
+  minicpm-v-4.7-35b-a3b-f16-llamacpp: {path: /models/MiniCPM-V-4.7-35B-A3B/MiniCPM-V-4_7-35B-A3B-F16.gguf, source: openbmb/MiniCPM-V-4.7-35B-A3B-gguf, quantization: F16}
+  minicpm-v-4.7-35b-a3b-q8-0-llamacpp: {path: /models/MiniCPM-V-4.7-35B-A3B/MiniCPM-V-4_7-35B-A3B-Q8_0.gguf, source: openbmb/MiniCPM-V-4.7-35B-A3B-gguf, quantization: Q8_0}
+  minicpm-v-4.7-35b-a3b-q4-k-m-llamacpp: {path: /models/MiniCPM-V-4.7-35B-A3B/MiniCPM-V-4_7-35B-A3B-Q4_K_M.gguf, source: openbmb/MiniCPM-V-4.7-35B-A3B-gguf, quantization: Q4_K_M}
+  nemotron-3.5-lightning-30b-a3b-bf16-llamacpp: {path: /models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16.gguf, source: ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF, quantization: BF16}
+  nemotron-3.5-lightning-30b-a3b-q8-0-llamacpp: {path: /models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q8_0.gguf, source: ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF, quantization: Q8_0}
+  nemotron-3.5-lightning-30b-a3b-q4-0-llamacpp: {path: /models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf, source: ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF, quantization: Q4_0}
+  granite-4.2-30b-bf16-llamacpp: {path: /models/granite-4.2-30b/granite-4.2-30b-bf16-00001-of-00002.gguf, source: ibm-granite/granite-4.2-30b-GGUF, quantization: BF16}
+  granite-4.2-30b-q8-0-llamacpp: {path: /models/granite-4.2-30b/granite-4.2-30b-Q8_0.gguf, source: ibm-granite/granite-4.2-30b-GGUF, quantization: Q8_0}
+  granite-4.2-30b-q4-k-m-llamacpp: {path: /models/granite-4.2-30b/granite-4.2-30b-Q4_K_M.gguf, source: ibm-granite/granite-4.2-30b-GGUF, quantization: Q4_K_M}
+  lfm2.5-24b-a2b-bf16-llamacpp: {path: /models/LFM2.5-24B-A2B/BF16/LFM2.5-24B-A2B-BF16.gguf, source: unsloth/LFM2.5-24B-A2B-GGUF, quantization: BF16}
+  lfm2.5-24b-a2b-q8-0-llamacpp: {path: /models/LFM2.5-24B-A2B/LFM2.5-24B-A2B-Q8_0.gguf, source: unsloth/LFM2.5-24B-A2B-GGUF, quantization: Q8_0}
+  lfm2.5-24b-a2b-ud-q4-k-xl-llamacpp: {path: /models/LFM2.5-24B-A2B/LFM2.5-24B-A2B-UD-Q4_K_XL.gguf, source: unsloth/LFM2.5-24B-A2B-GGUF, quantization: UD-Q4_K_XL}
   step-3.5-flash-q4-k-s-llamacpp: {path: /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf, source: stepfun-ai/Step-3.5-Flash-GGUF-Q4_K_S, quantization: Q4_K_S}
