@@ -381,6 +381,7 @@ launches:
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
 
+  # This llama.cpp replaced --no-mmap with --load-mode none.
   llamacpp-hip-no-mmap-2611:
     runtime: llamacpp
     backend: ROCm/HIP
@@ -392,7 +393,7 @@ launches:
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
     mods: []
     command: >-
-      llama-server -m {model.path} -ngl 999 -fa on --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+      llama-server -m {model.path} -ngl 999 -fa on --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
 
   llamacpp-hip-mimo-2611:
     runtime: llamacpp
@@ -405,7 +406,7 @@ launches:
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
     mods: []
     command: >-
-      llama-server -m {model.path} -ngl 999 -fa off --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+      llama-server -m {model.path} -ngl 999 -fa off --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
 
   r9700-llamacpp-hip-2611:
     runtime: llamacpp
@@ -472,5 +473,5 @@ launches:
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
     mods: []
     command: >-
-      llama-server -m {model.path} -ngl 999 -fa off --no-mmap --host {host} --port {port} -c {ctx} -np {nseq}
+      llama-server -m {model.path} -ngl 999 -fa off --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
       --cache-ram 0
