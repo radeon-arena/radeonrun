@@ -65,6 +65,27 @@ matrices:
   lfm2.5-24b-a2b-bf16-llamacpp: {model: lfm2.5-24b-a2b-bf16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
   lfm2.5-24b-a2b-q8-0-llamacpp: {model: lfm2.5-24b-a2b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
   lfm2.5-24b-a2b-ud-q4-k-xl-llamacpp: {model: lfm2.5-24b-a2b-ud-q4-k-xl-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  minicpm5-2b-f16-llamacpp: {model: minicpm5-2b-f16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  minicpm5-2b-q8-0-llamacpp: {model: minicpm5-2b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  minicpm5-2b-q4-k-m-llamacpp: {model: minicpm5-2b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  lfm3-1.7b-bf16-llamacpp: {model: lfm3-1.7b-bf16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  lfm3-1.7b-q8-0-llamacpp: {model: lfm3-1.7b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  lfm3-1.7b-q4-k-m-llamacpp: {model: lfm3-1.7b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  ling-3.0-tiny-bf16-llamacpp: {model: ling-3.0-tiny-bf16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  ling-3.0-tiny-q8-0-llamacpp: {model: ling-3.0-tiny-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  ling-3.0-tiny-q4-k-m-llamacpp: {model: ling-3.0-tiny-q4-k-m-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  mimo-v2.6-distill-qwen-9b-bf16-llamacpp: {model: mimo-v2.6-distill-qwen-9b-bf16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  mimo-v2.6-distill-qwen-9b-q8-0-llamacpp: {model: mimo-v2.6-distill-qwen-9b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  mimo-v2.6-distill-qwen-9b-q4-k-m-llamacpp: {model: mimo-v2.6-distill-qwen-9b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  nemotron-3.5-bolt-e4b-bf16-llamacpp: {model: nemotron-3.5-bolt-e4b-bf16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  nemotron-3.5-bolt-e4b-q8-0-llamacpp: {model: nemotron-3.5-bolt-e4b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  nemotron-3.5-bolt-e4b-ud-q4-k-xl-llamacpp: {model: nemotron-3.5-bolt-e4b-ud-q4-k-xl-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  granite-4.2-8b-bf16-llamacpp: {model: granite-4.2-8b-bf16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  granite-4.2-8b-q8-0-llamacpp: {model: granite-4.2-8b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  granite-4.2-8b-q4-k-m-llamacpp: {model: granite-4.2-8b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  minicpm-v-4.7-1b-f16-llamacpp: {model: minicpm-v-4.7-1b-f16-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  minicpm-v-4.7-1b-q8-0-llamacpp: {model: minicpm-v-4.7-1b-q8-0-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  minicpm-v-4.7-1b-q4-k-m-llamacpp: {model: minicpm-v-4.7-1b-q4-k-m-llamacpp, launch: {ref: llamacpp-hip-2611, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
   step-3.5-flash-q4-k-s-llamacpp: {model: step-3.5-flash-q4-k-s-llamacpp, launch: {ref: llamacpp-hip-no-mmap, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
 
   qwen3-4b-q4-k-m-llamacpp-r9700:
@@ -393,6 +414,174 @@ matrices:
     name: LFM2.5-24B-A2B
     description: llama.cpp HIP serving LFM2.5-24B-A2B UD-Q4_K_XL on one Radeon AI PRO R9700
     model: lfm2.5-24b-a2b-ud-q4-k-xl-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  minicpm5-2b-f16-llamacpp-r9700:
+    name: MiniCPM5-2B
+    description: llama.cpp HIP serving MiniCPM5-2B F16 on one Radeon AI PRO R9700
+    model: minicpm5-2b-f16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  minicpm5-2b-q8-0-llamacpp-r9700:
+    name: MiniCPM5-2B
+    description: llama.cpp HIP serving MiniCPM5-2B Q8_0 on one Radeon AI PRO R9700
+    model: minicpm5-2b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  minicpm5-2b-q4-k-m-llamacpp-r9700:
+    name: MiniCPM5-2B
+    description: llama.cpp HIP serving MiniCPM5-2B Q4_K_M on one Radeon AI PRO R9700
+    model: minicpm5-2b-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  lfm3-1.7b-bf16-llamacpp-r9700:
+    name: LFM3-1.7B
+    description: llama.cpp HIP serving LFM3-1.7B BF16 on one Radeon AI PRO R9700
+    model: lfm3-1.7b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  lfm3-1.7b-q8-0-llamacpp-r9700:
+    name: LFM3-1.7B
+    description: llama.cpp HIP serving LFM3-1.7B Q8_0 on one Radeon AI PRO R9700
+    model: lfm3-1.7b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  lfm3-1.7b-q4-k-m-llamacpp-r9700:
+    name: LFM3-1.7B
+    description: llama.cpp HIP serving LFM3-1.7B Q4_K_M on one Radeon AI PRO R9700
+    model: lfm3-1.7b-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  ling-3.0-tiny-bf16-llamacpp-r9700:
+    name: Ling-3.0-tiny
+    description: llama.cpp HIP serving Ling-3.0-tiny BF16 on one Radeon AI PRO R9700
+    model: ling-3.0-tiny-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  ling-3.0-tiny-q8-0-llamacpp-r9700:
+    name: Ling-3.0-tiny
+    description: llama.cpp HIP serving Ling-3.0-tiny Q8_0 on one Radeon AI PRO R9700
+    model: ling-3.0-tiny-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  ling-3.0-tiny-q4-k-m-llamacpp-r9700:
+    name: Ling-3.0-tiny
+    description: llama.cpp HIP serving Ling-3.0-tiny Q4_K_M on one Radeon AI PRO R9700
+    model: ling-3.0-tiny-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  mimo-v2.6-distill-qwen-9b-bf16-llamacpp-r9700:
+    name: MiMo-V2.6-Distill-Qwen-9B
+    description: llama.cpp HIP serving MiMo-V2.6-Distill-Qwen-9B BF16 on one Radeon AI PRO R9700
+    model: mimo-v2.6-distill-qwen-9b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  mimo-v2.6-distill-qwen-9b-q8-0-llamacpp-r9700:
+    name: MiMo-V2.6-Distill-Qwen-9B
+    description: llama.cpp HIP serving MiMo-V2.6-Distill-Qwen-9B Q8_0 on one Radeon AI PRO R9700
+    model: mimo-v2.6-distill-qwen-9b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  mimo-v2.6-distill-qwen-9b-q4-k-m-llamacpp-r9700:
+    name: MiMo-V2.6-Distill-Qwen-9B
+    description: llama.cpp HIP serving MiMo-V2.6-Distill-Qwen-9B Q4_K_M on one Radeon AI PRO R9700
+    model: mimo-v2.6-distill-qwen-9b-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  nemotron-3.5-bolt-e4b-bf16-llamacpp-r9700:
+    name: NVIDIA-Nemotron-3.5-Bolt-E4B
+    description: llama.cpp HIP serving NVIDIA-Nemotron-3.5-Bolt-E4B BF16 on one Radeon AI PRO R9700
+    model: nemotron-3.5-bolt-e4b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  nemotron-3.5-bolt-e4b-q8-0-llamacpp-r9700:
+    name: NVIDIA-Nemotron-3.5-Bolt-E4B
+    description: llama.cpp HIP serving NVIDIA-Nemotron-3.5-Bolt-E4B Q8_0 on one Radeon AI PRO R9700
+    model: nemotron-3.5-bolt-e4b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  nemotron-3.5-bolt-e4b-ud-q4-k-xl-llamacpp-r9700:
+    name: NVIDIA-Nemotron-3.5-Bolt-E4B
+    description: llama.cpp HIP serving NVIDIA-Nemotron-3.5-Bolt-E4B UD-Q4_K_XL on one Radeon AI PRO R9700
+    model: nemotron-3.5-bolt-e4b-ud-q4-k-xl-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  granite-4.2-8b-bf16-llamacpp-r9700:
+    name: granite-4.2-8b
+    description: llama.cpp HIP serving granite-4.2-8b BF16 on one Radeon AI PRO R9700
+    model: granite-4.2-8b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  granite-4.2-8b-q8-0-llamacpp-r9700:
+    name: granite-4.2-8b
+    description: llama.cpp HIP serving granite-4.2-8b Q8_0 on one Radeon AI PRO R9700
+    model: granite-4.2-8b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  granite-4.2-8b-q4-k-m-llamacpp-r9700:
+    name: granite-4.2-8b
+    description: llama.cpp HIP serving granite-4.2-8b Q4_K_M on one Radeon AI PRO R9700
+    model: granite-4.2-8b-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  minicpm-v-4.7-1b-f16-llamacpp-r9700:
+    name: MiniCPM-V-4.7-1B
+    description: llama.cpp HIP serving MiniCPM-V-4.7-1B F16 on one Radeon AI PRO R9700
+    model: minicpm-v-4.7-1b-f16-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  minicpm-v-4.7-1b-q8-0-llamacpp-r9700:
+    name: MiniCPM-V-4.7-1B
+    description: llama.cpp HIP serving MiniCPM-V-4.7-1B Q8_0 on one Radeon AI PRO R9700
+    model: minicpm-v-4.7-1b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2611
+    device: r9700
+    benchmark: halo-arena-v1
+
+  minicpm-v-4.7-1b-q4-k-m-llamacpp-r9700:
+    name: MiniCPM-V-4.7-1B
+    description: llama.cpp HIP serving MiniCPM-V-4.7-1B Q4_K_M on one Radeon AI PRO R9700
+    model: minicpm-v-4.7-1b-q4-k-m-llamacpp
     launch: r9700-llamacpp-hip-2611
     device: r9700
     benchmark: halo-arena-v1
