@@ -475,3 +475,73 @@ launches:
     command: >-
       llama-server -m {model.path} -ngl 999 -fa off --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
       --cache-ram 0
+
+  # llama.cpp 29b52d39 (same source as the 2026-11-21 InferStation images) compiled for gfx1100 inside the
+  # test machine with the llama-rocm recipe flags; the ref names that build, it is not a published image.
+  w7900-llamacpp-hip-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: local/llama-rocm-w7900:commit-29b52d398b29
+    topology: {node_count: 1, gpu_count: 1, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0"
+      ROCR_VISIBLE_DEVICES: "0"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
+
+  w7900-llamacpp-hip-2gpu-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: local/llama-rocm-w7900:commit-29b52d398b29
+    topology: {node_count: 1, gpu_count: 2, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1"
+      ROCR_VISIBLE_DEVICES: "0,1"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
+
+  w7900-llamacpp-hip-4gpu-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: local/llama-rocm-w7900:commit-29b52d398b29
+    topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1,2,3"
+      ROCR_VISIBLE_DEVICES: "0,1,2,3"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
+
+  w7900-llamacpp-hip-mimo-4gpu-2611:
+    runtime: llamacpp
+    backend: ROCm/HIP
+    container: llamacpp
+    image:
+      ref: local/llama-rocm-w7900:commit-29b52d398b29
+    topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
+    defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
+    env:
+      HIP_VISIBLE_DEVICES: "0,1,2,3"
+      ROCR_VISIBLE_DEVICES: "0,1,2,3"
+      LD_LIBRARY_PATH: /app:/opt/rocm/lib
+    mods: []
+    command: >-
+      llama-server -m {model.path} -ngl 999 -fa off --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
+      --cache-ram 0
