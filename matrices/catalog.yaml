@@ -40,6 +40,10 @@ matrices:
   qwen3.6-35b-a3b-q8-0-llamacpp: {model: qwen3.6-35b-a3b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
   qwen3.6-35b-a3b-quark-w8a8-int8-vllm: {model: qwen3.6-35b-a3b-quark-w8a8-int8-vllm, launch: {ref: vllm-quark, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
   qwen3.6-35b-a3b-ud-q4-k-m-llamacpp: {model: qwen3.6-35b-a3b-ud-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.8-27b-bf16-llamacpp: {model: qwen3.8-27b-bf16-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.8-27b-bf16-vllm: {model: qwen3.8-27b-bf16-vllm, launch: {ref: vllm-bf16, defaults: {ctx: 2304}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.8-27b-q8-0-llamacpp: {model: qwen3.8-27b-q8-0-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
+  qwen3.8-27b-ud-q4-k-m-llamacpp: {model: qwen3.8-27b-ud-q4-k-m-llamacpp, launch: {ref: llamacpp-hip, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
   step-3.5-flash-q4-k-s-llamacpp: {model: step-3.5-flash-q4-k-s-llamacpp, launch: {ref: llamacpp-hip-no-mmap, defaults: {ctx: 32768}}, device: halo, benchmark: halo-arena-v1}
 
   qwen3-4b-q4-k-m-llamacpp-r9700:
@@ -169,5 +173,45 @@ matrices:
     description: vLLM serving Qwen3.6-35B-A3B Quark W8A8 INT8 across two Radeon AI PRO R9700 GPUs
     model: qwen3.6-35b-a3b-quark-w8a8-int8-vllm
     launch: r9700-vllm-quark-tp2
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.8-27b-ud-q4-k-m-llamacpp-r9700:
+    name: Qwen3.8-27B
+    description: llama.cpp HIP serving Qwen3.8-27B UD-Q4_K_M on one Radeon AI PRO R9700
+    model: qwen3.8-27b-ud-q4-k-m-llamacpp
+    launch: r9700-llamacpp-hip
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.8-27b-q8-0-llamacpp-r9700-2gpu:
+    name: Qwen3.8-27B
+    description: llama.cpp HIP serving Qwen3.8-27B Q8_0 across two Radeon AI PRO R9700 GPUs
+    model: qwen3.8-27b-q8-0-llamacpp
+    launch: r9700-llamacpp-hip-2gpu
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.8-27b-bf16-llamacpp-r9700-2gpu:
+    name: Qwen3.8-27B
+    description: llama.cpp HIP serving Qwen3.8-27B BF16 across two Radeon AI PRO R9700 GPUs
+    model: qwen3.8-27b-bf16-llamacpp
+    launch: r9700-llamacpp-hip-2gpu
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.8-27b-bf16-vllm-r9700-tp2:
+    name: Qwen3.8-27B
+    description: vLLM TP2 serving Qwen3.8-27B BF16 on two Radeon AI PRO R9700 GPUs
+    model: qwen3.8-27b-bf16-vllm
+    launch: r9700-vllm-tp2
+    device: r9700
+    benchmark: halo-arena-v1
+
+  qwen3.8-27b-bf16-vllm-r9700-tp4:
+    name: Qwen3.8-27B
+    description: vLLM TP4 serving Qwen3.8-27B BF16 on four Radeon AI PRO R9700 GPUs
+    model: qwen3.8-27b-bf16-vllm
+    launch: r9700-vllm-tp4
     device: r9700
     benchmark: halo-arena-v1
