@@ -1,0 +1,202 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 150.89,
+      "decode_toks_per_s_per_req": 163.65,
+      "prefill_toks_per_s": 7808.44,
+      "prompt_tokens": 587,
+      "prompt_tokens_min": 587,
+      "prompt_tokens_max": 587,
+      "ttft_ms": 71.68,
+      "tpot_ms": 6.11,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 335.53,
+      "decode_toks_per_s_per_req": 98.83,
+      "prefill_toks_per_s": 2299.03,
+      "prompt_tokens": 588.75,
+      "prompt_tokens_min": 587,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 236.37,
+      "tpot_ms": 10.12,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 493.03,
+      "decode_toks_per_s_per_req": 36.9,
+      "prefill_toks_per_s": 863.62,
+      "prompt_tokens": 587.94,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 676.61,
+      "tpot_ms": 27.15,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 812.16,
+      "decode_toks_per_s_per_req": 32.75,
+      "prefill_toks_per_s": 631.76,
+      "prompt_tokens": 588.09,
+      "prompt_tokens_min": 586,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 1052.24,
+      "tpot_ms": 30.78,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": null,
+  "meta": {
+    "recipe": "MiniCPM-V-4.7-1B",
+    "model": "/models/MiniCPM-V-4.7-1B/MiniCPM-V-4_7-1B-F16.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/MiniCPM-V-4.7-1B/MiniCPM-V-4_7-1B-F16.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.minicpm-v-4.7-1b-f16-llamacpp-r9700",
+      "model": "models/catalog.yaml#models.minicpm-v-4.7-1b-f16-llamacpp",
+      "launch": "launches/catalog.yaml#launches.r9700-llamacpp-hip-2611",
+      "device": "devices/r9700.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "r9700",
+      "result_key": "r9700",
+      "image_device": "r9700",
+      "label": "Radeon AI PRO R9700",
+      "gpu": "Radeon AI PRO R9700",
+      "arch": "gfx1201",
+      "arch_aliases": [
+        "gfx1200"
+      ],
+      "runner_labels": [
+        "self-hosted",
+        "gfx1201"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 8
+      }
+    },
+    "model_spec": {
+      "path": "/models/MiniCPM-V-4.7-1B/MiniCPM-V-4_7-1B-F16.gguf",
+      "source": "openbmb/MiniCPM-V-4.7-1B-gguf",
+      "quantization": "F16",
+      "id": "minicpm-v-4.7-1b-f16-llamacpp",
+      "name": "MiniCPM-V-4.7-1B",
+      "description": "llama.cpp HIP serving MiniCPM-V-4.7-1B F16 on one Radeon AI PRO R9700"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "backend": "ROCm/HIP",
+      "container": "llamacpp",
+      "image": "ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 1,
+        "tensor_parallel_size": 1
+      },
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "HIP_VISIBLE_DEVICES": "0",
+        "ROCR_VISIBLE_DEVICES": "1",
+        "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
+      },
+      "mods": [],
+      "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=1 LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/MiniCPM-V-4.7-1B/MiniCPM-V-4_7-1B-F16.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+      "id": "r9700-llamacpp-hip-2611",
+      "image_tag": "sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.minicpm-v-4.7-1b-f16-llamacpp-r9700",
+        "model": "models/catalog.yaml#models.minicpm-v-4.7-1b-f16-llamacpp",
+        "launch": "launches/catalog.yaml#launches.r9700-llamacpp-hip-2611",
+        "device": "devices/r9700.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+      "image_id": "sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+      "image_resolved": "ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+      "image_digest": "sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+      "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+    "image_tag": "sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+    "image_id": "sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+    "image_resolved": "ghcr.io/inferstation/llama-rocm-r9700@sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+    "image_digest": "sha256:3aca429eea682400c8b6539d6839cd1706bd7c5aa3d2d4bbd6b036cd7bbd559b",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+  },
+  "generated_at": "2026-11-23T13:36:48Z"
+}

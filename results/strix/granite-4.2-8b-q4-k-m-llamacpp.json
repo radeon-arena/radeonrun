@@ -1,0 +1,192 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 33.36,
+      "decode_toks_per_s_per_req": 37.93,
+      "prefill_toks_per_s": 1108.88,
+      "prompt_tokens": 584,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 584,
+      "ttft_ms": 488.09,
+      "tpot_ms": 26.36,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 85.09,
+      "decode_toks_per_s_per_req": 30.01,
+      "prefill_toks_per_s": 298.06,
+      "prompt_tokens": 584.25,
+      "prompt_tokens_min": 583,
+      "prompt_tokens_max": 585,
+      "ttft_ms": 1760.32,
+      "tpot_ms": 33.35,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 114.54,
+      "decode_toks_per_s_per_req": 10.1,
+      "prefill_toks_per_s": 145.94,
+      "prompt_tokens": 583.25,
+      "prompt_tokens_min": 581,
+      "prompt_tokens_max": 586,
+      "ttft_ms": 4878.75,
+      "tpot_ms": 101.69,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 160.06,
+      "decode_toks_per_s_per_req": 8.76,
+      "prefill_toks_per_s": 77.05,
+      "prompt_tokens": 583.44,
+      "prompt_tokens_min": 581,
+      "prompt_tokens_max": 587,
+      "ttft_ms": 9587.42,
+      "tpot_ms": 124.17,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": null,
+  "meta": {
+    "recipe": "granite-4.2-8b-q4-k-m-llamacpp",
+    "model": "/models/granite-4.2-8b/granite-4.2-8b-Q4_K_M.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/granite-4.2-8b/granite-4.2-8b-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.granite-4.2-8b-q4-k-m-llamacpp",
+      "model": "models/catalog.yaml#models.granite-4.2-8b-q4-k-m-llamacpp",
+      "launch": "launches/catalog.yaml#launches.llamacpp-hip-2611",
+      "device": "devices/halo.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "halo",
+      "result_key": "strix",
+      "image_device": "halo",
+      "label": "Strix Halo",
+      "gpu": "Radeon 8060S (Strix Halo)",
+      "arch": "gfx1151",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1151"
+      ],
+      "topology": {
+        "kind": "single-gpu",
+        "default_gpu_count": 1,
+        "runner_capacity": 1
+      }
+    },
+    "model_spec": {
+      "path": "/models/granite-4.2-8b/granite-4.2-8b-Q4_K_M.gguf",
+      "source": "ibm-granite/granite-4.2-8b-GGUF",
+      "quantization": "Q4_K_M",
+      "id": "granite-4.2-8b-q4-k-m-llamacpp",
+      "name": "granite-4.2-8b-q4-k-m-llamacpp",
+      "description": "granite-4.2-8b-q4-k-m-llamacpp"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "backend": "ROCm/HIP",
+      "container": "llamacpp",
+      "image": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
+      },
+      "mods": [],
+      "command": "env LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/granite-4.2-8b/granite-4.2-8b-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+      "id": "llamacpp-hip-2611",
+      "image_tag": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.granite-4.2-8b-q4-k-m-llamacpp",
+        "model": "models/catalog.yaml#models.granite-4.2-8b-q4-k-m-llamacpp",
+        "launch": "launches/catalog.yaml#launches.llamacpp-hip-2611",
+        "device": "devices/halo.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_id": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_digest": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_tag": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_id": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_digest": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+  },
+  "generated_at": "2026-11-24T05:20:43Z"
+}

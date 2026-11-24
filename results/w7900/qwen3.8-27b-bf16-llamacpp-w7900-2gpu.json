@@ -1,0 +1,197 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 12.43,
+      "decode_toks_per_s_per_req": 13.67,
+      "prefill_toks_per_s": 547.22,
+      "prompt_tokens": 588,
+      "prompt_tokens_min": 588,
+      "prompt_tokens_max": 588,
+      "ttft_ms": 1008.79,
+      "tpot_ms": 73.14,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 35.17,
+      "decode_toks_per_s_per_req": 10.85,
+      "prefill_toks_per_s": 188.57,
+      "prompt_tokens": 588.5,
+      "prompt_tokens_min": 587,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 2817.66,
+      "tpot_ms": 92.21,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 55.82,
+      "decode_toks_per_s_per_req": 4.68,
+      "prefill_toks_per_s": 63.2,
+      "prompt_tokens": 587.88,
+      "prompt_tokens_min": 583,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 9195.01,
+      "tpot_ms": 215.09,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 83.85,
+      "decode_toks_per_s_per_req": 4.07,
+      "prefill_toks_per_s": 38.27,
+      "prompt_tokens": 587.41,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 16187.72,
+      "tpot_ms": 252.28,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": null,
+  "meta": {
+    "recipe": "Qwen3.8-27B",
+    "model": "/models/Qwen3.8-27B/BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib HSA_NO_SCRATCH_RECLAIM=1 HIP_FORCE_DEV_KERNARG=1 llama-server -m /models/Qwen3.8-27B/BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-llamacpp-w7900-2gpu",
+      "model": "models/catalog.yaml#models.qwen3.8-27b-bf16-llamacpp",
+      "launch": "launches/catalog.yaml#launches.w7900-llamacpp-hip-2gpu-2611",
+      "device": "devices/w7900.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "w7900",
+      "result_key": "w7900",
+      "image_device": "w7900",
+      "label": "Radeon PRO W7900",
+      "gpu": "Radeon PRO W7900",
+      "arch": "gfx1100",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1100"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 2
+      }
+    },
+    "model_spec": {
+      "path": "/models/Qwen3.8-27B/BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf",
+      "source": "unsloth/Qwen3.8-27B-GGUF",
+      "quantization": "BF16",
+      "id": "qwen3.8-27b-bf16-llamacpp",
+      "name": "Qwen3.8-27B",
+      "description": "llama.cpp HIP serving Qwen3.8-27B BF16 across two Radeon PRO W7900 GPUs"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "backend": "ROCm/HIP",
+      "container": "llamacpp",
+      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 2,
+        "tensor_parallel_size": 1
+      },
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "HIP_VISIBLE_DEVICES": "0,1",
+        "ROCR_VISIBLE_DEVICES": "0,1",
+        "LD_LIBRARY_PATH": "/app:/opt/rocm/lib",
+        "HSA_NO_SCRATCH_RECLAIM": "1",
+        "HIP_FORCE_DEV_KERNARG": "1"
+      },
+      "mods": [],
+      "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib HSA_NO_SCRATCH_RECLAIM=1 HIP_FORCE_DEV_KERNARG=1 llama-server -m /models/Qwen3.8-27B/BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+      "id": "w7900-llamacpp-hip-2gpu-2611",
+      "image_tag": "commit-29b52d398b29",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-llamacpp-w7900-2gpu",
+        "model": "models/catalog.yaml#models.qwen3.8-27b-bf16-llamacpp",
+        "launch": "launches/catalog.yaml#launches.w7900-llamacpp-hip-2gpu-2611",
+        "device": "devices/w7900.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image_tag": "commit-29b52d398b29",
+    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+  },
+  "generated_at": "2026-11-24T09:36:52Z"
+}

@@ -1,0 +1,197 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 39.05,
+      "decode_toks_per_s_per_req": 48.75,
+      "prefill_toks_per_s": 785.01,
+      "prompt_tokens": 588,
+      "prompt_tokens_min": 588,
+      "prompt_tokens_max": 588,
+      "ttft_ms": 672.74,
+      "tpot_ms": 20.51,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 87.59,
+      "decode_toks_per_s_per_req": 32.72,
+      "prefill_toks_per_s": 267.43,
+      "prompt_tokens": 586.75,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 588,
+      "ttft_ms": 1952.4,
+      "tpot_ms": 30.58,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 102.96,
+      "decode_toks_per_s_per_req": 9.5,
+      "prefill_toks_per_s": 94.1,
+      "prompt_tokens": 588.06,
+      "prompt_tokens_min": 585,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 6247.39,
+      "tpot_ms": 106.73,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 119.75,
+      "decode_toks_per_s_per_req": 5.8,
+      "prefill_toks_per_s": 58.12,
+      "prompt_tokens": 587.59,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 11283.41,
+      "tpot_ms": 178.03,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": null,
+  "meta": {
+    "recipe": "NVIDIA-Nemotron-3.5-Bolt-74B-A9B",
+    "model": "/models/NVIDIA-Nemotron-3.5-Bolt-74B-A9B/UD-Q4_K_XL/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-UD-Q4_K_XL-00001-of-00003.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib HSA_NO_SCRATCH_RECLAIM=1 HIP_FORCE_DEV_KERNARG=1 llama-server -m /models/NVIDIA-Nemotron-3.5-Bolt-74B-A9B/UD-Q4_K_XL/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-UD-Q4_K_XL-00001-of-00003.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.nemotron-3.5-bolt-74b-a9b-ud-q4-k-xl-llamacpp-w7900-2gpu",
+      "model": "models/catalog.yaml#models.nemotron-3.5-bolt-74b-a9b-ud-q4-k-xl-llamacpp",
+      "launch": "launches/catalog.yaml#launches.w7900-llamacpp-hip-2gpu-2611",
+      "device": "devices/w7900.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "w7900",
+      "result_key": "w7900",
+      "image_device": "w7900",
+      "label": "Radeon PRO W7900",
+      "gpu": "Radeon PRO W7900",
+      "arch": "gfx1100",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1100"
+      ],
+      "topology": {
+        "kind": "single-node",
+        "default_gpu_count": 1,
+        "runner_capacity": 2
+      }
+    },
+    "model_spec": {
+      "path": "/models/NVIDIA-Nemotron-3.5-Bolt-74B-A9B/UD-Q4_K_XL/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-UD-Q4_K_XL-00001-of-00003.gguf",
+      "source": "unsloth/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-GGUF",
+      "quantization": "UD-Q4_K_XL",
+      "id": "nemotron-3.5-bolt-74b-a9b-ud-q4-k-xl-llamacpp",
+      "name": "NVIDIA-Nemotron-3.5-Bolt-74B-A9B",
+      "description": "llama.cpp HIP serving NVIDIA-Nemotron-3.5-Bolt-74B-A9B UD-Q4_K_XL across two Radeon PRO W7900 GPUs"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "backend": "ROCm/HIP",
+      "container": "llamacpp",
+      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 2,
+        "tensor_parallel_size": 1
+      },
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "HIP_VISIBLE_DEVICES": "0,1",
+        "ROCR_VISIBLE_DEVICES": "0,1",
+        "LD_LIBRARY_PATH": "/app:/opt/rocm/lib",
+        "HSA_NO_SCRATCH_RECLAIM": "1",
+        "HIP_FORCE_DEV_KERNARG": "1"
+      },
+      "mods": [],
+      "command": "env HIP_VISIBLE_DEVICES=0,1 ROCR_VISIBLE_DEVICES=0,1 LD_LIBRARY_PATH=/app:/opt/rocm/lib HSA_NO_SCRATCH_RECLAIM=1 HIP_FORCE_DEV_KERNARG=1 llama-server -m /models/NVIDIA-Nemotron-3.5-Bolt-74B-A9B/UD-Q4_K_XL/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-UD-Q4_K_XL-00001-of-00003.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+      "id": "w7900-llamacpp-hip-2gpu-2611",
+      "image_tag": "commit-29b52d398b29",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.nemotron-3.5-bolt-74b-a9b-ud-q4-k-xl-llamacpp-w7900-2gpu",
+        "model": "models/catalog.yaml#models.nemotron-3.5-bolt-74b-a9b-ud-q4-k-xl-llamacpp",
+        "launch": "launches/catalog.yaml#launches.w7900-llamacpp-hip-2gpu-2611",
+        "device": "devices/w7900.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image_tag": "commit-29b52d398b29",
+    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+  },
+  "generated_at": "2026-11-24T07:20:10Z"
+}

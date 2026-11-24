@@ -1,0 +1,188 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 4.28,
+      "decode_toks_per_s_per_req": 4.4,
+      "prefill_toks_per_s": 662.77,
+      "prompt_tokens": 512,
+      "prompt_tokens_min": 512,
+      "prompt_tokens_max": 512,
+      "ttft_ms": 999.98,
+      "tpot_ms": 227.47,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 14.97,
+      "decode_toks_per_s_per_req": 4.11,
+      "prefill_toks_per_s": 263.02,
+      "prompt_tokens": 512,
+      "prompt_tokens_min": 512,
+      "prompt_tokens_max": 512,
+      "ttft_ms": 3216.49,
+      "tpot_ms": 243.58,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 38.96,
+      "decode_toks_per_s_per_req": 3.11,
+      "prefill_toks_per_s": 104.93,
+      "prompt_tokens": 512,
+      "prompt_tokens_min": 512,
+      "prompt_tokens_max": 512,
+      "ttft_ms": 10820.96,
+      "tpot_ms": 325.53,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 53.01,
+      "decode_toks_per_s_per_req": 2.31,
+      "prefill_toks_per_s": 73.18,
+      "prompt_tokens": 512,
+      "prompt_tokens_min": 512,
+      "prompt_tokens_max": 512,
+      "ttft_ms": 19847.19,
+      "tpot_ms": 444.15,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": null,
+  "meta": {
+    "recipe": "qwen3.8-27b-bf16-vllm",
+    "model": "/models/Qwen3.8-27B",
+    "runtime": "vllm",
+    "container": "vllm",
+    "command": "vllm serve /models/Qwen3.8-27B --host 0.0.0.0 --port 8000 --served-model-name q38b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-vllm",
+      "model": "models/catalog.yaml#models.qwen3.8-27b-bf16-vllm",
+      "launch": "launches/catalog.yaml#launches.vllm-bf16",
+      "device": "devices/halo.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "halo",
+      "result_key": "strix",
+      "image_device": "halo",
+      "label": "Strix Halo",
+      "gpu": "Radeon 8060S (Strix Halo)",
+      "arch": "gfx1151",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1151"
+      ],
+      "topology": {
+        "kind": "single-gpu",
+        "default_gpu_count": 1,
+        "runner_capacity": 1
+      }
+    },
+    "model_spec": {
+      "path": "/models/Qwen3.8-27B",
+      "source": "Qwen/Qwen3.8-27B",
+      "served_name": "q38b",
+      "quantization": "BF16",
+      "id": "qwen3.8-27b-bf16-vllm",
+      "name": "qwen3.8-27b-bf16-vllm",
+      "description": "qwen3.8-27b-bf16-vllm"
+    },
+    "launch_spec": {
+      "runtime": "vllm",
+      "container": "vllm",
+      "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 2304
+      },
+      "env": {},
+      "mods": [],
+      "command": "vllm serve /models/Qwen3.8-27B --host 0.0.0.0 --port 8000 --served-model-name q38b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
+      "id": "vllm-bf16",
+      "image_tag": "f5fa386fe",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-vllm",
+        "model": "models/catalog.yaml#models.qwen3.8-27b-bf16-vllm",
+        "launch": "launches/catalog.yaml#launches.vllm-bf16",
+        "device": "devices/halo.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+      "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
+      "image_resolved": "ghcr.io/radeon-arena/halo-vllm@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
+      "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+    "image_requested": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+    "image_tag": "f5fa386fe",
+    "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
+    "image_resolved": "ghcr.io/radeon-arena/halo-vllm@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
+    "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
+  },
+  "generated_at": "2026-11-23T06:42:03Z"
+}

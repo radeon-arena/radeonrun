@@ -1,0 +1,192 @@
+{
+  "profile": "halo-arena-v1",
+  "framework": "llama-benchy",
+  "methodology": {
+    "version": 2,
+    "prompt_policy": "server-tokenized-distinct-prefix",
+    "timing_window": "completion-requests-only",
+    "prompt_tokens_source": "server-usage-or-preflight-tokenize"
+  },
+  "measurements": [
+    {
+      "decode_toks_per_s": 67.22,
+      "decode_toks_per_s_per_req": 73.21,
+      "prefill_toks_per_s": 3298.07,
+      "prompt_tokens": 585,
+      "prompt_tokens_min": 585,
+      "prompt_tokens_max": 585,
+      "ttft_ms": 168.9,
+      "tpot_ms": 13.66,
+      "requests_ok": 1,
+      "requests_total": 1,
+      "depth": 0,
+      "concurrency": 1,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 193.33,
+      "decode_toks_per_s_per_req": 62.6,
+      "prefill_toks_per_s": 870.35,
+      "prompt_tokens": 585.25,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 586,
+      "ttft_ms": 607.02,
+      "tpot_ms": 15.98,
+      "requests_ok": 4,
+      "requests_total": 4,
+      "depth": 0,
+      "concurrency": 4,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 283.97,
+      "decode_toks_per_s_per_req": 23.32,
+      "prefill_toks_per_s": 435.98,
+      "prompt_tokens": 584.06,
+      "prompt_tokens_min": 582,
+      "prompt_tokens_max": 587,
+      "ttft_ms": 1635.88,
+      "tpot_ms": 43.59,
+      "requests_ok": 16,
+      "requests_total": 16,
+      "depth": 0,
+      "concurrency": 16,
+      "pp": 512,
+      "tg": 128
+    },
+    {
+      "decode_toks_per_s": 411.63,
+      "decode_toks_per_s_per_req": 19.8,
+      "prefill_toks_per_s": 244.35,
+      "prompt_tokens": 583.69,
+      "prompt_tokens_min": 581,
+      "prompt_tokens_max": 586,
+      "ttft_ms": 3115.62,
+      "tpot_ms": 52.96,
+      "requests_ok": 32,
+      "requests_total": 32,
+      "depth": 0,
+      "concurrency": 32,
+      "pp": 512,
+      "tg": 128
+    }
+  ],
+  "failed_points": 0,
+  "skipped_points": 0,
+  "max_context": null,
+  "meta": {
+    "recipe": "minicpm5-2b-q8-0-llamacpp",
+    "model": "/models/MiniCPM5-2B/MiniCPM5-2B-Q8_0.gguf",
+    "runtime": "llamacpp",
+    "container": "llamacpp",
+    "command": "env LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/MiniCPM5-2B/MiniCPM5-2B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+    "config_source": "matrix",
+    "spec_files": {
+      "matrix": "matrices/catalog.yaml#matrices.minicpm5-2b-q8-0-llamacpp",
+      "model": "models/catalog.yaml#models.minicpm5-2b-q8-0-llamacpp",
+      "launch": "launches/catalog.yaml#launches.llamacpp-hip-2611",
+      "device": "devices/halo.yaml",
+      "benchmark": "benchmarking/halo-arena-v1.yaml",
+      "legacy_recipe": null
+    },
+    "device": {
+      "spec_version": "1",
+      "id": "halo",
+      "result_key": "strix",
+      "image_device": "halo",
+      "label": "Strix Halo",
+      "gpu": "Radeon 8060S (Strix Halo)",
+      "arch": "gfx1151",
+      "runner_labels": [
+        "self-hosted",
+        "gfx1151"
+      ],
+      "topology": {
+        "kind": "single-gpu",
+        "default_gpu_count": 1,
+        "runner_capacity": 1
+      }
+    },
+    "model_spec": {
+      "path": "/models/MiniCPM5-2B/MiniCPM5-2B-Q8_0.gguf",
+      "source": "openbmb/MiniCPM5-2B-GGUF",
+      "quantization": "Q8_0",
+      "id": "minicpm5-2b-q8-0-llamacpp",
+      "name": "minicpm5-2b-q8-0-llamacpp",
+      "description": "minicpm5-2b-q8-0-llamacpp"
+    },
+    "launch_spec": {
+      "runtime": "llamacpp",
+      "backend": "ROCm/HIP",
+      "container": "llamacpp",
+      "image": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "defaults": {
+        "port": 8000,
+        "host": "0.0.0.0",
+        "nseq": 32,
+        "ctx": 32768
+      },
+      "env": {
+        "LD_LIBRARY_PATH": "/app:/opt/rocm/lib"
+      },
+      "mods": [],
+      "command": "env LD_LIBRARY_PATH=/app:/opt/rocm/lib llama-server -m /models/MiniCPM5-2B/MiniCPM5-2B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+      "id": "llamacpp-hip-2611",
+      "image_tag": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "config_source": "matrix",
+      "spec_files": {
+        "matrix": "matrices/catalog.yaml#matrices.minicpm5-2b-q8-0-llamacpp",
+        "model": "models/catalog.yaml#models.minicpm5-2b-q8-0-llamacpp",
+        "launch": "launches/catalog.yaml#launches.llamacpp-hip-2611",
+        "device": "devices/halo.yaml",
+        "benchmark": "benchmarking/halo-arena-v1.yaml",
+        "legacy_recipe": null
+      },
+      "image_requested": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_id": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_digest": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+      "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    },
+    "benchmark_spec": {
+      "framework": "llama-benchy",
+      "metadata": {
+        "name": "halo-arena-v1",
+        "description": "halo-arena quick daily sweep (in512/out128 streaming)",
+        "version": "1"
+      },
+      "args": {
+        "depth": [
+          0
+        ],
+        "pp": [
+          512
+        ],
+        "tg": [
+          128
+        ],
+        "concurrency": [
+          1,
+          4,
+          16,
+          32
+        ],
+        "prefix_caching": true,
+        "warmup": 1,
+        "runs": 3
+      },
+      "id": "halo-arena-v1",
+      "file": "benchmarking/halo-arena-v1.yaml"
+    },
+    "image": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_tag": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_id": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_digest": "sha256:00bbff0cae14fd6020294c01e6091b49f5b7e7fa2718e89be0a02ed40548a8ca",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+  },
+  "generated_at": "2026-11-23T09:30:41Z"
+}
