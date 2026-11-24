@@ -478,6 +478,8 @@ launches:
 
   # llama.cpp 29b52d39 (same source as the 2026-11-21 InferStation images) compiled for gfx1100 inside the
   # test machine with the llama-rocm recipe flags; the ref names that build, it is not a published image.
+  # HSA_NO_SCRATCH_RECLAIM / HIP_FORCE_DEV_KERNARG: as in the env of the 2026-11-20 test-machine W7900D vLLM runs; added
+  # after llama-server stalled at concurrency 16 (GPU idle, no progress) without them on 2026-11-24.
   w7900-llamacpp-hip-2611:
     runtime: llamacpp
     backend: ROCm/HIP
@@ -490,6 +492,8 @@ launches:
       HIP_VISIBLE_DEVICES: "0"
       ROCR_VISIBLE_DEVICES: "0"
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
+      HSA_NO_SCRATCH_RECLAIM: "1"
+      HIP_FORCE_DEV_KERNARG: "1"
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
@@ -507,6 +511,8 @@ launches:
       HIP_VISIBLE_DEVICES: "0,1"
       ROCR_VISIBLE_DEVICES: "0,1"
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
+      HSA_NO_SCRATCH_RECLAIM: "1"
+      HIP_FORCE_DEV_KERNARG: "1"
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
@@ -524,6 +530,8 @@ launches:
       HIP_VISIBLE_DEVICES: "0,1,2,3"
       ROCR_VISIBLE_DEVICES: "0,1,2,3"
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
+      HSA_NO_SCRATCH_RECLAIM: "1"
+      HIP_FORCE_DEV_KERNARG: "1"
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa on --host {host} --port {port} -c {ctx} -np {nseq}
@@ -541,6 +549,8 @@ launches:
       HIP_VISIBLE_DEVICES: "0,1,2,3"
       ROCR_VISIBLE_DEVICES: "0,1,2,3"
       LD_LIBRARY_PATH: /app:/opt/rocm/lib
+      HSA_NO_SCRATCH_RECLAIM: "1"
+      HIP_FORCE_DEV_KERNARG: "1"
     mods: []
     command: >-
       llama-server -m {model.path} -ngl 999 -fa off --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
