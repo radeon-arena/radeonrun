@@ -370,11 +370,12 @@ matrices:
     device: r9700
     benchmark: halo-arena-v1
 
-  granite-4.2-30b-bf16-llamacpp-r9700-2gpu:
+  # two R9700 cards ran out of memory on the compute buffers (2026-11-23), so BF16 uses four
+  granite-4.2-30b-bf16-llamacpp-r9700-4gpu:
     name: granite-4.2-30b
-    description: llama.cpp HIP serving granite-4.2-30b BF16 across two Radeon AI PRO R9700 GPUs
+    description: llama.cpp HIP serving granite-4.2-30b BF16 across four Radeon AI PRO R9700 GPUs
     model: granite-4.2-30b-bf16-llamacpp
-    launch: r9700-llamacpp-hip-2gpu-2611
+    launch: r9700-llamacpp-hip-4gpu-2611
     device: r9700
     benchmark: halo-arena-v1
 
