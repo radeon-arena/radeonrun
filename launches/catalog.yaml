@@ -476,10 +476,10 @@ launches:
       llama-server -m {model.path} -ngl 999 -fa off --load-mode none --host {host} --port {port} -c {ctx} -np {nseq}
       --cache-ram 0
 
-  # llama.cpp 29b52d39 (same source as the 2026-11-21 InferStation images) compiled for gfx1100 inside the
-  # test machine with the llama-rocm recipe flags; the ref names that build, it is not a published image.
-  # HSA_NO_SCRATCH_RECLAIM / HIP_FORCE_DEV_KERNARG: as in the env of the 2026-11-20 test-machine W7900D vLLM runs. They did
-  # not stop the mid-benchmark stalls seen on 2026-11-24; those were KFD queue evictions on the test-machine node.
+  # llama.cpp 29b52d39 (same source as the 2026-11-21 InferStation images) compiled for gfx1100 on the
+  # test machine with the llama-rocm recipe flags; the ref names that local build, it is not a published image.
+  # HSA_NO_SCRATCH_RECLAIM / HIP_FORCE_DEV_KERNARG are kept from earlier W7900 runs; they did not stop the
+  # mid-benchmark stalls seen on 2026-11-24, which were KFD queue evictions on the test machine.
   w7900-llamacpp-hip-2611:
     runtime: llamacpp
     backend: ROCm/HIP
