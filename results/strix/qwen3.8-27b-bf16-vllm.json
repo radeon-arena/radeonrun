@@ -121,7 +121,7 @@
     "launch_spec": {
       "runtime": "vllm",
       "container": "vllm",
-      "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+      "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
       "defaults": {
         "port": 8000,
         "host": "0.0.0.0",
@@ -132,7 +132,7 @@
       "mods": [],
       "command": "vllm serve /models/Qwen3.8-27B --host 0.0.0.0 --port 8000 --served-model-name q38b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
       "id": "vllm-bf16",
-      "image_tag": "f5fa386fe",
+      "image_tag": "arena-f5fa386fe",
       "config_source": "matrix",
       "spec_files": {
         "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-vllm",
@@ -142,9 +142,9 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": null
       },
-      "image_requested": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
+      "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
       "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
-      "image_resolved": "ghcr.io/radeon-arena/halo-vllm@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
+      "image_resolved": "ghcr.io/inferstation/vllm-rocm-halo@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
       "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
     },
     "benchmark_spec": {
@@ -177,11 +177,11 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
-    "image_requested": "ghcr.io/radeon-arena/halo-vllm:f5fa386fe",
-    "image_tag": "f5fa386fe",
+    "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+    "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+    "image_tag": "arena-f5fa386fe",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
-    "image_resolved": "ghcr.io/radeon-arena/halo-vllm@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
+    "image_resolved": "ghcr.io/inferstation/vllm-rocm-halo@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
     "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
   "generated_at": "2026-11-23T06:42:03Z"

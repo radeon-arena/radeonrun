@@ -5,7 +5,7 @@ launches:
     container: llamacpp
     image:
       by_device:
-        halo: {tag: fe7c8b2414}
+        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414}
       build: {framework: llamacpp}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -18,7 +18,7 @@ launches:
     container: llamacpp
     image:
       by_device:
-        halo: {tag: fe7c8b2414}
+        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414}
       build: {framework: llamacpp}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -31,7 +31,7 @@ launches:
     container: llamacpp
     image:
       by_device:
-        halo: {tag: fe7c8b2414}
+        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414}
       build: {framework: llamacpp}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -44,7 +44,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -59,7 +59,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -74,7 +74,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -88,7 +88,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -103,7 +103,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -117,7 +117,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -131,7 +131,7 @@ launches:
     container: vllm
     image:
       by_device:
-        halo: {tag: f5fa386fe}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe}
       build: {framework: vllm}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env:
@@ -154,7 +154,7 @@ launches:
     container: vllm-main
     image:
       by_device:
-        halo: {tag: 92221485a}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a}
       build: {framework: vllm-main}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 4}
     env: {}
