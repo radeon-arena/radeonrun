@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-11-28T04:23:36.904918+00:00",
+  "generated_at": "2026-11-28T05:20:53.646196+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "f78109e26fd2efb7044ad5fe634c92668ed99cb1",
-  "short_commit": "f78109e",
+  "commit": "264dc2ef4221ad64cf4522e0fbedc3d02b311f09",
+  "short_commit": "264dc2e",
   "devices": {
     "strix": [
       "deepseek-v4-flash-0731-ud-q2-k-xl-llamacpp.json",
@@ -1138,7 +1138,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -1223,8 +1223,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/gemma-4-26B-A4B-it-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name g26bawq --max-num-seqs {nseq} --dtype float16 --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-06T06:00:06Z"
@@ -1259,7 +1259,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -1270,7 +1270,7 @@
           "mods": [],
           "command": "vllm serve /models/gemma-4-26B-A4B-it-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name g26bawq --max-num-seqs {nseq} --dtype float16 --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-awq",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-awq-4bit-vllm",
@@ -1637,7 +1637,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -1722,8 +1722,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/gemma-4-26B-A4B-it --host 0.0.0.0 --port {port} --served-model-name g26b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-06T06:30:25Z"
@@ -1758,7 +1758,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -1769,7 +1769,7 @@
           "mods": [],
           "command": "vllm serve /models/gemma-4-26B-A4B-it --host 0.0.0.0 --port {port} --served-model-name g26b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-bf16-triton",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-bf16-vllm",
@@ -2386,7 +2386,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -2872,8 +2872,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Gemma-4-31B-it-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name g31q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-05T08:53:48Z"
@@ -2908,7 +2908,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -2919,7 +2919,7 @@
           "mods": [],
           "command": "vllm serve /models/Gemma-4-31B-it-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name g31q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-quark",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.gemma-4-31b-it-quark-w8a8-int8-vllm",
@@ -18551,7 +18551,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -18636,8 +18636,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-07T06:53:28Z"
@@ -18673,7 +18673,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -18684,7 +18684,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-bf16-triton",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-vllm",
@@ -18813,7 +18813,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -19299,8 +19299,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b-yarn --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-04T06:56:36Z"
@@ -19348,7 +19348,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -19359,7 +19359,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port {port} --served-model-name q30b-yarn --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-bf16-triton",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-yarn-vllm",
@@ -22810,7 +22810,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -22895,8 +22895,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port {port} --served-model-name q27b --max-num-seqs {nseq} --dtype bfloat16 --max-model-len {ctx} --gpu-memory-utilization 0.9",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-06T10:13:28Z"
@@ -22931,7 +22931,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -22942,7 +22942,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.6-27B --host 0.0.0.0 --port {port} --served-model-name q27b --max-num-seqs {nseq} --dtype bfloat16 --max-model-len {ctx} --gpu-memory-utilization 0.9",
           "id": "vllm-bf16",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-bf16-vllm",
@@ -23559,7 +23559,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -23644,8 +23644,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3.6-27B-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name q27q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-06T02:52:47Z"
@@ -23680,7 +23680,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -23691,7 +23691,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.6-27B-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name q27q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-quark",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-quark-w8a8-int8-vllm",
@@ -23808,7 +23808,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -23893,8 +23893,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3.6-35B-A3B-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name q35awq --max-num-seqs {nseq} --dtype float16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-07T06:45:16Z"
@@ -23929,7 +23929,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -23940,7 +23940,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.6-35B-A3B-AWQ-4bit --host 0.0.0.0 --port {port} --served-model-name q35awq --max-num-seqs {nseq} --dtype float16 --attention-backend TRITON_ATTN --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-awq-triton",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-awq-4bit-vllm",
@@ -24307,7 +24307,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -24392,8 +24392,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3.6-35B-A3B --host 0.0.0.0 --port {port} --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --served-model-name qwen36-35b --max-model-len {ctx}",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-07T07:10:36Z"
@@ -24428,7 +24428,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -24439,7 +24439,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.6-35B-A3B --host 0.0.0.0 --port {port} --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --served-model-name qwen36-35b --max-model-len {ctx}",
           "id": "vllm-bf16-triton-no-gmu",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-vllm",
@@ -24564,7 +24564,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -24655,10 +24655,10 @@
             "recipe": "qwen3-6-35b-a3b-int4-mixed-autoround",
             "model": "/models/Qwen3.6-35B-A3B-int4-mixed-AutoRound",
             "runtime": "vllm",
-            "container": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+            "container": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
             "command": "vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \\ --served-model-name qwen36-int4-mixed \\ --host 0.0.0.0 --port {port} \\ --trust-remote-code \\ --dtype float16 \\ --max-model-len {ctx} \\ --max-num-seqs {nseq} \\ --max-num-batched-tokens 8192 \\ --gpu-memory-utilization 0.85 \\ --attention-backend TRITON_ATTN \\ --mm-encoder-attn-backend TRITON_ATTN \\ --quantization gptq",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:9ef42a112badfb0b46a40752acea8b533266e6870e836ed4c677d5688e22fdeb"
           },
           "generated_at": "2026-07-06T04:33:17Z"
@@ -24702,7 +24702,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -24721,7 +24721,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.6-35B-A3B-int4-mixed-AutoRound \\ --served-model-name qwen36-int4-mixed \\ --host 0.0.0.0 --port {port} \\ --trust-remote-code \\ --dtype float16 \\ --max-model-len {ctx} \\ --max-num-seqs {nseq} \\ --max-num-batched-tokens 8192 \\ --gpu-memory-utilization 0.85 \\ --attention-backend TRITON_ATTN \\ --mm-encoder-attn-backend TRITON_ATTN \\ --quantization gptq",
           "id": "vllm-autoround-gptq",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-int4-mixed-autoround-vllm",
@@ -25088,7 +25088,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -25173,8 +25173,8 @@
             "runtime": "vllm",
             "container": "vllm",
             "command": "vllm serve /models/Qwen3.6-35B-A3B-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name q35q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
           },
           "generated_at": "2026-07-07T07:18:04Z"
@@ -25209,7 +25209,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -25220,7 +25220,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.6-35B-A3B-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name q35q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
           "id": "vllm-quark",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-quark-w8a8-int8-vllm",
@@ -25942,7 +25942,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -26084,7 +26084,7 @@
             "launch_spec": {
               "runtime": "vllm",
               "container": "vllm",
-              "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+              "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
               "defaults": {
                 "port": 8000,
                 "host": "0.0.0.0",
@@ -26095,7 +26095,7 @@
               "mods": [],
               "command": "vllm serve /models/Qwen3.8-27B --host 0.0.0.0 --port 8000 --served-model-name q38b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
               "id": "vllm-bf16",
-              "image_tag": "arena-f5fa386fe",
+              "image_tag": "commit-f5fa386fef78",
               "config_source": "matrix",
               "spec_files": {
                 "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-vllm",
@@ -26105,7 +26105,7 @@
                 "benchmark": "benchmarking/halo-arena-v1.yaml",
                 "legacy_recipe": null
               },
-              "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+              "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
               "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
               "image_resolved": "ghcr.io/inferstation/vllm-rocm-halo@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
               "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
@@ -26140,9 +26140,9 @@
               "id": "halo-arena-v1",
               "file": "benchmarking/halo-arena-v1.yaml"
             },
-            "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-            "image_tag": "arena-f5fa386fe",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+            "image_tag": "commit-f5fa386fef78",
             "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
             "image_resolved": "ghcr.io/inferstation/vllm-rocm-halo@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
             "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
@@ -26179,7 +26179,7 @@
         "launch": {
           "runtime": "vllm",
           "container": "vllm",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -26190,7 +26190,7 @@
           "mods": [],
           "command": "vllm serve /models/Qwen3.8-27B --host 0.0.0.0 --port 8000 --served-model-name q38b --max-num-seqs 32 --dtype bfloat16 --max-model-len 2304 --gpu-memory-utilization 0.9",
           "id": "vllm-bf16",
-          "image_tag": "arena-f5fa386fe",
+          "image_tag": "commit-f5fa386fef78",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-vllm",
@@ -26200,7 +26200,7 @@
             "benchmark": "benchmarking/halo-arena-v1.yaml",
             "legacy_recipe": null
           },
-          "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
+          "image_requested": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
           "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
           "image_resolved": "ghcr.io/inferstation/vllm-rocm-halo@sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61",
           "image_digest": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
@@ -28399,7 +28399,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -29159,7 +29159,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -30310,7 +30310,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -47825,7 +47825,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -48216,7 +48216,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -54242,7 +54242,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -55393,7 +55393,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -56153,7 +56153,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {
@@ -56917,7 +56917,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78"
               }
             },
             "build": {

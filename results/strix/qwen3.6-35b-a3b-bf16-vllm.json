@@ -64,8 +64,8 @@
     "runtime": "vllm",
     "container": "vllm",
     "command": "vllm serve /models/Qwen3.6-35B-A3B --host 0.0.0.0 --port {port} --max-num-seqs {nseq} --dtype bfloat16 --attention-backend TRITON_ATTN --served-model-name qwen36-35b --max-model-len {ctx}",
-    "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-    "image_tag": "arena-f5fa386fe",
+    "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+    "image_tag": "commit-f5fa386fef78",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
   "generated_at": "2026-07-07T07:10:36Z"

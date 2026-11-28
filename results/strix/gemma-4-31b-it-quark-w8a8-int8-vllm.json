@@ -465,8 +465,8 @@
     "runtime": "vllm",
     "container": "vllm",
     "command": "vllm serve /models/Gemma-4-31B-it-Quark-W8A8-INT8 --host 0.0.0.0 --port {port} --served-model-name g31q --max-num-seqs {nseq} --quantization quark --max-model-len {ctx} --gpu-memory-utilization 0.85",
-    "image": "ghcr.io/inferstation/vllm-rocm-halo:arena-f5fa386fe",
-    "image_tag": "arena-f5fa386fe",
+    "image": "ghcr.io/inferstation/vllm-rocm-halo:commit-f5fa386fef78",
+    "image_tag": "commit-f5fa386fef78",
     "image_id": "sha256:dbb87b2120d10b65718ae2447ab1afb726f9d7fb1705ce7c5bb112ef4917da61"
   },
   "generated_at": "2026-07-05T08:53:48Z"
