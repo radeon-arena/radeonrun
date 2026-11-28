@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-11-28T04:14:45.154922+00:00",
+  "generated_at": "2026-11-28T04:23:36.904918+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "5fb135a2516112744045ed233fbbcbb954c559bd",
-  "short_commit": "5fb135a",
+  "commit": "f78109e26fd2efb7044ad5fe634c92668ed99cb1",
+  "short_commit": "f78109e",
   "devices": {
     "strix": [
       "deepseek-v4-flash-0731-ud-q2-k-xl-llamacpp.json",
@@ -644,7 +644,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa"
               }
             },
             "build": {
@@ -728,8 +728,8 @@
             "runtime": "vllm-main",
             "container": "vllm-main",
             "command": "vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 \\ --served-model-name diffawq \\ --host {host} --port {port} \\ --max-model-len 896 --max-num-seqs {nseq} \\ --gpu-memory-utilization 0.6 \\ --generation-config vllm \\ --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\ --diffusion-config '{\"canvas_length\":256}'",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a",
-            "image_tag": "arena-92221485a",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa",
+            "image_tag": "commit-92221485aaaa",
             "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
           },
           "generated_at": "2026-07-06T04:56:55Z"
@@ -764,7 +764,7 @@
         "launch": {
           "runtime": "vllm-main",
           "container": "vllm-main",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -774,7 +774,7 @@
           "mods": [],
           "command": "vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 \\ --served-model-name diffawq \\ --host {host} --port {port} \\ --max-model-len 896 --max-num-seqs {nseq} \\ --gpu-memory-utilization 0.6 \\ --generation-config vllm \\ --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\ --diffusion-config '{\"canvas_length\":256}'",
           "id": "vllm-main-diffusion",
-          "image_tag": "arena-92221485a",
+          "image_tag": "commit-92221485aaaa",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.diffusiongemma-26b-a4b-awq-int4",
@@ -891,7 +891,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa"
               }
             },
             "build": {
@@ -975,8 +975,8 @@
             "runtime": "vllm-main",
             "container": "vllm-main",
             "command": "vllm serve /models/diffusiongemma-26B-A4B-it \\ --served-model-name diffgemma \\ --host {host} --port {port} \\ --max-model-len 896 --max-num-seqs {nseq} \\ --gpu-memory-utilization 0.6 \\ --generation-config vllm \\ --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\ --diffusion-config '{\"canvas_length\":256}'",
-            "image": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a",
-            "image_tag": "arena-92221485a",
+            "image": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa",
+            "image_tag": "commit-92221485aaaa",
             "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
           },
           "generated_at": "2026-07-06T10:26:28Z"
@@ -1011,7 +1011,7 @@
         "launch": {
           "runtime": "vllm-main",
           "container": "vllm-main",
-          "image": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a",
+          "image": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -1021,7 +1021,7 @@
           "mods": [],
           "command": "vllm serve /models/diffusiongemma-26B-A4B-it \\ --served-model-name diffgemma \\ --host {host} --port {port} \\ --max-model-len 896 --max-num-seqs {nseq} \\ --gpu-memory-utilization 0.6 \\ --generation-config vllm \\ --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\ --diffusion-config '{\"canvas_length\":256}'",
           "id": "vllm-main-diffusion",
-          "image_tag": "arena-92221485a",
+          "image_tag": "commit-92221485aaaa",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.diffusiongemma-26b-a4b-bf16",
@@ -1387,7 +1387,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -1472,8 +1472,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/gemma-4-26B-A4B-it/BF16/gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -1508,7 +1508,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -1519,7 +1519,7 @@
           "mods": [],
           "command": "llama-server -m /models/gemma-4-26B-A4B-it/BF16/gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-bf16-llamacpp",
@@ -1886,7 +1886,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -1971,8 +1971,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -2007,7 +2007,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -2018,7 +2018,7 @@
           "mods": [],
           "command": "llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-q8-0-llamacpp",
@@ -2136,7 +2136,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -2221,8 +2221,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -2257,7 +2257,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -2268,7 +2268,7 @@
           "mods": [],
           "command": "llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp",
@@ -9178,7 +9178,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -9263,8 +9263,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -9299,7 +9299,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -9310,7 +9310,7 @@
           "mods": [],
           "command": "llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.llama-3.1-8b-instruct-bf16-llamacpp",
@@ -9428,7 +9428,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -9513,8 +9513,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -9549,7 +9549,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -9560,7 +9560,7 @@
           "mods": [],
           "command": "llama-server -m /models/Llama-3.1-8B-Instruct/Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.llama-3.1-8b-instruct-q4-k-m-llamacpp",
@@ -9678,7 +9678,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -9763,8 +9763,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf -ngl 999 -fa off --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -9799,7 +9799,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -9810,7 +9810,7 @@
           "mods": [],
           "command": "llama-server -m /models/MiMo-V2.5-GGUF/UD-Q2_K_XL/MiMo-V2.5-UD-Q2_K_XL-00001-of-00004.gguf -ngl 999 -fa off --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip-mimo",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.mimo-v2.5-ud-q2-k-xl-llamacpp",
@@ -17551,7 +17551,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -17636,8 +17636,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -17672,7 +17672,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -17683,7 +17683,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-14b-bf16-llamacpp",
@@ -17801,7 +17801,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -17886,8 +17886,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -17922,7 +17922,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -17933,7 +17933,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-14b-q4-k-m-llamacpp",
@@ -18051,7 +18051,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -18136,8 +18136,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -18172,7 +18172,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -18183,7 +18183,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-14b-q8-0-llamacpp",
@@ -18301,7 +18301,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -18386,8 +18386,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-30B-A3B/BF16/Qwen3-30B-A3B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -18422,7 +18422,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -18433,7 +18433,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-30B-A3B/BF16/Qwen3-30B-A3B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-llamacpp",
@@ -19810,7 +19810,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -19895,8 +19895,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -19931,7 +19931,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -19942,7 +19942,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-q4-k-m-llamacpp",
@@ -20060,7 +20060,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -20145,8 +20145,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -20181,7 +20181,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -20192,7 +20192,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-30B-A3B/Qwen3-30B-A3B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-q8-0-llamacpp",
@@ -20310,7 +20310,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -20395,8 +20395,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-32B/BF16/Qwen3-32B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -20431,7 +20431,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -20442,7 +20442,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-32B/BF16/Qwen3-32B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-32b-bf16-llamacpp",
@@ -20560,7 +20560,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -20645,8 +20645,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-32B/Qwen3-32B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -20681,7 +20681,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -20692,7 +20692,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-32B/Qwen3-32B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-32b-q4-k-m-llamacpp",
@@ -20810,7 +20810,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -20895,8 +20895,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-32B/Qwen3-32B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -20931,7 +20931,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -20942,7 +20942,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-32B/Qwen3-32B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-32b-q8-0-llamacpp",
@@ -21060,7 +21060,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -21145,8 +21145,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -21181,7 +21181,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -21192,7 +21192,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-bf16-llamacpp",
@@ -21310,7 +21310,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -21395,8 +21395,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -21431,7 +21431,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -21442,7 +21442,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-q4-k-m-llamacpp",
@@ -21560,7 +21560,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -21645,8 +21645,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -21681,7 +21681,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -21692,7 +21692,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-4B/Qwen3-4B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-4b-q8-0-llamacpp",
@@ -21810,7 +21810,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -21895,8 +21895,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-8B/Qwen3-8B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -21931,7 +21931,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -21942,7 +21942,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-8B/Qwen3-8B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-8b-bf16-llamacpp",
@@ -22060,7 +22060,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -22145,8 +22145,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-8B/Qwen3-8B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -22181,7 +22181,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -22192,7 +22192,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-8B/Qwen3-8B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-8b-q4-k-m-llamacpp",
@@ -22310,7 +22310,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -22395,8 +22395,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3-8B/Qwen3-8B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -22431,7 +22431,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -22442,7 +22442,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3-8B/Qwen3-8B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3-8b-q8-0-llamacpp",
@@ -22560,7 +22560,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -22645,8 +22645,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -22681,7 +22681,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -22692,7 +22692,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3.6-27B/BF16/Qwen3.6-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-bf16-llamacpp",
@@ -23059,7 +23059,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -23144,8 +23144,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -23180,7 +23180,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -23191,7 +23191,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-q4-k-m-llamacpp",
@@ -23309,7 +23309,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -23394,8 +23394,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -23430,7 +23430,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -23441,7 +23441,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3.6-27B/Qwen3.6-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-27b-q8-0-llamacpp",
@@ -24057,7 +24057,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -24142,8 +24142,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3.6-35B-A3B/BF16/Qwen3.6-35B-A3B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -24178,7 +24178,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -24189,7 +24189,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3.6-35B-A3B/BF16/Qwen3.6-35B-A3B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-bf16-llamacpp",
@@ -24838,7 +24838,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -24923,8 +24923,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -24959,7 +24959,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -24970,7 +24970,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-q8-0-llamacpp",
@@ -25337,7 +25337,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -25422,8 +25422,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -25458,7 +25458,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -25469,7 +25469,7 @@
           "mods": [],
           "command": "llama-server -m /models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.6-35b-a3b-ud-q4-k-m-llamacpp",
@@ -25580,7 +25580,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -25721,7 +25721,7 @@
             "launch_spec": {
               "runtime": "llamacpp",
               "container": "llamacpp",
-              "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+              "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
               "defaults": {
                 "port": 8000,
                 "host": "0.0.0.0",
@@ -25732,7 +25732,7 @@
               "mods": [],
               "command": "env LD_LIBRARY_PATH=/app llama-server -m /models/Qwen3.8-27B/BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
               "id": "llamacpp-hip",
-              "image_tag": "arena-fe7c8b2414",
+              "image_tag": "commit-fe7c8b2414bb",
               "config_source": "matrix",
               "spec_files": {
                 "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-llamacpp",
@@ -25742,7 +25742,7 @@
                 "benchmark": "benchmarking/halo-arena-v1.yaml",
                 "legacy_recipe": null
               },
-              "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+              "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
               "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
               "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
               "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -25778,9 +25778,9 @@
               "id": "halo-arena-v1",
               "file": "benchmarking/halo-arena-v1.yaml"
             },
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -25817,7 +25817,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -25828,7 +25828,7 @@
           "mods": [],
           "command": "env LD_LIBRARY_PATH=/app llama-server -m /models/Qwen3.8-27B/BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-bf16-llamacpp",
@@ -25838,7 +25838,7 @@
             "benchmark": "benchmarking/halo-arena-v1.yaml",
             "legacy_recipe": null
           },
-          "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
           "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
           "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -26303,7 +26303,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -26444,7 +26444,7 @@
             "launch_spec": {
               "runtime": "llamacpp",
               "container": "llamacpp",
-              "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+              "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
               "defaults": {
                 "port": 8000,
                 "host": "0.0.0.0",
@@ -26455,7 +26455,7 @@
               "mods": [],
               "command": "env LD_LIBRARY_PATH=/app llama-server -m /models/Qwen3.8-27B/Qwen3.8-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
               "id": "llamacpp-hip",
-              "image_tag": "arena-fe7c8b2414",
+              "image_tag": "commit-fe7c8b2414bb",
               "config_source": "matrix",
               "spec_files": {
                 "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-q8-0-llamacpp",
@@ -26465,7 +26465,7 @@
                 "benchmark": "benchmarking/halo-arena-v1.yaml",
                 "legacy_recipe": null
               },
-              "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+              "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
               "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
               "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
               "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -26501,9 +26501,9 @@
               "id": "halo-arena-v1",
               "file": "benchmarking/halo-arena-v1.yaml"
             },
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -26540,7 +26540,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -26551,7 +26551,7 @@
           "mods": [],
           "command": "env LD_LIBRARY_PATH=/app llama-server -m /models/Qwen3.8-27B/Qwen3.8-27B-Q8_0.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-q8-0-llamacpp",
@@ -26561,7 +26561,7 @@
             "benchmark": "benchmarking/halo-arena-v1.yaml",
             "legacy_recipe": null
           },
-          "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
           "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
           "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -26665,7 +26665,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -26806,7 +26806,7 @@
             "launch_spec": {
               "runtime": "llamacpp",
               "container": "llamacpp",
-              "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+              "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
               "defaults": {
                 "port": 8000,
                 "host": "0.0.0.0",
@@ -26817,7 +26817,7 @@
               "mods": [],
               "command": "env LD_LIBRARY_PATH=/app llama-server -m /models/Qwen3.8-27B/Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
               "id": "llamacpp-hip",
-              "image_tag": "arena-fe7c8b2414",
+              "image_tag": "commit-fe7c8b2414bb",
               "config_source": "matrix",
               "spec_files": {
                 "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-ud-q4-k-m-llamacpp",
@@ -26827,7 +26827,7 @@
                 "benchmark": "benchmarking/halo-arena-v1.yaml",
                 "legacy_recipe": null
               },
-              "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+              "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
               "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
               "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
               "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -26863,9 +26863,9 @@
               "id": "halo-arena-v1",
               "file": "benchmarking/halo-arena-v1.yaml"
             },
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -26902,7 +26902,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -26913,7 +26913,7 @@
           "mods": [],
           "command": "env LD_LIBRARY_PATH=/app llama-server -m /models/Qwen3.8-27B/Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
           "id": "llamacpp-hip",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.qwen3.8-27b-ud-q4-k-m-llamacpp",
@@ -26923,7 +26923,7 @@
             "benchmark": "benchmarking/halo-arena-v1.yaml",
             "legacy_recipe": null
           },
-          "image_requested": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image_requested": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
           "image_resolved": "ghcr.io/inferstation/llama-rocm-halo@sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
           "image_digest": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
@@ -27397,7 +27397,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414"
+                "ref": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb"
               }
             },
             "build": {
@@ -27482,8 +27482,8 @@
             "runtime": "llamacpp",
             "container": "llamacpp",
             "command": "llama-server -m /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf -ngl 999 -fa on --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-            "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-            "image_tag": "arena-fe7c8b2414",
+            "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+            "image_tag": "commit-fe7c8b2414bb",
             "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
             "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
           },
@@ -27518,7 +27518,7 @@
         "launch": {
           "runtime": "llamacpp",
           "container": "llamacpp",
-          "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
+          "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
           "defaults": {
             "port": 8000,
             "host": "0.0.0.0",
@@ -27529,7 +27529,7 @@
           "mods": [],
           "command": "llama-server -m /models/Step-3.5-Flash-GGUF-Q4_K_S/step3p5_flash_Q4_K_S-00001-of-00012.gguf -ngl 999 -fa on --no-mmap --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
           "id": "llamacpp-hip-no-mmap",
-          "image_tag": "arena-fe7c8b2414",
+          "image_tag": "commit-fe7c8b2414bb",
           "config_source": "matrix",
           "spec_files": {
             "matrix": "matrices/catalog.yaml#matrices.step-3.5-flash-q4-k-s-llamacpp",
@@ -28029,7 +28029,7 @@
           "image": {
             "by_device": {
               "halo": {
-                "ref": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a"
+                "ref": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa"
               }
             },
             "build": {

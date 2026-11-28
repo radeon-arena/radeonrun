@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "generated_at": "2026-11-28T04:14:45.154922+00:00",
+  "generated_at": "2026-11-28T04:23:36.904918+00:00",
   "repo": "radeon-arena/radeonrun",
-  "commit": "5fb135a2516112744045ed233fbbcbb954c559bd",
-  "short_commit": "5fb135a",
+  "commit": "f78109e26fd2efb7044ad5fe634c92668ed99cb1",
+  "short_commit": "f78109e",
   "devices": {
     "strix": [
       "deepseek-v4-flash-0731-ud-q2-k-xl-llamacpp.json",

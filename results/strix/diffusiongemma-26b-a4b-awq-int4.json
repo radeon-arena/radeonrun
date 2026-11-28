@@ -64,8 +64,8 @@
     "runtime": "vllm-main",
     "container": "vllm-main",
     "command": "vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 \\ --served-model-name diffawq \\ --host {host} --port {port} \\ --max-model-len 896 --max-num-seqs {nseq} \\ --gpu-memory-utilization 0.6 \\ --generation-config vllm \\ --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' \\ --diffusion-config '{\"canvas_length\":256}'",
-    "image": "ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a",
-    "image_tag": "arena-92221485a",
+    "image": "ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa",
+    "image_tag": "commit-92221485aaaa",
     "image_id": "sha256:1160b7a3cf7101c70f100b6352c1e61840774a3f6860d5f71af1d7dde98d7eca"
   },
   "generated_at": "2026-07-06T04:56:55Z"

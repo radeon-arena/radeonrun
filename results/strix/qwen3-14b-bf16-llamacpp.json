@@ -64,8 +64,8 @@
     "runtime": "llamacpp",
     "container": "llamacpp",
     "command": "llama-server -m /models/Qwen3-14B/Qwen3-14B-BF16.gguf -ngl 999 -fa on --host 0.0.0.0 --port {port} -c {ctx} -np {nseq}",
-    "image": "ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414",
-    "image_tag": "arena-fe7c8b2414",
+    "image": "ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb",
+    "image_tag": "commit-fe7c8b2414bb",
     "image_id": "sha256:6f66cf5d50c6f3add8df323a1167df1e5f57822ef615f3c572c05fcbac7c45f2",
     "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
   },

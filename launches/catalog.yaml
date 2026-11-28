@@ -5,7 +5,7 @@ launches:
     container: llamacpp
     image:
       by_device:
-        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414}
+        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb}
       build: {framework: llamacpp}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -18,7 +18,7 @@ launches:
     container: llamacpp
     image:
       by_device:
-        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414}
+        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb}
       build: {framework: llamacpp}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -31,7 +31,7 @@ launches:
     container: llamacpp
     image:
       by_device:
-        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:arena-fe7c8b2414}
+        halo: {ref: ghcr.io/inferstation/llama-rocm-halo:commit-fe7c8b2414bb}
       build: {framework: llamacpp}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32}
     env: {}
@@ -154,7 +154,7 @@ launches:
     container: vllm-main
     image:
       by_device:
-        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo-main:arena-92221485a}
+        halo: {ref: ghcr.io/inferstation/vllm-rocm-halo-main:commit-92221485aaaa}
       build: {framework: vllm-main}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 4}
     env: {}
