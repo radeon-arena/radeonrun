@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 58.37,
-      "decode_toks_per_s_per_req": 75.82,
-      "prefill_toks_per_s": 1014.86,
-      "prompt_tokens": 590,
-      "prompt_tokens_min": 590,
-      "prompt_tokens_max": 590,
-      "ttft_ms": 517.69,
-      "tpot_ms": 13.19,
+      "decode_toks_per_s": 68.08,
+      "decode_toks_per_s_per_req": 78.01,
+      "prefill_toks_per_s": 2144.02,
+      "prompt_tokens": 589,
+      "prompt_tokens_min": 589,
+      "prompt_tokens_max": 589,
+      "ttft_ms": 251.62,
+      "tpot_ms": 12.82,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 124.19,
-      "decode_toks_per_s_per_req": 58.51,
-      "prefill_toks_per_s": 264.72,
-      "prompt_tokens": 589.5,
-      "prompt_tokens_min": 588,
-      "prompt_tokens_max": 591,
-      "ttft_ms": 1951.2,
-      "tpot_ms": 17.09,
+      "decode_toks_per_s": 170.32,
+      "decode_toks_per_s_per_req": 60.93,
+      "prefill_toks_per_s": 576.81,
+      "prompt_tokens": 587.5,
+      "prompt_tokens_min": 585,
+      "prompt_tokens_max": 589,
+      "ttft_ms": 913.23,
+      "tpot_ms": 16.43,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 97.16,
-      "decode_toks_per_s_per_req": 17.0,
-      "prefill_toks_per_s": 38.83,
+      "decode_toks_per_s": 194.77,
+      "decode_toks_per_s_per_req": 17.92,
+      "prefill_toks_per_s": 174.89,
       "prompt_tokens": 588.94,
       "prompt_tokens_min": 585,
       "prompt_tokens_max": 591,
-      "ttft_ms": 13366.33,
-      "tpot_ms": 60.18,
+      "ttft_ms": 3290.63,
+      "tpot_ms": 56.5,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 108.85,
-      "decode_toks_per_s_per_req": 10.78,
-      "prefill_toks_per_s": 20.74,
-      "prompt_tokens": 588.53,
-      "prompt_tokens_min": 585,
+      "decode_toks_per_s": 261.01,
+      "decode_toks_per_s_per_req": 13.3,
+      "prefill_toks_per_s": 113.66,
+      "prompt_tokens": 588.47,
+      "prompt_tokens_min": 586,
       "prompt_tokens_max": 591,
-      "ttft_ms": 25103.26,
-      "tpot_ms": 97.26,
+      "ttft_ms": 5585.92,
+      "tpot_ms": 78.4,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -81,12 +81,12 @@
     "model": "/models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf",
     "runtime": "llamacpp",
     "container": "llamacpp",
-    "command": "env LD_LIBRARY_PATH=/app env ROCR_VISIBLE_DEVICES=0 HIP_VISIBLE_DEVICES=0 llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
+    "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib HSA_NO_SCRATCH_RECLAIM=1 HIP_FORCE_DEV_KERNARG=1 llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
     "config_source": "matrix",
     "spec_files": {
       "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp",
       "model": "models/catalog.yaml#models.gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp",
-      "launch": "launches/catalog.yaml#launches.llamacpp-hip",
+      "launch": "launches/catalog.yaml#launches.w7900-llamacpp-hip-2611",
       "device": "devices/w7900.yaml",
       "benchmark": "benchmarking/halo-arena-v1.yaml",
       "legacy_recipe": "recipes/gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp.yaml"
@@ -120,7 +120,7 @@
     "launch_spec": {
       "runtime": "llamacpp",
       "container": "llamacpp",
-      "image": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
+      "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
       "defaults": {
         "port": 8000,
         "host": "0.0.0.0",
@@ -128,13 +128,16 @@
         "ctx": 32768
       },
       "env": {
+        "HIP_VISIBLE_DEVICES": "0",
         "ROCR_VISIBLE_DEVICES": "0",
-        "HIP_VISIBLE_DEVICES": "0"
+        "LD_LIBRARY_PATH": "/app:/opt/rocm/lib",
+        "HSA_NO_SCRATCH_RECLAIM": "1",
+        "HIP_FORCE_DEV_KERNARG": "1"
       },
       "mods": [],
-      "command": "env LD_LIBRARY_PATH=/app env ROCR_VISIBLE_DEVICES=0 HIP_VISIBLE_DEVICES=0 llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32",
-      "id": "llamacpp-hip",
-      "image_tag": "latest",
+      "command": "env HIP_VISIBLE_DEVICES=0 ROCR_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=/app:/opt/rocm/lib HSA_NO_SCRATCH_RECLAIM=1 HIP_FORCE_DEV_KERNARG=1 llama-server -m /models/Gemma-4-26B-A4B-it-smoke/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 999 -fa on --host 0.0.0.0 --port 8000 -c 32768 -np 32 --cache-ram 0",
+      "id": "w7900-llamacpp-hip-2611",
+      "image_tag": "commit-29b52d398b29",
       "config_source": "matrix",
       "spec_files": {
         "matrix": "matrices/catalog.yaml#matrices.gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp",
@@ -144,9 +147,15 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": "recipes/gemma-4-26b-a4b-it-ud-q4-k-m-llamacpp.yaml"
       },
-      "image_requested": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
-      "image_id": "local-build llama.cpp@fe7c8b2414 gfx1100 on rocm/pytorch:rocm7.2.4",
-      "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+      "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+      "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+      "backend": "ROCm/HIP",
+      "topology": {
+        "node_count": 1,
+        "gpu_count": 1,
+        "tensor_parallel_size": 1
+      }
     },
     "benchmark_spec": {
       "framework": "llama-benchy",
@@ -178,11 +187,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
-    "image_requested": "ghcr.io/radeon-arena/w7900-llamacpp:latest",
-    "image_tag": "latest",
-    "image_id": "local-build llama.cpp@fe7c8b2414 gfx1100 on rocm/pytorch:rocm7.2.4",
-    "image_commit": "fe7c8b2414bb39e3dbc192fb494a1eb054b90890"
+    "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_tag": "commit-29b52d398b29",
+    "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-18T18:59:00Z"
+  "generated_at": "2026-11-27T12:09:29Z"
 }

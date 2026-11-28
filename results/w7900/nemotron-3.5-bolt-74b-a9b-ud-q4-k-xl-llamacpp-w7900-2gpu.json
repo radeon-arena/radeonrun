@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 39.05,
-      "decode_toks_per_s_per_req": 48.75,
-      "prefill_toks_per_s": 785.01,
+      "decode_toks_per_s": 38.95,
+      "decode_toks_per_s_per_req": 48.71,
+      "prefill_toks_per_s": 778.15,
       "prompt_tokens": 588,
       "prompt_tokens_min": 588,
       "prompt_tokens_max": 588,
-      "ttft_ms": 672.74,
-      "tpot_ms": 20.51,
+      "ttft_ms": 678.5,
+      "tpot_ms": 20.53,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 87.59,
-      "decode_toks_per_s_per_req": 32.72,
-      "prefill_toks_per_s": 267.43,
-      "prompt_tokens": 586.75,
-      "prompt_tokens_min": 584,
-      "prompt_tokens_max": 588,
-      "ttft_ms": 1952.4,
-      "tpot_ms": 30.58,
+      "decode_toks_per_s": 85.14,
+      "decode_toks_per_s_per_req": 32.31,
+      "prefill_toks_per_s": 252.16,
+      "prompt_tokens": 589,
+      "prompt_tokens_min": 588,
+      "prompt_tokens_max": 590,
+      "ttft_ms": 2070.54,
+      "tpot_ms": 30.98,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 102.96,
-      "decode_toks_per_s_per_req": 9.5,
-      "prefill_toks_per_s": 94.1,
+      "decode_toks_per_s": 94.82,
+      "decode_toks_per_s_per_req": 9.23,
+      "prefill_toks_per_s": 78.88,
       "prompt_tokens": 588.06,
       "prompt_tokens_min": 585,
       "prompt_tokens_max": 590,
-      "ttft_ms": 6247.39,
-      "tpot_ms": 106.73,
+      "ttft_ms": 7470.59,
+      "tpot_ms": 110.49,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 119.75,
-      "decode_toks_per_s_per_req": 5.8,
-      "prefill_toks_per_s": 58.12,
-      "prompt_tokens": 587.59,
-      "prompt_tokens_min": 584,
+      "decode_toks_per_s": 117.41,
+      "decode_toks_per_s_per_req": 5.74,
+      "prefill_toks_per_s": 55.48,
+      "prompt_tokens": 588.16,
+      "prompt_tokens_min": 586,
       "prompt_tokens_max": 590,
-      "ttft_ms": 11283.41,
-      "tpot_ms": 178.03,
+      "ttft_ms": 11694.51,
+      "tpot_ms": 180.15,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -121,7 +121,7 @@
       "runtime": "llamacpp",
       "backend": "ROCm/HIP",
       "container": "llamacpp",
-      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
       "topology": {
         "node_count": 1,
         "gpu_count": 2,
@@ -153,8 +153,8 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": null
       },
-      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
-      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
       "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
     },
     "benchmark_spec": {
@@ -187,11 +187,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
-    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
     "image_tag": "commit-29b52d398b29",
-    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
-    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-24T07:20:10Z"
+  "generated_at": "2026-11-27T12:04:04Z"
 }

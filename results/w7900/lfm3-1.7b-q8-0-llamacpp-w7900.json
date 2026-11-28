@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 166.68,
-      "decode_toks_per_s_per_req": 181.25,
-      "prefill_toks_per_s": 8368.94,
+      "decode_toks_per_s": 166.19,
+      "decode_toks_per_s_per_req": 180.47,
+      "prefill_toks_per_s": 8472.99,
       "prompt_tokens": 586,
       "prompt_tokens_min": 586,
       "prompt_tokens_max": 586,
-      "ttft_ms": 66.7,
-      "tpot_ms": 5.52,
+      "ttft_ms": 65.97,
+      "tpot_ms": 5.54,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 430.35,
-      "decode_toks_per_s_per_req": 132.85,
-      "prefill_toks_per_s": 2305.32,
-      "prompt_tokens": 586.5,
-      "prompt_tokens_min": 586,
-      "prompt_tokens_max": 588,
-      "ttft_ms": 230.15,
-      "tpot_ms": 7.53,
+      "decode_toks_per_s": 424.86,
+      "decode_toks_per_s_per_req": 131.02,
+      "prefill_toks_per_s": 2313.56,
+      "prompt_tokens": 584.25,
+      "prompt_tokens_min": 583,
+      "prompt_tokens_max": 585,
+      "ttft_ms": 229.22,
+      "tpot_ms": 7.63,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 543.01,
-      "decode_toks_per_s_per_req": 42.84,
-      "prefill_toks_per_s": 795.55,
+      "decode_toks_per_s": 537.74,
+      "decode_toks_per_s_per_req": 42.46,
+      "prefill_toks_per_s": 751.88,
       "prompt_tokens": 585.19,
       "prompt_tokens_min": 583,
       "prompt_tokens_max": 587,
-      "ttft_ms": 763.84,
-      "tpot_ms": 23.45,
+      "ttft_ms": 778.41,
+      "tpot_ms": 23.64,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 698.53,
-      "decode_toks_per_s_per_req": 29.01,
-      "prefill_toks_per_s": 509.54,
-      "prompt_tokens": 584.72,
+      "decode_toks_per_s": 695.44,
+      "decode_toks_per_s_per_req": 29.05,
+      "prefill_toks_per_s": 476.77,
+      "prompt_tokens": 584.78,
       "prompt_tokens_min": 582,
       "prompt_tokens_max": 587,
-      "ttft_ms": 1356.03,
-      "tpot_ms": 34.88,
+      "ttft_ms": 1388.7,
+      "tpot_ms": 34.82,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -121,7 +121,7 @@
       "runtime": "llamacpp",
       "backend": "ROCm/HIP",
       "container": "llamacpp",
-      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
       "topology": {
         "node_count": 1,
         "gpu_count": 1,
@@ -153,8 +153,8 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": null
       },
-      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
-      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
       "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
     },
     "benchmark_spec": {
@@ -187,11 +187,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
-    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
     "image_tag": "commit-29b52d398b29",
-    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
-    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-24T09:07:31Z"
+  "generated_at": "2026-11-27T12:13:53Z"
 }

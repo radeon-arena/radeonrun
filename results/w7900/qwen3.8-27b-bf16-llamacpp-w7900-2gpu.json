@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 12.43,
-      "decode_toks_per_s_per_req": 13.67,
-      "prefill_toks_per_s": 547.22,
-      "prompt_tokens": 588,
-      "prompt_tokens_min": 588,
-      "prompt_tokens_max": 588,
-      "ttft_ms": 1008.79,
-      "tpot_ms": 73.14,
+      "decode_toks_per_s": 12.4,
+      "decode_toks_per_s_per_req": 13.66,
+      "prefill_toks_per_s": 538.38,
+      "prompt_tokens": 587,
+      "prompt_tokens_min": 587,
+      "prompt_tokens_max": 587,
+      "ttft_ms": 1024.2,
+      "tpot_ms": 73.19,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 35.17,
-      "decode_toks_per_s_per_req": 10.85,
-      "prefill_toks_per_s": 188.57,
-      "prompt_tokens": 588.5,
-      "prompt_tokens_min": 587,
-      "prompt_tokens_max": 590,
-      "ttft_ms": 2817.66,
-      "tpot_ms": 92.21,
+      "decode_toks_per_s": 35.12,
+      "decode_toks_per_s_per_req": 10.8,
+      "prefill_toks_per_s": 190.58,
+      "prompt_tokens": 586.5,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 588,
+      "ttft_ms": 2790.03,
+      "tpot_ms": 92.58,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 55.82,
-      "decode_toks_per_s_per_req": 4.68,
-      "prefill_toks_per_s": 63.2,
+      "decode_toks_per_s": 55.93,
+      "decode_toks_per_s_per_req": 4.64,
+      "prefill_toks_per_s": 66.84,
       "prompt_tokens": 587.88,
       "prompt_tokens_min": 583,
       "prompt_tokens_max": 590,
-      "ttft_ms": 9195.01,
-      "tpot_ms": 215.09,
+      "ttft_ms": 8837.29,
+      "tpot_ms": 216.93,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 83.85,
-      "decode_toks_per_s_per_req": 4.07,
-      "prefill_toks_per_s": 38.27,
-      "prompt_tokens": 587.41,
+      "decode_toks_per_s": 83.63,
+      "decode_toks_per_s_per_req": 4.01,
+      "prefill_toks_per_s": 39.57,
+      "prompt_tokens": 587.53,
       "prompt_tokens_min": 584,
       "prompt_tokens_max": 590,
-      "ttft_ms": 16187.72,
-      "tpot_ms": 252.28,
+      "ttft_ms": 15847.63,
+      "tpot_ms": 256.0,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -121,7 +121,7 @@
       "runtime": "llamacpp",
       "backend": "ROCm/HIP",
       "container": "llamacpp",
-      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
       "topology": {
         "node_count": 1,
         "gpu_count": 2,
@@ -153,8 +153,8 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": null
       },
-      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
-      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
       "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
     },
     "benchmark_spec": {
@@ -187,11 +187,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
-    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
     "image_tag": "commit-29b52d398b29",
-    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
-    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-24T09:36:52Z"
+  "generated_at": "2026-11-27T12:11:15Z"
 }

@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 75.45,
-      "decode_toks_per_s_per_req": 79.28,
-      "prefill_toks_per_s": 6283.2,
+      "decode_toks_per_s": 93.78,
+      "decode_toks_per_s_per_req": 98.03,
+      "prefill_toks_per_s": 8737.71,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 94.1,
-      "tpot_ms": 12.61,
+      "ttft_ms": 68.8,
+      "tpot_ms": 10.2,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 151.74,
-      "decode_toks_per_s_per_req": 40.58,
-      "prefill_toks_per_s": 3445.18,
+      "decode_toks_per_s": 200.42,
+      "decode_toks_per_s_per_req": 54.03,
+      "prefill_toks_per_s": 3867.12,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 227.56,
-      "tpot_ms": 24.66,
+      "ttft_ms": 194.5,
+      "tpot_ms": 18.52,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 364.55,
-      "decode_toks_per_s_per_req": 25.61,
-      "prefill_toks_per_s": 1524.85,
+      "decode_toks_per_s": 485.31,
+      "decode_toks_per_s_per_req": 34.72,
+      "prefill_toks_per_s": 1859.94,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 584.02,
-      "tpot_ms": 39.11,
+      "ttft_ms": 511.11,
+      "tpot_ms": 28.87,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 498.5,
-      "decode_toks_per_s_per_req": 21.18,
-      "prefill_toks_per_s": 770.92,
+      "decode_toks_per_s": 749.05,
+      "decode_toks_per_s_per_req": 28.25,
+      "prefill_toks_per_s": 1257.53,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 2009.72,
-      "tpot_ms": 47.83,
+      "ttft_ms": 856.34,
+      "tpot_ms": 35.6,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -122,7 +122,7 @@
     "launch_spec": {
       "runtime": "vllm",
       "container": "vllm",
-      "image": "ghcr.io/radeon-arena/w7900-vllm:latest",
+      "image": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
       "defaults": {
         "port": 8000,
         "host": "0.0.0.0",
@@ -133,7 +133,7 @@
       "mods": [],
       "command": "vllm serve /models/Qwen3-30B-A3B-bf16 --host 0.0.0.0 --port 8000 --served-model-name q30b --max-num-seqs 32 --dtype bfloat16 --attention-backend TRITON_ATTN --max-model-len 40960 --gpu-memory-utilization 0.85 --tensor-parallel-size 2",
       "id": "vllm-bf16-triton",
-      "image_tag": "latest",
+      "image_tag": "commit-9740f70413d3",
       "config_source": "matrix",
       "spec_files": {
         "matrix": "matrices/catalog.yaml#matrices.qwen3-30b-a3b-bf16-vllm",
@@ -143,13 +143,14 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": "recipes/qwen3-30b-a3b-bf16-vllm.yaml"
       },
-      "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
-      "image_id": "local-runtime",
+      "image_requested": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+      "image_id": "sha256:d9f1663a455d32b9f2541920c75b807ab57ab65d656557475a64aec091c4bbf5",
       "topology": {
         "node_count": 1,
         "gpu_count": 2,
         "tensor_parallel_size": 2
-      }
+      },
+      "image_commit": "9740f70413d3"
     },
     "benchmark_spec": {
       "framework": "llama-benchy",
@@ -181,10 +182,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "ghcr.io/radeon-arena/w7900-vllm:latest",
-    "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
-    "image_tag": "latest",
-    "image_id": "local-runtime"
+    "image": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+    "image_requested": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+    "image_tag": "commit-9740f70413d3",
+    "image_id": "sha256:d9f1663a455d32b9f2541920c75b807ab57ab65d656557475a64aec091c4bbf5",
+    "image_commit": "9740f70413d3",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-20T05:53:07Z"
+  "generated_at": "2026-11-27T07:39:33Z"
 }

@@ -485,7 +485,7 @@ launches:
     backend: ROCm/HIP
     container: llamacpp
     image:
-      ref: local/llama-rocm-w7900:commit-29b52d398b29
+      ref: ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29
     topology: {node_count: 1, gpu_count: 1, tensor_parallel_size: 1}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
     env:
@@ -504,7 +504,7 @@ launches:
     backend: ROCm/HIP
     container: llamacpp
     image:
-      ref: local/llama-rocm-w7900:commit-29b52d398b29
+      ref: ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29
     topology: {node_count: 1, gpu_count: 2, tensor_parallel_size: 1}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
     env:
@@ -523,7 +523,7 @@ launches:
     backend: ROCm/HIP
     container: llamacpp
     image:
-      ref: local/llama-rocm-w7900:commit-29b52d398b29
+      ref: ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29
     topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
     env:
@@ -542,7 +542,7 @@ launches:
     backend: ROCm/HIP
     container: llamacpp
     image:
-      ref: local/llama-rocm-w7900:commit-29b52d398b29
+      ref: ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29
     topology: {node_count: 1, gpu_count: 4, tensor_parallel_size: 1}
     defaults: {port: 8000, host: 0.0.0.0, nseq: 32, ctx: 32768}
     env:

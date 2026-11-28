@@ -248,6 +248,12 @@ def load_run_config(
 
     if matrix is not None:
         legacy = read_yaml(legacy_path) if legacy_path.is_file() else {}
+        # `by_device.<device>` lets one matrix name a different launch (or
+        # model/benchmark_ctx) on another device, e.g. a multi-GPU W7900 launch.
+        device_key = str(device_override or matrix.get("device") or "halo")
+        per_device = (matrix.get("by_device") or {}).get(device_key)
+        if isinstance(per_device, Mapping):
+            matrix = {**{k: v for k, v in matrix.items() if k != "by_device"}, **per_device}
         model_ref, model_overrides = _ref_and_overrides(matrix.get("model"), "model")
         launch_ref, launch_overrides = _ref_and_overrides(matrix.get("launch"), "launch")
         model_base, model_file = _catalog_spec(MODELS_DIR, "models", model_ref)

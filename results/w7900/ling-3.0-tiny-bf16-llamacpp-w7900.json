@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 92.33,
-      "decode_toks_per_s_per_req": 106.31,
-      "prefill_toks_per_s": 2814.77,
-      "prompt_tokens": 588,
-      "prompt_tokens_min": 588,
-      "prompt_tokens_max": 588,
-      "ttft_ms": 191.3,
-      "tpot_ms": 9.41,
+      "decode_toks_per_s": 91.89,
+      "decode_toks_per_s_per_req": 105.76,
+      "prefill_toks_per_s": 2811.6,
+      "prompt_tokens": 589,
+      "prompt_tokens_min": 589,
+      "prompt_tokens_max": 589,
+      "ttft_ms": 191.56,
+      "tpot_ms": 9.46,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 189.74,
-      "decode_toks_per_s_per_req": 62.41,
-      "prefill_toks_per_s": 801.02,
+      "decode_toks_per_s": 189.62,
+      "decode_toks_per_s_per_req": 62.16,
+      "prefill_toks_per_s": 809.28,
       "prompt_tokens": 589,
       "prompt_tokens_min": 588,
       "prompt_tokens_max": 590,
-      "ttft_ms": 657.37,
-      "tpot_ms": 16.03,
+      "ttft_ms": 650.87,
+      "tpot_ms": 16.09,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 254.32,
-      "decode_toks_per_s_per_req": 21.15,
-      "prefill_toks_per_s": 285.29,
+      "decode_toks_per_s": 253.8,
+      "decode_toks_per_s_per_req": 21.16,
+      "prefill_toks_per_s": 282.16,
       "prompt_tokens": 588.06,
       "prompt_tokens_min": 585,
       "prompt_tokens_max": 590,
-      "ttft_ms": 1980.12,
-      "tpot_ms": 47.49,
+      "ttft_ms": 1998.98,
+      "tpot_ms": 47.47,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 409.88,
-      "decode_toks_per_s_per_req": 19.82,
-      "prefill_toks_per_s": 202.87,
-      "prompt_tokens": 588.22,
-      "prompt_tokens_min": 586,
+      "decode_toks_per_s": 400.83,
+      "decode_toks_per_s_per_req": 19.56,
+      "prefill_toks_per_s": 177.92,
+      "prompt_tokens": 587.59,
+      "prompt_tokens_min": 585,
       "prompt_tokens_max": 590,
-      "ttft_ms": 3252.63,
-      "tpot_ms": 52.03,
+      "ttft_ms": 3417.66,
+      "tpot_ms": 52.47,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -121,7 +121,7 @@
       "runtime": "llamacpp",
       "backend": "ROCm/HIP",
       "container": "llamacpp",
-      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
       "topology": {
         "node_count": 1,
         "gpu_count": 1,
@@ -153,8 +153,8 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": null
       },
-      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
-      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
       "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
     },
     "benchmark_spec": {
@@ -187,11 +187,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
-    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
     "image_tag": "commit-29b52d398b29",
-    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
-    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-24T09:11:12Z"
+  "generated_at": "2026-11-27T12:14:32Z"
 }

@@ -9,13 +9,13 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 20.32,
+      "decode_toks_per_s": 31.22,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 6297.44,
+      "ttft_ms": 4099.56,
       "tpot_ms": null,
       "requests_ok": 1,
       "requests_total": 1,
@@ -25,13 +25,13 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 26.08,
+      "decode_toks_per_s": 35.17,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 19633.34,
+      "ttft_ms": 14555.55,
       "tpot_ms": null,
       "requests_ok": 4,
       "requests_total": 4,
@@ -41,13 +41,13 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 25.56,
+      "decode_toks_per_s": 34.99,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 50085.24,
+      "ttft_ms": 36436.47,
       "tpot_ms": null,
       "requests_ok": 16,
       "requests_total": 16,
@@ -57,13 +57,13 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 25.53,
+      "decode_toks_per_s": 34.92,
       "decode_toks_per_s_per_req": null,
       "prefill_toks_per_s": null,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 90268.14,
+      "ttft_ms": 65812.41,
       "tpot_ms": null,
       "requests_ok": 32,
       "requests_total": 32,
@@ -121,7 +121,7 @@
     "launch_spec": {
       "runtime": "vllm-main",
       "container": "vllm-main",
-      "image": "ghcr.io/radeon-arena/w7900-vllm-main:latest",
+      "image": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
       "defaults": {
         "port": 8000,
         "host": "0.0.0.0",
@@ -131,7 +131,7 @@
       "mods": [],
       "command": "vllm serve /models/diffusiongemma-26B-A4B-it-AWQ-INT4 --served-model-name diffawq --host 0.0.0.0 --port 8000 --max-model-len 896 --max-num-seqs 4 --gpu-memory-utilization 0.6 --generation-config vllm --hf-overrides '{\"diffusion_sampler\":\"entropy_bound\",\"diffusion_entropy_bound\":0.1}' --diffusion-config '{\"canvas_length\":256}'",
       "id": "vllm-main-diffusion",
-      "image_tag": "latest",
+      "image_tag": "commit-9740f70413d3",
       "config_source": "matrix",
       "spec_files": {
         "matrix": "matrices/catalog.yaml#matrices.diffusiongemma-26b-a4b-awq-int4",
@@ -141,8 +141,12 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": "recipes/diffusiongemma-26b-a4b-awq-int4.yaml"
       },
-      "image_requested": "ghcr.io/radeon-arena/w7900-vllm-main:latest",
-      "image_id": "local-runtime"
+      "image_requested": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+      "image_id": "sha256:d9f1663a455d32b9f2541920c75b807ab57ab65d656557475a64aec091c4bbf5",
+      "topology": {
+        "gpu_count": 1
+      },
+      "image_commit": "9740f70413d3"
     },
     "benchmark_spec": {
       "framework": "llama-benchy",
@@ -174,10 +178,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "ghcr.io/radeon-arena/w7900-vllm-main:latest",
-    "image_requested": "ghcr.io/radeon-arena/w7900-vllm-main:latest",
-    "image_tag": "latest",
-    "image_id": "local-runtime"
+    "image": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+    "image_requested": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+    "image_tag": "commit-9740f70413d3",
+    "image_id": "sha256:d9f1663a455d32b9f2541920c75b807ab57ab65d656557475a64aec091c4bbf5",
+    "image_commit": "9740f70413d3",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-20T07:53:03Z"
+  "generated_at": "2026-11-27T07:54:23Z"
 }

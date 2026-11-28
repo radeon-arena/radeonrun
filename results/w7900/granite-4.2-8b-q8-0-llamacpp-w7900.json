@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 58.04,
-      "decode_toks_per_s_per_req": 64.55,
-      "prefill_toks_per_s": 2306.5,
-      "prompt_tokens": 581,
-      "prompt_tokens_min": 581,
-      "prompt_tokens_max": 581,
-      "ttft_ms": 237.47,
-      "tpot_ms": 15.49,
+      "decode_toks_per_s": 58.26,
+      "decode_toks_per_s_per_req": 64.76,
+      "prefill_toks_per_s": 2326.57,
+      "prompt_tokens": 584,
+      "prompt_tokens_min": 584,
+      "prompt_tokens_max": 584,
+      "ttft_ms": 235.51,
+      "tpot_ms": 15.44,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 157.41,
-      "decode_toks_per_s_per_req": 49.85,
-      "prefill_toks_per_s": 902.99,
+      "decode_toks_per_s": 157.85,
+      "decode_toks_per_s_per_req": 51.76,
+      "prefill_toks_per_s": 1018.86,
       "prompt_tokens": 584.25,
       "prompt_tokens_min": 583,
       "prompt_tokens_max": 585,
-      "ttft_ms": 674.64,
-      "tpot_ms": 20.22,
+      "ttft_ms": 754.13,
+      "tpot_ms": 19.55,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 218.52,
-      "decode_toks_per_s_per_req": 18.46,
-      "prefill_toks_per_s": 440.3,
-      "prompt_tokens": 583.12,
+      "decode_toks_per_s": 215.25,
+      "decode_toks_per_s_per_req": 18.23,
+      "prefill_toks_per_s": 439.8,
+      "prompt_tokens": 583.25,
       "prompt_tokens_min": 581,
-      "prompt_tokens_max": 585,
-      "ttft_ms": 2292.24,
-      "tpot_ms": 55.32,
+      "prompt_tokens_max": 586,
+      "ttft_ms": 2336.77,
+      "tpot_ms": 56.09,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 291.55,
-      "decode_toks_per_s_per_req": 13.84,
-      "prefill_toks_per_s": 230.62,
-      "prompt_tokens": 582.81,
-      "prompt_tokens_min": 581,
+      "decode_toks_per_s": 295.42,
+      "decode_toks_per_s_per_req": 14.05,
+      "prefill_toks_per_s": 284.62,
+      "prompt_tokens": 582.47,
+      "prompt_tokens_min": 580,
       "prompt_tokens_max": 585,
-      "ttft_ms": 4258.87,
-      "tpot_ms": 75.98,
+      "ttft_ms": 4219.72,
+      "tpot_ms": 74.88,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -121,7 +121,7 @@
       "runtime": "llamacpp",
       "backend": "ROCm/HIP",
       "container": "llamacpp",
-      "image": "local/llama-rocm-w7900:commit-29b52d398b29",
+      "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
       "topology": {
         "node_count": 1,
         "gpu_count": 1,
@@ -153,8 +153,8 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": null
       },
-      "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
-      "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
+      "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+      "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
       "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
     },
     "benchmark_spec": {
@@ -187,11 +187,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "local/llama-rocm-w7900:commit-29b52d398b29",
-    "image_requested": "local/llama-rocm-w7900:commit-29b52d398b29",
+    "image": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
+    "image_requested": "ghcr.io/inferstation/llama-rocm-w7900:commit-29b52d398b29",
     "image_tag": "commit-29b52d398b29",
-    "image_id": "sha256:b97583cbc6759f2926dd29762cfc45e090e20a42470aed2773ae657d559ec828",
-    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213"
+    "image_id": "sha256:6727af2e60a8a8d1b9df68328202a7a0fd2d6f992e54a85ae6282a7ee642cf3d",
+    "image_commit": "29b52d398b294509746ec0a3f28948a3107c0213",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-24T09:21:03Z"
+  "generated_at": "2026-11-27T12:12:37Z"
 }

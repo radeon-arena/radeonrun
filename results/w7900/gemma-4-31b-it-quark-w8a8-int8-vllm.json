@@ -9,14 +9,14 @@
   },
   "measurements": [
     {
-      "decode_toks_per_s": 20.18,
-      "decode_toks_per_s_per_req": 21.55,
-      "prefill_toks_per_s": 1276.12,
+      "decode_toks_per_s": 12.87,
+      "decode_toks_per_s_per_req": 13.32,
+      "prefill_toks_per_s": 1506.05,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 447.63,
-      "tpot_ms": 46.41,
+      "ttft_ms": 415.02,
+      "tpot_ms": 75.06,
       "requests_ok": 1,
       "requests_total": 1,
       "depth": 0,
@@ -25,14 +25,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 38.76,
-      "decode_toks_per_s_per_req": 10.85,
-      "prefill_toks_per_s": 586.78,
+      "decode_toks_per_s": 40.53,
+      "decode_toks_per_s_per_req": 11.33,
+      "prefill_toks_per_s": 626.25,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 1460.57,
-      "tpot_ms": 92.34,
+      "ttft_ms": 1375.66,
+      "tpot_ms": 88.47,
       "requests_ok": 4,
       "requests_total": 4,
       "depth": 0,
@@ -41,14 +41,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 69.47,
-      "decode_toks_per_s_per_req": 5.71,
-      "prefill_toks_per_s": 163.55,
+      "decode_toks_per_s": 70.63,
+      "decode_toks_per_s_per_req": 9.82,
+      "prefill_toks_per_s": 223.58,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 4533.14,
-      "tpot_ms": 175.9,
+      "ttft_ms": 6395.13,
+      "tpot_ms": 103.63,
       "requests_ok": 16,
       "requests_total": 16,
       "depth": 0,
@@ -57,14 +57,14 @@
       "tg": 128
     },
     {
-      "decode_toks_per_s": 71.02,
-      "decode_toks_per_s_per_req": 5.27,
-      "prefill_toks_per_s": 133.3,
+      "decode_toks_per_s": 85.38,
+      "decode_toks_per_s_per_req": 9.47,
+      "prefill_toks_per_s": 121.59,
       "prompt_tokens": 512,
       "prompt_tokens_min": 512,
       "prompt_tokens_max": 512,
-      "ttft_ms": 17330.57,
-      "tpot_ms": 195.93,
+      "ttft_ms": 16727.81,
+      "tpot_ms": 107.48,
       "requests_ok": 32,
       "requests_total": 32,
       "depth": 0,
@@ -121,7 +121,7 @@
     "launch_spec": {
       "runtime": "vllm",
       "container": "vllm",
-      "image": "ghcr.io/radeon-arena/w7900-vllm:latest",
+      "image": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
       "defaults": {
         "port": 8000,
         "host": "0.0.0.0",
@@ -132,7 +132,7 @@
       "mods": [],
       "command": "vllm serve /models/Gemma-4-31B-it-Quark-W8A8-INT8 --host 0.0.0.0 --port 8000 --served-model-name g31q --max-num-seqs 32 --quantization quark --max-model-len 2304 --gpu-memory-utilization 0.85",
       "id": "vllm-quark",
-      "image_tag": "latest",
+      "image_tag": "commit-9740f70413d3",
       "config_source": "matrix",
       "spec_files": {
         "matrix": "matrices/catalog.yaml#matrices.gemma-4-31b-it-quark-w8a8-int8-vllm",
@@ -142,8 +142,12 @@
         "benchmark": "benchmarking/halo-arena-v1.yaml",
         "legacy_recipe": "recipes/gemma-4-31b-it-quark-w8a8-int8-vllm.yaml"
       },
-      "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
-      "image_id": "local-runtime"
+      "image_requested": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+      "image_id": "sha256:d9f1663a455d32b9f2541920c75b807ab57ab65d656557475a64aec091c4bbf5",
+      "topology": {
+        "gpu_count": 1
+      },
+      "image_commit": "9740f70413d3"
     },
     "benchmark_spec": {
       "framework": "llama-benchy",
@@ -175,10 +179,12 @@
       "id": "halo-arena-v1",
       "file": "benchmarking/halo-arena-v1.yaml"
     },
-    "image": "ghcr.io/radeon-arena/w7900-vllm:latest",
-    "image_requested": "ghcr.io/radeon-arena/w7900-vllm:latest",
-    "image_tag": "latest",
-    "image_id": "local-runtime"
+    "image": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+    "image_requested": "ghcr.io/inferstation/vllm-rocm-w7900-main:commit-9740f70413d3",
+    "image_tag": "commit-9740f70413d3",
+    "image_id": "sha256:d9f1663a455d32b9f2541920c75b807ab57ab65d656557475a64aec091c4bbf5",
+    "image_commit": "9740f70413d3",
+    "run_host": "RC-2 wx-k8s-prod-s-064 (W7900D x8), interleaved NUMA memory policy"
   },
-  "generated_at": "2026-11-20T04:22:36Z"
+  "generated_at": "2026-11-27T07:51:55Z"
 }
